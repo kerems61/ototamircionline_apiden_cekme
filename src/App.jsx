@@ -1,0 +1,750 @@
+import React, { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import {
+  Search, MapPin, Star, Clock, Phone, ChevronRight, X,
+  Sparkles, Shield, Wrench, CircleDot, Flame, Hammer, Droplet,
+  Home, Heart, User, Navigation, ExternalLink, Send, BadgeCheck,
+} from 'lucide-react';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+  { auth: { persistSession: false } }
+);
+
+/* ──────────────────────────────────────────────────────────────
+   ototamircionline.com — UI
+   Hybrid data model: Google Places (live) + Supabase (delta, TBD)
+   ────────────────────────────────────────────────────────────── */
+
+const FONT_INJECT = `
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Geist:wght@300;400;500;600;700&display=swap');
+:root{
+  --bg: #FAFAF6;
+  --bg-warm: #F4F1EA;
+  --ink: #14110F;
+  --ink-2: #5C5650;
+  --ink-3: #8C857C;
+  --line: #E8E3D8;
+  --line-2: #EFEAE0;
+  --card: #FFFFFF;
+  --accent: #C2410C;
+  --accent-soft: #FEF1E6;
+  --green: #166534;
+  --green-soft: #ECFDF5;
+  --shadow-sm: 0 1px 2px rgba(20,17,15,.04), 0 1px 3px rgba(20,17,15,.03);
+  --shadow-md: 0 1px 2px rgba(20,17,15,.04), 0 8px 24px rgba(20,17,15,.06);
+  --shadow-lg: 0 1px 2px rgba(20,17,15,.04), 0 24px 48px -12px rgba(20,17,15,.12);
+}
+.serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
+.sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(194,65,12,.35); }
+  100% { box-shadow: 0 0 0 12px rgba(194,65,12,0); }
+}
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.fadeUp { animation: fadeUp .7s cubic-bezier(.2,.8,.2,1) both; }
+.fadeIn { animation: fadeIn .5s ease both; }
+.slideUp { animation: slideUp .45s cubic-bezier(.2,.8,.2,1) both; }
+.pulseRing::after{
+  content:''; position:absolute; inset:-4px; border-radius:9999px;
+  animation: pulseRing 1.8s ease-out infinite;
+}
+.skeleton {
+  background: linear-gradient(90deg, #EEE9DD 0%, #F6F2E8 50%, #EEE9DD 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.scrollbar-none::-webkit-scrollbar { display:none; }
+.scrollbar-none { scrollbar-width: none; }
+.grain {
+  background-image:
+    radial-gradient(1200px 600px at 110% -20%, rgba(194,65,12,.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(22,101,52,.04), transparent 60%);
+}
+`;
+
+const CATEGORIES = [
+  { id: 'all',     label: 'Tümü',         icon: Sparkles,  query: 'oto tamirci',     tones: ['#2C2825', '#4A3F33'] },
+  { id: 'tire',    label: 'Lastikçi',     icon: CircleDot, query: 'lastikçi',        tones: ['#1E3A2E', '#2F5443'] },
+  { id: 'exhaust', label: 'Egzozcu',      icon: Flame,     query: 'egzoz tamircisi', tones: ['#2A1F1A', '#5A3A28'] },
+  { id: 'engine',  label: 'Motorcu',      icon: Wrench,    query: 'motor tamircisi', tones: ['#1F1B16', '#3F3525'] },
+  { id: 'body',    label: 'Kaportacı',    icon: Hammer,    query: 'kaportacı',       tones: ['#1F2937', '#374151'] },
+  { id: 'oil',     label: 'Yağ Değişimi', icon: Droplet,   query: 'yağ değişimi',    tones: ['#3B2616', '#6B4226'] },
+];
+
+const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+
+const ANKARA_CENTER = { lat: 39.9208, lng: 32.8541 };
+
+function haversineKm(a, b) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const R = 6371;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const lat1 = toRad(a.lat);
+  const lat2 = toRad(b.lat);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function extractDistrict(addr) {
+  if (!addr) return 'Ankara';
+  const m = addr.match(/(\S+?)\/Ankara/);
+  return m ? m[1] : 'Ankara';
+}
+
+function mapRow(row) {
+  const loc = (row.lat != null && row.lng != null) ? { lat: row.lat, lng: row.lng } : null;
+  const distanceKm = loc ? +haversineKm(ANKARA_CENTER, loc).toFixed(1) : null;
+  const cat = CATEGORY_BY_ID[row.category] ?? CATEGORY_BY_ID.all;
+  return {
+    id: row.place_id,
+    place_id: row.place_id,
+    name: row.name ?? 'İsimsiz',
+    district: row.district ?? 'Ankara',
+    categoryId: row.category ?? 'all',
+    categoryLabel: cat.label,
+    rating: row.rating ?? 0,
+    reviews: row.review_count ?? 0,
+    distanceKm,
+    phone: row.phone ?? null,
+    address: row.address ?? '',
+    openingHours: row.opening_hours ?? null,
+    photoTone: cat.tones,
+    transparentPrices: row.transparent_prices ?? [],
+    avgLaborTL: null,
+    verifiedShop: row.verified ?? false,
+  };
+}
+
+async function fetchMechanics({ category, district, query }) {
+  let q = supabase.from('mechanics').select('*');
+  if (category && category !== 'all') q = q.eq('category', category);
+  if (district && district !== 'all') q = q.eq('district', district);
+  if (query?.trim()) q = q.ilike('name', `%${query.trim()}%`);
+  const { data, error } = await q.limit(60);
+  if (error) throw new Error(error.message);
+  return (data ?? []).map(mapRow);
+}
+
+async function fetchAvailableDistricts() {
+  const { data, error } = await supabase.from('mechanics').select('district');
+  if (error) throw new Error(error.message);
+  const set = new Set((data ?? []).map((r) => r.district).filter(Boolean));
+  return [...set].sort((a, b) => a.localeCompare(b, 'tr'));
+}
+
+function Logo({ size = 18 }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="relative" style={{ width: size + 10, height: size + 10 }}>
+        <div className="absolute inset-0 rounded-2xl" style={{ background: 'var(--ink)' }} />
+        <div className="absolute inset-[3px] rounded-xl flex items-center justify-center" style={{ background: 'var(--accent)' }}>
+          <Wrench size={size - 4} color="white" strokeWidth={2.4} />
+        </div>
+      </div>
+      <div className="leading-none">
+        <div className="serif text-[15px] font-semibold tracking-tight" style={{ color: 'var(--ink)' }}>
+          ototamirci<span style={{ color: 'var(--accent)' }}>online</span>
+        </div>
+        <div className="sans text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--ink-3)' }}>
+          Şeffaf · Güvenilir · Ankara
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StarRow({ rating, reviews, dense }) {
+  return (
+    <div className={`flex items-center ${dense ? 'gap-1' : 'gap-1.5'} sans`}>
+      <Star size={dense ? 13 : 14} fill="var(--ink)" color="var(--ink)" strokeWidth={0} />
+      <span className="font-semibold text-[13px]" style={{ color: 'var(--ink)' }}>{rating.toFixed(1)}</span>
+      <span className="text-[12px]" style={{ color: 'var(--ink-3)' }}>({reviews})</span>
+    </div>
+  );
+}
+
+function CategoryPills({ active, onChange }) {
+  return (
+    <div className="overflow-x-auto scrollbar-none -mx-5 px-5 lg:mx-0 lg:px-0">
+      <div className="flex gap-2 min-w-max lg:min-w-0 lg:flex-wrap">
+        {CATEGORIES.map(({ id, label, icon: Icon }) => {
+          const isActive = active === id;
+          return (
+            <button
+              key={id}
+              onClick={() => onChange(id)}
+              className="sans flex items-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300"
+              style={{
+                background: isActive ? 'var(--ink)' : 'var(--card)',
+                color: isActive ? 'white' : 'var(--ink)',
+                border: isActive ? '1px solid var(--ink)' : '1px solid var(--line)',
+                boxShadow: isActive ? 'var(--shadow-md)' : 'none',
+              }}
+            >
+              <Icon size={15} strokeWidth={2} />
+              <span>{label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function DistrictPills({ active, options, onChange }) {
+  const items = [{ id: 'all', label: 'Tüm İlçeler' }, ...options.map((d) => ({ id: d, label: d }))];
+  return (
+    <div className="overflow-x-auto scrollbar-none -mx-5 px-5 lg:mx-0 lg:px-0">
+      <div className="flex gap-2 min-w-max lg:min-w-0 lg:flex-wrap">
+        {items.map(({ id, label }) => {
+          const isActive = active === id;
+          return (
+            <button
+              key={id}
+              onClick={() => onChange(id)}
+              className="sans flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[12.5px] font-medium transition-all"
+              style={{
+                background: isActive ? 'var(--accent)' : 'var(--card)',
+                color: isActive ? 'white' : 'var(--ink-2)',
+                border: isActive ? '1px solid var(--accent)' : '1px solid var(--line)',
+              }}
+            >
+              <MapPin size={12} strokeWidth={2.2} />
+              <span>{label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function MechanicPhoto({ tones, verified }) {
+  return (
+    <div
+      className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden"
+      style={{
+        background: `radial-gradient(120% 80% at 20% 10%, ${tones[1]} 0%, ${tones[0]} 70%)`,
+      }}
+    >
+      <div className="absolute inset-0 opacity-40"
+        style={{ background:
+          'repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 14px)' }} />
+      <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full" style={{ background:'rgba(255,255,255,0.08)', filter:'blur(8px)' }} />
+
+      <div className="absolute top-3 left-3 flex gap-1.5">
+        {verified && (
+          <span className="sans text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1"
+            style={{ background:'rgba(255,255,255,0.92)', color:'var(--accent)' }}>
+            <BadgeCheck size={12} strokeWidth={2.4} /> Doğrulanmış
+          </span>
+        )}
+      </div>
+
+      <button className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-transform hover:scale-110"
+        style={{ background:'rgba(255,255,255,0.9)' }}>
+        <Heart size={16} color="var(--ink)" />
+      </button>
+    </div>
+  );
+}
+
+function MechanicCard({ m, onOpen, delay = 0 }) {
+  const hasPrices = m.transparentPrices.length > 0;
+  return (
+    <article
+      onClick={() => onOpen(m)}
+      className="fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 transition-all duration-500 hover:-translate-y-1"
+      style={{
+        background: 'var(--card)',
+        border: '1px solid var(--line)',
+        boxShadow: 'var(--shadow-sm)',
+        animationDelay: `${delay}ms`,
+      }}
+      onMouseEnter={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-lg)'}
+      onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-sm)'}
+    >
+      <MechanicPhoto tones={m.photoTone} verified={m.verifiedShop} />
+
+      <div className="pt-4 px-1">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="serif text-[19px] font-semibold leading-tight truncate" style={{ color: 'var(--ink)' }}>
+              {m.name}
+            </h3>
+            <p className="sans text-[12.5px] mt-0.5" style={{ color: 'var(--ink-3)' }}>
+              {m.categoryLabel} · {m.district}
+            </p>
+          </div>
+          <StarRow rating={m.rating} reviews={m.reviews} dense />
+        </div>
+
+        <div className="mt-3 flex items-center gap-3 sans text-[12px] flex-wrap" style={{ color: 'var(--ink-2)' }}>
+          {m.distanceKm !== null && (
+            <span className="flex items-center gap-1"><Navigation size={12} /> {m.distanceKm} km</span>
+          )}
+          {m.avgLaborTL !== null && (
+            <>
+              <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />
+              <span className="flex items-center gap-1"><Clock size={12} /> Ort. işçilik {m.avgLaborTL}₺</span>
+            </>
+          )}
+          {m.phone && (
+            <>
+              <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />
+              <span className="flex items-center gap-1"><Phone size={12} /> {m.phone}</span>
+            </>
+          )}
+        </div>
+
+        {hasPrices && (
+          <div className="mt-4 space-y-1.5">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <Shield size={12} color="var(--accent)" strokeWidth={2.4} />
+              <span className="sans text-[10.5px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--accent)' }}>
+                Şeffaf İşçilik
+              </span>
+            </div>
+            {m.transparentPrices.slice(0, 2).map((p, i) => (
+              <div key={i} className="sans flex items-center justify-between gap-3 px-3 py-2 rounded-xl"
+                style={{ background: 'var(--accent-soft)' }}>
+                <span className="text-[12px] font-medium truncate" style={{ color: 'var(--ink)' }}>{p.service}</span>
+                <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: 'var(--accent)' }}>
+                  {p.priceTL.toLocaleString('tr-TR')} ₺
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <button className="sans mt-4 w-full flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-[13px] font-medium transition-all"
+          style={{ background: 'var(--ink)', color: 'white' }}>
+          Detayları Gör <ChevronRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function CardSkeleton({ delay = 0 }) {
+  return (
+    <div
+      className="fadeUp rounded-3xl p-3 sm:p-4"
+      style={{ background: 'var(--card)', border: '1px solid var(--line)', animationDelay: `${delay}ms` }}
+    >
+      <div className="skeleton w-full h-44 sm:h-48 rounded-2xl" />
+      <div className="pt-4 px-1 space-y-3">
+        <div className="skeleton h-5 w-3/4 rounded" />
+        <div className="skeleton h-3 w-1/2 rounded" />
+        <div className="skeleton h-3 w-2/3 rounded" />
+        <div className="skeleton h-10 w-full rounded-2xl mt-3" />
+      </div>
+    </div>
+  );
+}
+
+function DetailSheet({ mechanic, onClose, onWriteReview }) {
+  if (!mechanic) return null;
+  const hasPrices = mechanic.transparentPrices.length > 0;
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center fadeIn" style={{ background:'rgba(20,17,15,0.45)' }} onClick={onClose}>
+      <div
+        onClick={(e)=>e.stopPropagation()}
+        className="slideUp relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl"
+        style={{ background:'var(--bg)' }}
+      >
+        <div className="relative h-56" style={{
+          background:`radial-gradient(120% 80% at 20% 10%, ${mechanic.photoTone[1]}, ${mechanic.photoTone[0]} 70%)`,
+        }}>
+          <button onClick={onClose} className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center"
+            style={{ background:'rgba(255,255,255,0.92)' }}>
+            <X size={16} color="var(--ink)" />
+          </button>
+          <div className="absolute bottom-4 left-5 right-5 text-white">
+            <div className="serif text-[26px] font-semibold leading-tight">{mechanic.name}</div>
+            <div className="sans text-[13px] opacity-90 mt-1 flex items-center gap-2">
+              <MapPin size={13} /> {mechanic.address}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-5 sm:p-6 space-y-6">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-2xl p-3.5" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+              <div className="sans text-[10.5px] uppercase tracking-[0.14em]" style={{ color:'var(--ink-3)' }}>Google Puanı</div>
+              <div className="serif text-[20px] font-semibold mt-1" style={{ color:'var(--ink)' }}>{mechanic.rating.toFixed(1)}</div>
+              <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>{mechanic.reviews} yorum</div>
+            </div>
+            <div className="rounded-2xl p-3.5" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+              <div className="sans text-[10.5px] uppercase tracking-[0.14em]" style={{ color:'var(--ink-3)' }}>Mesafe</div>
+              <div className="serif text-[20px] font-semibold mt-1" style={{ color:'var(--ink)' }}>
+                {mechanic.distanceKm !== null ? `${mechanic.distanceKm} km` : '—'}
+              </div>
+              <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>Kızılay'dan</div>
+            </div>
+            <div className="rounded-2xl p-3.5" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+              <div className="sans text-[10.5px] uppercase tracking-[0.14em]" style={{ color:'var(--ink-3)' }}>Ort. İşçilik</div>
+              <div className="serif text-[20px] font-semibold mt-1" style={{ color:'var(--ink)' }}>
+                {mechanic.avgLaborTL !== null ? `${mechanic.avgLaborTL}₺` : 'Yakında'}
+              </div>
+              <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>Topluluk verisi</div>
+            </div>
+          </div>
+
+          {mechanic.openingHours?.weekdayDescriptions?.length > 0 && (
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <Clock size={15} color="var(--ink)" />
+                <h4 className="serif text-[18px] font-semibold" style={{ color:'var(--ink)' }}>Çalışma Saatleri</h4>
+              </div>
+              <div className="rounded-2xl p-4" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+                <ul className="sans text-[13px] space-y-1.5" style={{ color:'var(--ink-2)' }}>
+                  {mechanic.openingHours.weekdayDescriptions.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          )}
+
+          <div className="rounded-2xl p-4 flex gap-3" style={{ background:'var(--bg-warm)', border:'1px solid var(--line-2)' }}>
+            <div className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'white' }}>
+              <Sparkles size={16} color="var(--accent)" />
+            </div>
+            <div className="sans text-[12.5px] leading-relaxed" style={{ color:'var(--ink-2)' }}>
+              <b style={{ color:'var(--ink)' }}>Hibrit veri:</b> Temel bilgiler Google Places'tan günlük güncellenir;
+              şeffaf fiyat katmanı topluluktan toplanacak.
+            </div>
+          </div>
+
+          {hasPrices ? (
+            <section>
+              <div className="flex items-baseline justify-between mb-3">
+                <h4 className="serif text-[20px] font-semibold" style={{ color:'var(--ink)' }}>Şeffaf Fiyat Listesi</h4>
+                <span className="sans text-[11.5px]" style={{ color:'var(--ink-3) ' }}>Topluluk · Güncel</span>
+              </div>
+              <div className="space-y-2">
+                {mechanic.transparentPrices.map((p,i)=>(
+                  <div key={i} className="flex items-center justify-between rounded-2xl p-4"
+                    style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'var(--accent-soft)' }}>
+                        <Wrench size={15} color="var(--accent)" strokeWidth={2.2} />
+                      </div>
+                      <div>
+                        <div className="sans text-[13.5px] font-medium" style={{ color:'var(--ink)' }}>{p.service}</div>
+                        <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>Ortalama, vergi dahil</div>
+                      </div>
+                    </div>
+                    <div className="serif text-[18px] font-semibold" style={{ color:'var(--accent)' }}>
+                      {p.priceTL.toLocaleString('tr-TR')} ₺
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : (
+            <section className="rounded-2xl p-5 text-center" style={{ background:'var(--card)', border:'1px dashed var(--line)' }}>
+              <div className="serif text-[16px] font-semibold" style={{ color:'var(--ink)' }}>Şeffaf Fiyat Listesi</div>
+              <p className="sans text-[12.5px] mt-1.5" style={{ color:'var(--ink-3)' }}>
+                Bu usta için topluluk fiyatları henüz toplanmadı. Yakında.
+              </p>
+            </section>
+          )}
+
+          <div className="grid grid-cols-2 gap-3">
+            <a
+              href={mechanic.phone ? `tel:${mechanic.phone.replace(/\s+/g, '')}` : undefined}
+              onClick={(e) => { if (!mechanic.phone) e.preventDefault(); }}
+              className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
+              style={{ background:'var(--ink)', color:'white', opacity: mechanic.phone ? 1 : 0.5 }}>
+              <Phone size={15} /> {mechanic.phone ?? 'Telefon yok'}
+            </a>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mechanic.name + ' ' + mechanic.address)}`}
+              target="_blank" rel="noreferrer"
+              className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
+              style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+              <Navigation size={15} /> Yol Tarifi
+            </a>
+          </div>
+
+          <div className="rounded-3xl p-5"
+            style={{ background:'linear-gradient(180deg, var(--accent-soft), var(--bg-warm))', border:'1px solid var(--line-2)' }}>
+            <div className="flex items-start gap-3">
+              <div className="shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background:'white' }}>
+                <Send size={16} color="var(--accent)" />
+              </div>
+              <div className="flex-1">
+                <div className="serif text-[17px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
+                  Yorumun ustaya destek olsun
+                </div>
+                <p className="sans text-[12.5px] mt-1.5 leading-relaxed" style={{ color:'var(--ink-2)' }}>
+                  Yorumu sistemimize değil, doğrudan <b>Google'a</b> yazıyorsun. Bu hem ustaya hem
+                  diğer sürücülere daha çok yarar; biz aynı yorumu burada da gösteririz.
+                </p>
+                <button
+                  onClick={()=>onWriteReview(mechanic.place_id)}
+                  className="sans mt-3 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[12.5px] font-semibold transition-transform hover:scale-[1.02]"
+                  style={{ background:'var(--accent)', color:'white' }}
+                >
+                  Google'da Yorum Yaz <ExternalLink size={13} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="h-2" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BottomNav({ active, onChange }) {
+  const items = [
+    { id:'home',   label:'Keşfet',   icon: Home    },
+    { id:'map',    label:'Harita',   icon: MapPin  },
+    { id:'saved',  label:'Kayıtlı',  icon: Heart   },
+    { id:'me',     label:'Profil',   icon: User    },
+  ];
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-30 lg:hidden"
+      style={{ paddingBottom:'max(env(safe-area-inset-bottom), 8px)' }}>
+      <div className="mx-3 mb-3 rounded-3xl px-2 py-2 backdrop-blur-xl"
+        style={{ background:'rgba(255,255,255,0.92)', border:'1px solid var(--line)', boxShadow:'var(--shadow-lg)' }}>
+        <div className="grid grid-cols-4">
+          {items.map(({id,label,icon:Icon})=>{
+            const isActive = active===id;
+            return (
+              <button key={id} onClick={()=>onChange(id)}
+                className="sans flex flex-col items-center gap-1 py-2 rounded-2xl transition-all"
+                style={{ color: isActive ? 'var(--ink)' : 'var(--ink-3)' }}>
+                <div className="relative">
+                  {isActive && (
+                    <span className="absolute -inset-2 rounded-full" style={{ background:'var(--accent-soft)' }} />
+                  )}
+                  <Icon size={20} strokeWidth={isActive ? 2.4 : 2} className="relative" />
+                </div>
+                <span className="text-[10.5px] font-medium tracking-tight">{label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default function App() {
+  const [activeCat, setActiveCat] = useState('all');
+  const [activeDistrict, setActiveDistrict] = useState('all');
+  const [districts, setDistricts] = useState([]);
+  const [query, setQuery] = useState('');
+  const [submittedQuery, setSubmittedQuery] = useState('');
+  const [selected, setSelected] = useState(null);
+  const [navTab, setNavTab] = useState('home');
+  const [mechanics, setMechanics] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchAvailableDistricts()
+      .then((list) => {
+        setDistricts(list);
+        if (list.length === 1) setActiveDistrict(list[0]);
+      })
+      .catch((err) => setError(err.message));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetchMechanics({ category: activeCat, district: activeDistrict, query: submittedQuery })
+      .then((list) => {
+        if (cancelled) return;
+        const sorted = [...list].sort((a, b) => {
+          const ar = a.rating ?? 0, br = b.rating ?? 0;
+          if (br !== ar) return br - ar;
+          return (b.reviews ?? 0) - (a.reviews ?? 0);
+        });
+        setMechanics(sorted);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [activeCat, activeDistrict, submittedQuery]);
+
+  const handleWriteReview = (placeId) => {
+    const url = `https://search.google.com/local/writereview?placeid=${placeId}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const submitSearch = (e) => {
+    e?.preventDefault?.();
+    setSubmittedQuery(query);
+  };
+
+  return (
+    <div className="min-h-screen sans grain" style={{ background:'var(--bg)' }}>
+      <style>{FONT_INJECT}</style>
+
+      <header className="sticky top-0 z-20 backdrop-blur-xl"
+        style={{ background:'rgba(250,250,246,0.82)', borderBottom:'1px solid var(--line)' }}>
+        <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
+          <Logo />
+          <div className="hidden lg:flex items-center gap-7 sans text-[13.5px]" style={{ color:'var(--ink-2)' }}>
+            <a className="hover:text-[var(--ink)] transition" href="#">Keşfet</a>
+            <a className="hover:text-[var(--ink)] transition" href="#">Şeffaflık</a>
+            <a className="hover:text-[var(--ink)] transition" href="#">Usta misin?</a>
+          </div>
+          <button className="sans text-[13px] font-medium px-4 py-2 rounded-full"
+            style={{ background:'var(--ink)', color:'white' }}>
+            Giriş Yap
+          </button>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-5 pt-8 pb-32 lg:pb-12">
+        <section className="fadeUp">
+          <div className="flex items-center gap-2 sans text-[11px] uppercase tracking-[0.18em] mb-4"
+            style={{ color:'var(--ink-3)' }}>
+            <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
+              style={{ background:'var(--accent)' }} />
+            Ankara · Günlük güncel veri
+          </div>
+          <h1 className="serif text-[40px] sm:text-[56px] leading-[0.98] font-semibold tracking-tight max-w-3xl"
+            style={{ color:'var(--ink)' }}>
+            Güvenilir oto ustası,
+            <span className="block italic" style={{ color:'var(--accent)' }}>şeffaf fiyatla.</span>
+          </h1>
+          <p className="sans text-[15px] sm:text-[16px] mt-4 max-w-xl" style={{ color:'var(--ink-2)' }}>
+            Google'dan canlı puan, topluluktan şeffaf işçilik. Ankara sanayisinin en iyi ustalarını
+            ücret pazarlığı yapmadan bul.
+          </p>
+
+          <form onSubmit={submitSearch} className="mt-7 flex items-center gap-2 rounded-full p-1.5 max-w-2xl"
+            style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-md)' }}>
+            <div className="pl-4 flex items-center"><Search size={17} color="var(--ink-3)" /></div>
+            <input
+              value={query}
+              onChange={(e)=>setQuery(e.target.value)}
+              placeholder="Bölge veya hizmet ara…"
+              className="flex-1 bg-transparent outline-none sans text-[14px] py-2.5"
+              style={{ color:'var(--ink)' }}
+            />
+            <button type="submit" className="sans text-[13px] font-semibold px-5 py-2.5 rounded-full"
+              style={{ background:'var(--ink)', color:'white' }}>
+              Ara
+            </button>
+          </form>
+        </section>
+
+        <section className="mt-9 fadeUp" style={{ animationDelay:'120ms' }}>
+          <CategoryPills active={activeCat} onChange={setActiveCat} />
+        </section>
+
+        {districts.length > 0 && (
+          <section className="mt-3 fadeUp" style={{ animationDelay:'150ms' }}>
+            <DistrictPills active={activeDistrict} options={districts} onChange={setActiveDistrict} />
+          </section>
+        )}
+
+        <div className="mt-7 flex items-baseline justify-between fadeUp" style={{ animationDelay:'180ms' }}>
+          <h2 className="serif text-[22px] font-semibold" style={{ color:'var(--ink)' }}>
+            {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
+          </h2>
+          <button className="sans text-[12.5px] font-medium" style={{ color:'var(--ink-3)' }}>
+            Sırala: Yakınlık ↓
+          </button>
+        </div>
+
+        {error && (
+          <div className="mt-5 rounded-2xl p-4 sans text-[13px]" style={{ background:'#FEF2F2', border:'1px solid #FECACA', color:'#991B1B' }}>
+            <b>API hatası:</b> {error}
+          </div>
+        )}
+
+        <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} delay={i * 60} />)
+            : mechanics.map((m, i) => (
+                <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={i * 70} />
+              ))
+          }
+        </section>
+
+        {!loading && mechanics.length === 0 && !error && (
+          <div className="mt-10 rounded-3xl p-10 text-center"
+            style={{ background:'var(--card)', border:'1px dashed var(--line)' }}>
+            <div className="serif text-[20px] font-semibold" style={{ color:'var(--ink)' }}>Sonuç yok</div>
+            <p className="sans text-[13px] mt-1" style={{ color:'var(--ink-3)' }}>
+              Filtreyi temizleyip tekrar dene.
+            </p>
+          </div>
+        )}
+
+        <section className="mt-14 rounded-3xl overflow-hidden relative fadeUp" style={{ animationDelay:'250ms' }}>
+          <div className="p-7 sm:p-10" style={{
+            background: 'linear-gradient(135deg, var(--ink) 0%, #2A211A 100%)',
+            color:'white'
+          }}>
+            <div className="grid sm:grid-cols-3 gap-7">
+              <div className="sm:col-span-2">
+                <div className="sans text-[11px] uppercase tracking-[0.18em] opacity-70">Mimari Notu</div>
+                <div className="serif text-[28px] sm:text-[34px] mt-2 font-semibold leading-tight">
+                  Hibrit veri, <span className="italic" style={{ color:'#FBBF77' }}>çift kazanç.</span>
+                </div>
+                <p className="sans text-[14px] mt-3 opacity-80 max-w-xl leading-relaxed">
+                  Veriyi <b>günde bir kez</b> Google Places'tan çekip Supabase'e yazıyoruz; kullanıcı
+                  isteklerinde Google'a hiç gitmiyoruz. Sıfır API maliyeti, milisaniye yanıt.
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
+                {[
+                  { k:'$0', v:'Aylık API maliyeti' },
+                  { k:'<100ms', v:'Supabase yanıt süresi' },
+                  { k:'1×/gün', v:'Google senkronu' },
+                ].map((s,i)=>(
+                  <div key={i}>
+                    <div className="serif text-[28px] font-semibold" style={{ color:'#FBBF77' }}>{s.k}</div>
+                    <div className="sans text-[11.5px] opacity-75">{s.v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer className="mt-12 pt-7 flex flex-col sm:flex-row items-center justify-between gap-3 sans text-[12px]"
+          style={{ borderTop:'1px solid var(--line)', color:'var(--ink-3)' }}>
+          <div>© 2026 ototamircionline · Ankara</div>
+          <div className="flex gap-5">
+            <a href="#" className="hover:text-[var(--ink)]">Gizlilik</a>
+            <a href="#" className="hover:text-[var(--ink)]">Şartlar</a>
+            <a href="#" className="hover:text-[var(--ink)]">İletişim</a>
+          </div>
+        </footer>
+      </main>
+
+      <DetailSheet mechanic={selected} onClose={()=>setSelected(null)} onWriteReview={handleWriteReview} />
+      <BottomNav active={navTab} onChange={setNavTab} />
+    </div>
+  );
+}
