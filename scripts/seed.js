@@ -1,48 +1,43 @@
-/* Seed mechanics from Google Places into Supabase.
+/* Google Places'tan ustaları çek, ≥4.5 filtreden geçir, Supabase'e yaz.
  *
- * Usage:
+ * CLI kullanım:
  *   node scripts/seed.js etimesgut
- *   node scripts/seed.js cankaya
  *
- * Env (loaded from .env):
- *   GOOGLE_PLACES_API_KEY  — for Places API calls
- *   SUPABASE_URL           — project URL
- *   SUPABASE_SECRET_KEY    — service_role key (writes)
+ * Vercel cron (api/refresh.js) bu modülün refreshDistrict() fonksiyonunu çağırır.
+ *
+ * Env (.env veya Vercel env):
+ *   GOOGLE_PLACES_API_KEY  — Places API (New) anahtarı
+ *   SUPABASE_URL           — proje URL'i
+ *   SUPABASE_SECRET_KEY    — service_role key (write yetkisi)
  */
 
 import 'dotenv/config';
 import { createClient } from '@supabase/supabase-js';
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
-const { GOOGLE_PLACES_API_KEY, SUPABASE_URL, SUPABASE_SECRET_KEY } = process.env;
+export const MIN_RATING = 4.5;
 
-if (!GOOGLE_PLACES_API_KEY || !SUPABASE_URL || !SUPABASE_SECRET_KEY) {
-  console.error('Missing env vars. Need GOOGLE_PLACES_API_KEY, SUPABASE_URL, SUPABASE_SECRET_KEY');
-  process.exit(1);
-}
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SECRET_KEY, {
-  auth: { persistSession: false },
-});
-
-const CATEGORIES = [
-  { id: 'engine',  query: 'oto tamirci' },
-  { id: 'engine',  query: 'motor tamircisi' },
+// Daha spesifik kategoriler önce — dedupe sırasında uzmanlık genel "all"ı yener.
+export const CATEGORIES = [
   { id: 'tire',    query: 'lastikçi' },
   { id: 'exhaust', query: 'egzoz tamircisi' },
   { id: 'body',    query: 'kaportacı' },
   { id: 'oil',     query: 'yağ değişimi' },
+  { id: 'engine',  query: 'motor tamircisi' },
+  { id: 'all',     query: 'oto tamirci' },
 ];
 
-const DISTRICTS = {
-  etimesgut: { name: 'Etimesgut', center: { lat: 39.9558, lng: 32.6790 } },
-  cankaya:   { name: 'Çankaya',   center: { lat: 39.9078, lng: 32.8546 } },
+export const DISTRICTS = {
+  etimesgut:   { name: 'Etimesgut',   center: { lat: 39.9558, lng: 32.6790 } },
+  cankaya:     { name: 'Çankaya',     center: { lat: 39.9078, lng: 32.8546 } },
   yenimahalle: { name: 'Yenimahalle', center: { lat: 39.9583, lng: 32.7831 } },
-  mamak:     { name: 'Mamak',     center: { lat: 39.9272, lng: 32.9133 } },
-  kecioren:  { name: 'Keçiören',  center: { lat: 39.9881, lng: 32.8625 } },
-  sincan:    { name: 'Sincan',    center: { lat: 39.9701, lng: 32.5797 } },
-  altindag:  { name: 'Altındağ',  center: { lat: 39.9517, lng: 32.8728 } },
-  pursaklar: { name: 'Pursaklar', center: { lat: 40.0353, lng: 32.8997 } },
-  golbasi:   { name: 'Gölbaşı',   center: { lat: 39.7917, lng: 32.8089 } },
+  mamak:       { name: 'Mamak',       center: { lat: 39.9272, lng: 32.9133 } },
+  kecioren:    { name: 'Keçiören',    center: { lat: 39.9881, lng: 32.8625 } },
+  sincan:      { name: 'Sincan',      center: { lat: 39.9701, lng: 32.5797 } },
+  altindag:    { name: 'Altındağ',    center: { lat: 39.9517, lng: 32.8728 } },
+  pursaklar:   { name: 'Pursaklar',   center: { lat: 40.0353, lng: 32.8997 } },
+  golbasi:     { name: 'Gölbaşı',     center: { lat: 39.7917, lng: 32.8089 } },
 };
 
 const FIELD_MASK = [
@@ -56,12 +51,12 @@ const FIELD_MASK = [
   'places.regularOpeningHours',
 ].join(',');
 
-async function searchPlaces(textQuery, center) {
+async function searchPlaces(apiKey, textQuery, center) {
   const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
+      'X-Goog-Api-Key': apiKey,
       'X-Goog-FieldMask': FIELD_MASK,
     },
     body: JSON.stringify({
@@ -84,7 +79,7 @@ async function searchPlaces(textQuery, center) {
   return data.places ?? [];
 }
 
-function extractDistrictFromAddress(addr, fallback) {
+function extractDistrict(addr, fallback) {
   if (!addr) return fallback;
   const m = addr.match(/(\S+?)\/Ankara/);
   return m ? m[1] : fallback;
@@ -95,7 +90,7 @@ function mapToRow(place, categoryId, districtName) {
     place_id: place.id,
     name: place.displayName?.text ?? 'İsimsiz',
     address: place.formattedAddress ?? null,
-    district: extractDistrictFromAddress(place.formattedAddress, districtName),
+    district: extractDistrict(place.formattedAddress, districtName),
     category: categoryId,
     rating: place.rating ?? null,
     review_count: place.userRatingCount ?? null,
@@ -107,60 +102,74 @@ function mapToRow(place, categoryId, districtName) {
   };
 }
 
-async function main() {
-  const districtKey = (process.argv[2] ?? '').toLowerCase();
+/**
+ * Bir ilçedeki ustaları çek + filtrele + Supabase'e yaz.
+ * Hem CLI hem Vercel cron tarafından çağrılır.
+ */
+export async function refreshDistrict(districtKey, env = process.env) {
   const district = DISTRICTS[districtKey];
-  if (!district) {
-    console.error(`Unknown district "${districtKey}". Options: ${Object.keys(DISTRICTS).join(', ')}`);
-    process.exit(1);
+  if (!district) throw new Error(`Bilinmeyen ilçe: "${districtKey}". Seçenekler: ${Object.keys(DISTRICTS).join(', ')}`);
+
+  const apiKey = env.GOOGLE_PLACES_API_KEY;
+  const supabaseUrl = env.SUPABASE_URL;
+  const supabaseKey = env.SUPABASE_SECRET_KEY;
+
+  if (!apiKey || !supabaseUrl || !supabaseKey) {
+    throw new Error('Eksik env: GOOGLE_PLACES_API_KEY, SUPABASE_URL, SUPABASE_SECRET_KEY hepsi gerekli');
   }
 
-  console.log(`\n→ Seeding ${district.name}...\n`);
+  const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
 
-  // Dedupe: a place may match multiple category queries; first hit wins.
   const seen = new Map();
-  let totalCalls = 0;
+  const log = [];
+  let apiCalls = 0;
+  let filtered = 0;
 
   for (const { id: categoryId, query } of CATEGORIES) {
     const textQuery = `${query} ${district.name} Ankara`;
-    process.stdout.write(`  · "${textQuery}" ... `);
     try {
-      const places = await searchPlaces(textQuery, district.center);
-      totalCalls++;
+      const places = await searchPlaces(apiKey, textQuery, district.center);
+      apiCalls++;
       let added = 0;
       for (const p of places) {
-        if (!seen.has(p.id)) {
-          seen.set(p.id, mapToRow(p, categoryId, district.name));
-          added++;
-        }
+        if (seen.has(p.id)) continue;
+        const rating = p.rating ?? 0;
+        if (rating < MIN_RATING) { filtered++; continue; }
+        seen.set(p.id, mapToRow(p, categoryId, district.name));
+        added++;
       }
-      console.log(`${places.length} results, ${added} new`);
+      log.push(`  · "${textQuery}" → ${places.length} sonuç, ${added} eklendi`);
     } catch (e) {
-      console.log(`FAILED: ${e.message}`);
+      log.push(`  · "${textQuery}" HATA: ${e.message}`);
     }
   }
 
   const rows = [...seen.values()];
-  console.log(`\n→ ${rows.length} unique mechanics from ${totalCalls} API calls.`);
+  log.push(`\n→ Toplam: ${rows.length} usta (${apiCalls} API çağrısı, ${filtered} usta <${MIN_RATING} puanla elendi)`);
 
-  if (rows.length === 0) {
-    console.log('Nothing to upsert. Done.');
-    return;
+  if (rows.length > 0) {
+    const { error } = await supabase
+      .from('mechanics')
+      .upsert(rows, { onConflict: 'place_id' });
+    if (error) throw new Error(`Supabase upsert hatası: ${error.message}`);
+    log.push(`✓ ${rows.length} kayıt yazıldı / güncellendi`);
   }
 
-  console.log(`→ Upserting to Supabase...`);
-  const { error, count } = await supabase
-    .from('mechanics')
-    .upsert(rows, { onConflict: 'place_id', count: 'exact' });
-
-  if (error) {
-    console.error(`Supabase error: ${error.message}`);
-    process.exit(1);
-  }
-  console.log(`✓ Upserted ${count ?? rows.length} rows.\n`);
+  return { district: district.name, rowsUpserted: rows.length, apiCalls, filtered, log };
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// CLI mode — doğrudan çalıştırıldığında
+const isCli = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
+if (isCli) {
+  const districtKey = (process.argv[2] ?? 'etimesgut').toLowerCase();
+  console.log(`\n→ ${districtKey} için ustalar çekiliyor (puan ≥ ${MIN_RATING})...\n`);
+  refreshDistrict(districtKey)
+    .then((result) => {
+      console.log(result.log.join('\n'));
+      console.log(`\n✓ ${result.district} tamamlandı: ${result.rowsUpserted} usta\n`);
+    })
+    .catch((e) => {
+      console.error(`\n✗ HATA: ${e.message}\n`);
+      process.exit(1);
+    });
+}

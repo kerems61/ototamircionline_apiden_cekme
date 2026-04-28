@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import {
   Search, MapPin, Star, Clock, Phone, ChevronRight, X,
-  Sparkles, Shield, Wrench, CircleDot, Flame, Hammer, Droplet,
+  Sparkles, Shield, Wrench, CircleDot, Zap,
   Home, Heart, User, Navigation, ExternalLink, Send, BadgeCheck,
 } from 'lucide-react';
 
@@ -72,73 +72,57 @@ const FONT_INJECT = `
 `;
 
 const CATEGORIES = [
-  { id: 'all',     label: 'Tümü',         icon: Sparkles,  query: 'oto tamirci',     tones: ['#2C2825', '#4A3F33'] },
-  { id: 'tire',    label: 'Lastikçi',     icon: CircleDot, query: 'lastikçi',        tones: ['#1E3A2E', '#2F5443'] },
-  { id: 'exhaust', label: 'Egzozcu',      icon: Flame,     query: 'egzoz tamircisi', tones: ['#2A1F1A', '#5A3A28'] },
-  { id: 'engine',  label: 'Motorcu',      icon: Wrench,    query: 'motor tamircisi', tones: ['#1F1B16', '#3F3525'] },
-  { id: 'body',    label: 'Kaportacı',    icon: Hammer,    query: 'kaportacı',       tones: ['#1F2937', '#374151'] },
-  { id: 'oil',     label: 'Yağ Değişimi', icon: Droplet,   query: 'yağ değişimi',    tones: ['#3B2616', '#6B4226'] },
+  { id: 'all',      label: 'Tümü',        icon: Sparkles,   tones: ['#2C2825', '#4A3F33'] },
+  { id: 'bakim',    label: 'Araç Bakım',  icon: Wrench,     tones: ['#1F1B16', '#3F3525'] },
+  { id: 'servis',   label: 'Özel Servis', icon: BadgeCheck, tones: ['#1F2937', '#374151'] },
+  { id: 'lastik',   label: 'Oto Lastik',  icon: CircleDot,  tones: ['#1E3A2E', '#2F5443'] },
+  { id: 'elektrik', label: 'Oto Elektrik',icon: Zap,        tones: ['#3B2616', '#6B4226'] },
 ];
 
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
-const ANKARA_CENTER = { lat: 39.9208, lng: 32.8541 };
-
-function haversineKm(a, b) {
-  const toRad = (d) => (d * Math.PI) / 180;
-  const R = 6371;
-  const dLat = toRad(b.lat - a.lat);
-  const dLng = toRad(b.lng - a.lng);
-  const lat1 = toRad(a.lat);
-  const lat2 = toRad(b.lat);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-
-function extractDistrict(addr) {
-  if (!addr) return 'Ankara';
-  const m = addr.match(/(\S+?)\/Ankara/);
-  return m ? m[1] : 'Ankara';
-}
-
 function mapRow(row) {
-  const loc = (row.lat != null && row.lng != null) ? { lat: row.lat, lng: row.lng } : null;
-  const distanceKm = loc ? +haversineKm(ANKARA_CENTER, loc).toFixed(1) : null;
-  const cat = CATEGORY_BY_ID[row.category] ?? CATEGORY_BY_ID.all;
+  const cat = CATEGORY_BY_ID[row.sector] ?? CATEGORY_BY_ID.all;
+  const prices = (row.mechanic_prices ?? []).map(p => ({
+    service: p.service,
+    priceTL: p.price_tl,
+  }));
   return {
-    id: row.place_id,
-    place_id: row.place_id,
+    id: row.id,
     name: row.name ?? 'İsimsiz',
-    district: row.district ?? 'Ankara',
-    categoryId: row.category ?? 'all',
+    district: row.district ?? 'Etimesgut',
+    neighborhood: row.neighborhood ?? null,
+    categoryId: row.sector ?? 'all',
     categoryLabel: cat.label,
+    googleCategory: row.google_category ?? null,
     rating: row.rating ?? 0,
     reviews: row.review_count ?? 0,
-    distanceKm,
     phone: row.phone ?? null,
     address: row.address ?? '',
     openingHours: row.opening_hours ?? null,
     photoTone: cat.tones,
-    transparentPrices: row.transparent_prices ?? [],
+    transparentPrices: prices,
     avgLaborTL: null,
-    verifiedShop: row.verified ?? false,
+    verifiedShop: prices.length > 0,
   };
 }
 
-async function fetchMechanics({ category, district, query }) {
-  let q = supabase.from('mechanics').select('*');
-  if (category && category !== 'all') q = q.eq('category', category);
-  if (district && district !== 'all') q = q.eq('district', district);
+async function fetchMechanics({ category, neighborhood, query }) {
+  let q = supabase
+    .from('mechanics')
+    .select('*, mechanic_prices(service, price_tl)');
+  if (category && category !== 'all') q = q.eq('sector', category);
+  if (neighborhood && neighborhood !== 'all') q = q.eq('neighborhood', neighborhood);
   if (query?.trim()) q = q.ilike('name', `%${query.trim()}%`);
-  const { data, error } = await q.limit(60);
+  const { data, error } = await q.limit(500);
   if (error) throw new Error(error.message);
   return (data ?? []).map(mapRow);
 }
 
-async function fetchAvailableDistricts() {
-  const { data, error } = await supabase.from('mechanics').select('district');
+async function fetchAvailableNeighborhoods() {
+  const { data, error } = await supabase.from('mechanics').select('neighborhood');
   if (error) throw new Error(error.message);
-  const set = new Set((data ?? []).map((r) => r.district).filter(Boolean));
+  const set = new Set((data ?? []).map((r) => r.neighborhood).filter(Boolean));
   return [...set].sort((a, b) => a.localeCompare(b, 'tr'));
 }
 
@@ -201,8 +185,8 @@ function CategoryPills({ active, onChange }) {
   );
 }
 
-function DistrictPills({ active, options, onChange }) {
-  const items = [{ id: 'all', label: 'Tüm İlçeler' }, ...options.map((d) => ({ id: d, label: d }))];
+function NeighborhoodPills({ active, options, onChange }) {
+  const items = [{ id: 'all', label: 'Tüm Mahalleler' }, ...options.map((d) => ({ id: d, label: d }))];
   return (
     <div className="overflow-x-auto scrollbar-none -mx-5 px-5 lg:mx-0 lg:px-0">
       <div className="flex gap-2 min-w-max lg:min-w-0 lg:flex-wrap">
@@ -283,25 +267,19 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
               {m.name}
             </h3>
             <p className="sans text-[12.5px] mt-0.5" style={{ color: 'var(--ink-3)' }}>
-              {m.categoryLabel} · {m.district}
+              {m.categoryLabel}{m.neighborhood ? ` · ${m.neighborhood}` : ''}
             </p>
           </div>
           <StarRow rating={m.rating} reviews={m.reviews} dense />
         </div>
 
         <div className="mt-3 flex items-center gap-3 sans text-[12px] flex-wrap" style={{ color: 'var(--ink-2)' }}>
-          {m.distanceKm !== null && (
-            <span className="flex items-center gap-1"><Navigation size={12} /> {m.distanceKm} km</span>
-          )}
-          {m.avgLaborTL !== null && (
-            <>
-              <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />
-              <span className="flex items-center gap-1"><Clock size={12} /> Ort. işçilik {m.avgLaborTL}₺</span>
-            </>
+          {m.openingHours && (
+            <span className="flex items-center gap-1"><Clock size={12} /> {m.openingHours}</span>
           )}
           {m.phone && (
             <>
-              <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />
+              {m.openingHours && <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />}
               <span className="flex items-center gap-1"><Phone size={12} /> {m.phone}</span>
             </>
           )}
@@ -386,11 +364,11 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
               <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>{mechanic.reviews} yorum</div>
             </div>
             <div className="rounded-2xl p-3.5" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
-              <div className="sans text-[10.5px] uppercase tracking-[0.14em]" style={{ color:'var(--ink-3)' }}>Mesafe</div>
-              <div className="serif text-[20px] font-semibold mt-1" style={{ color:'var(--ink)' }}>
-                {mechanic.distanceKm !== null ? `${mechanic.distanceKm} km` : '—'}
+              <div className="sans text-[10.5px] uppercase tracking-[0.14em]" style={{ color:'var(--ink-3)' }}>Mahalle</div>
+              <div className="serif text-[16px] font-semibold mt-1 truncate" style={{ color:'var(--ink)' }}>
+                {mechanic.neighborhood ?? '—'}
               </div>
-              <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>Kızılay'dan</div>
+              <div className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>{mechanic.district}</div>
             </div>
             <div className="rounded-2xl p-3.5" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
               <div className="sans text-[10.5px] uppercase tracking-[0.14em]" style={{ color:'var(--ink-3)' }}>Ort. İşçilik</div>
@@ -401,31 +379,17 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
             </div>
           </div>
 
-          {mechanic.openingHours?.weekdayDescriptions?.length > 0 && (
+          {mechanic.openingHours && (
             <section>
               <div className="flex items-center gap-2 mb-3">
                 <Clock size={15} color="var(--ink)" />
                 <h4 className="serif text-[18px] font-semibold" style={{ color:'var(--ink)' }}>Çalışma Saatleri</h4>
               </div>
               <div className="rounded-2xl p-4" style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
-                <ul className="sans text-[13px] space-y-1.5" style={{ color:'var(--ink-2)' }}>
-                  {mechanic.openingHours.weekdayDescriptions.map((line, i) => (
-                    <li key={i}>{line}</li>
-                  ))}
-                </ul>
+                <p className="sans text-[13px]" style={{ color:'var(--ink-2)' }}>{mechanic.openingHours}</p>
               </div>
             </section>
           )}
-
-          <div className="rounded-2xl p-4 flex gap-3" style={{ background:'var(--bg-warm)', border:'1px solid var(--line-2)' }}>
-            <div className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'white' }}>
-              <Sparkles size={16} color="var(--accent)" />
-            </div>
-            <div className="sans text-[12.5px] leading-relaxed" style={{ color:'var(--ink-2)' }}>
-              <b style={{ color:'var(--ink)' }}>Hibrit veri:</b> Temel bilgiler Google Places'tan günlük güncellenir;
-              şeffaf fiyat katmanı topluluktan toplanacak.
-            </div>
-          </div>
 
           {hasPrices ? (
             <section>
@@ -471,13 +435,22 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
               <Phone size={15} /> {mechanic.phone ?? 'Telefon yok'}
             </a>
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mechanic.name + ' ' + mechanic.address)}`}
+              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mechanic.name + ' ' + (mechanic.address ?? ''))}`}
               target="_blank" rel="noreferrer"
               className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
               style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
               <Navigation size={15} /> Yol Tarifi
             </a>
           </div>
+
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mechanic.name + ' ' + (mechanic.address ?? ''))}`}
+            target="_blank" rel="noreferrer"
+            className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
+            style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+            <Star size={15} /> Yorumları Google'da Gör ({mechanic.reviews})
+            <ExternalLink size={13} />
+          </a>
 
           <div className="rounded-3xl p-5"
             style={{ background:'linear-gradient(180deg, var(--accent-soft), var(--bg-warm))', border:'1px solid var(--line-2)' }}>
@@ -494,7 +467,7 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
                   diğer sürücülere daha çok yarar; biz aynı yorumu burada da gösteririz.
                 </p>
                 <button
-                  onClick={()=>onWriteReview(mechanic.place_id)}
+                  onClick={()=>onWriteReview(mechanic)}
                   className="sans mt-3 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[12.5px] font-semibold transition-transform hover:scale-[1.02]"
                   style={{ background:'var(--accent)', color:'white' }}
                 >
@@ -548,8 +521,8 @@ function BottomNav({ active, onChange }) {
 
 export default function App() {
   const [activeCat, setActiveCat] = useState('all');
-  const [activeDistrict, setActiveDistrict] = useState('all');
-  const [districts, setDistricts] = useState([]);
+  const [activeNeighborhood, setActiveNeighborhood] = useState('all');
+  const [neighborhoods, setNeighborhoods] = useState([]);
   const [query, setQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [selected, setSelected] = useState(null);
@@ -559,11 +532,8 @@ export default function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchAvailableDistricts()
-      .then((list) => {
-        setDistricts(list);
-        if (list.length === 1) setActiveDistrict(list[0]);
-      })
+    fetchAvailableNeighborhoods()
+      .then((list) => setNeighborhoods(list))
       .catch((err) => setError(err.message));
   }, []);
 
@@ -571,10 +541,13 @@ export default function App() {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetchMechanics({ category: activeCat, district: activeDistrict, query: submittedQuery })
+    fetchMechanics({ category: activeCat, neighborhood: activeNeighborhood, query: submittedQuery })
       .then((list) => {
         if (cancelled) return;
         const sorted = [...list].sort((a, b) => {
+          const ap = a.transparentPrices.length > 0 ? 1 : 0;
+          const bp = b.transparentPrices.length > 0 ? 1 : 0;
+          if (bp !== ap) return bp - ap;
           const ar = a.rating ?? 0, br = b.rating ?? 0;
           if (br !== ar) return br - ar;
           return (b.reviews ?? 0) - (a.reviews ?? 0);
@@ -589,11 +562,13 @@ export default function App() {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [activeCat, activeDistrict, submittedQuery]);
+  }, [activeCat, activeNeighborhood, submittedQuery]);
 
-  const handleWriteReview = (placeId) => {
-    const url = `https://search.google.com/local/writereview?placeid=${placeId}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const handleWriteReview = (mechanic) => {
+    // place_id olmadığı için, isim+adres ile Google Maps araması açıyoruz;
+    // kullanıcı oradan "Yorum yaz" diyebilir.
+    const q = encodeURIComponent(`${mechanic.name} ${mechanic.address ?? ''}`);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${q}`, '_blank', 'noopener,noreferrer');
   };
 
   const submitSearch = (e) => {
@@ -627,7 +602,7 @@ export default function App() {
             style={{ color:'var(--ink-3)' }}>
             <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
               style={{ background:'var(--accent)' }} />
-            Ankara · Günlük güncel veri
+            Etimesgut · Sadece 4.5+ puanlı ustalar
           </div>
           <h1 className="serif text-[40px] sm:text-[56px] leading-[0.98] font-semibold tracking-tight max-w-3xl"
             style={{ color:'var(--ink)' }}>
@@ -635,7 +610,7 @@ export default function App() {
             <span className="block italic" style={{ color:'var(--accent)' }}>şeffaf fiyatla.</span>
           </h1>
           <p className="sans text-[15px] sm:text-[16px] mt-4 max-w-xl" style={{ color:'var(--ink-2)' }}>
-            Google'dan canlı puan, topluluktan şeffaf işçilik. Ankara sanayisinin en iyi ustalarını
+            Etimesgut'un en iyi puanlı oto ustaları tek listede. Topluluktan gelen şeffaf fiyatlarla
             ücret pazarlığı yapmadan bul.
           </p>
 
@@ -660,9 +635,9 @@ export default function App() {
           <CategoryPills active={activeCat} onChange={setActiveCat} />
         </section>
 
-        {districts.length > 0 && (
+        {neighborhoods.length > 0 && (
           <section className="mt-3 fadeUp" style={{ animationDelay:'150ms' }}>
-            <DistrictPills active={activeDistrict} options={districts} onChange={setActiveDistrict} />
+            <NeighborhoodPills active={activeNeighborhood} options={neighborhoods} onChange={setActiveNeighborhood} />
           </section>
         )}
 
@@ -707,20 +682,20 @@ export default function App() {
           }}>
             <div className="grid sm:grid-cols-3 gap-7">
               <div className="sm:col-span-2">
-                <div className="sans text-[11px] uppercase tracking-[0.18em] opacity-70">Mimari Notu</div>
+                <div className="sans text-[11px] uppercase tracking-[0.18em] opacity-70">Şeffaflık Vaadi</div>
                 <div className="serif text-[28px] sm:text-[34px] mt-2 font-semibold leading-tight">
-                  Hibrit veri, <span className="italic" style={{ color:'#FBBF77' }}>çift kazanç.</span>
+                  Sade liste, <span className="italic" style={{ color:'#FBBF77' }}>net fiyat.</span>
                 </div>
                 <p className="sans text-[14px] mt-3 opacity-80 max-w-xl leading-relaxed">
-                  Veriyi <b>günde bir kez</b> Google Places'tan çekip Supabase'e yazıyoruz; kullanıcı
-                  isteklerinde Google'a hiç gitmiyoruz. Sıfır API maliyeti, milisaniye yanıt.
+                  Etimesgut sanayisinde elle taranmış, <b>sadece 4.5+ puanlı</b> ustalar. Hesabıyla
+                  kayıt olan ustalar şeffaf fiyat listesini paylaşır, yukarıda görünür.
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
                 {[
-                  { k:'$0', v:'Aylık API maliyeti' },
-                  { k:'<100ms', v:'Supabase yanıt süresi' },
-                  { k:'1×/gün', v:'Google senkronu' },
+                  { k:'455', v:'Etimesgut ustası' },
+                  { k:'≥4.5', v:'Puan filtresi' },
+                  { k:'%100', v:'Şeffaf fiyat' },
                 ].map((s,i)=>(
                   <div key={i}>
                     <div className="serif text-[28px] font-semibold" style={{ color:'#FBBF77' }}>{s.k}</div>
