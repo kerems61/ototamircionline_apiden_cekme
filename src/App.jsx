@@ -13,7 +13,7 @@ const supabase = createClient(
 );
 
 /* ──────────────────────────────────────────────────────────────
-   ototamircionline.com — UI
+   ototamircimonline.com — UI
    Hybrid data model: Google Places (live) + Supabase (delta, TBD)
    ────────────────────────────────────────────────────────────── */
 
@@ -137,7 +137,7 @@ function Logo({ size = 18 }) {
       </div>
       <div className="leading-none">
         <div className="serif text-[15px] font-semibold tracking-tight" style={{ color: 'var(--ink)' }}>
-          ototamirci<span style={{ color: 'var(--accent)' }}>online</span>
+          ototamircim<span style={{ color: 'var(--accent)' }}>online</span>
         </div>
         <div className="sans text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--ink-3)' }}>
           Şeffaf · Güvenilir · Ankara
@@ -709,7 +709,7 @@ export default function App() {
 
         <footer className="mt-12 pt-7 flex flex-col sm:flex-row items-center justify-between gap-3 sans text-[12px]"
           style={{ borderTop:'1px solid var(--line)', color:'var(--ink-3)' }}>
-          <div>© 2026 ototamircionline · Ankara</div>
+          <div>© 2026 ototamircimonline · Ankara</div>
           <div className="flex gap-5">
             <a href="#" className="hover:text-[var(--ink)]">Gizlilik</a>
             <a href="#" className="hover:text-[var(--ink)]">Şartlar</a>
