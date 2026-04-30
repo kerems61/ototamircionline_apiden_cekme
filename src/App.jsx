@@ -1209,6 +1209,7 @@ export default function App() {
   const [activeCat, setActiveCat] = useState('all');
   const [activeNeighborhood, setActiveNeighborhood] = useState('all');
   const [neighborhoods, setNeighborhoods] = useState([]);
+  const [totalMechanics, setTotalMechanics] = useState(null);
   const [query, setQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [selected, setSelected] = useState(null);
@@ -1222,6 +1223,9 @@ export default function App() {
     fetchAvailableNeighborhoods()
       .then((list) => setNeighborhoods(list))
       .catch((err) => setError(err.message));
+    // Toplam usta sayısını çek (filtre fark etmez)
+    supabase.from('mechanics').select('id', { count: 'exact', head: true })
+      .then(({ count }) => { if (count != null) setTotalMechanics(count); });
   }, []);
 
   useEffect(() => {
@@ -1324,7 +1328,7 @@ export default function App() {
             style={{ color:'var(--accent)', background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
             <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
               style={{ background:'var(--accent)' }} />
-            <span className="font-semibold">Etimesgut · 417 Doğrulanmış Usta</span>
+            <span className="font-semibold">Etimesgut · {totalMechanics ?? '...'} Doğrulanmış Usta</span>
           </div>
           <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[0.95] font-semibold tracking-tight max-w-4xl"
             style={{ color:'var(--ink)' }}>
@@ -1358,7 +1362,7 @@ export default function App() {
           {/* Trust strip */}
           <div className="mt-8 grid grid-cols-3 gap-3 max-w-2xl fadeUp" style={{ animationDelay:'200ms' }}>
             {[
-              { k: '417', v: 'Doğrulanmış usta', icon: BadgeCheck },
+              { k: totalMechanics ?? '...', v: 'Doğrulanmış usta', icon: BadgeCheck },
               { k: '≥4.5', v: 'Puan filtresi', icon: Star },
               { k: '7', v: 'Sade kategori', icon: Sparkles },
             ].map((s, i) => {
@@ -1484,7 +1488,7 @@ export default function App() {
               </div>
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
                 {[
-                  { k:'417', v:'Doğrulanmış usta' },
+                  { k: totalMechanics ?? '...', v:'Doğrulanmış usta' },
                   { k:'≥4.5', v:'Puan filtresi' },
                   { k:'7', v:'Sade kategori' },
                 ].map((s,i)=>(
@@ -1531,7 +1535,7 @@ export default function App() {
           <div className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[12px]"
             style={{ borderTop:'1px solid var(--line)' }}>
             <div>© 2026 ototamircimonline · Ankara</div>
-            <div>Etimesgut · 417 doğrulanmış usta</div>
+            <div>Etimesgut · {totalMechanics ?? '...'} doğrulanmış usta</div>
           </div>
         </footer>
       </main>
