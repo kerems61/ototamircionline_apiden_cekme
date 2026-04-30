@@ -2,8 +2,10 @@
 -- 417 usta (puan ≥ 4.5, oto-dışı işletmeler elendi)
 -- Bu dosyayı Supabase SQL Editor'a yapıştırıp Run bas — hepsini halleder.
 
--- 1) Schema migration — featured kolonu yoksa ekle (idempotent)
+-- 1) Schema migration — yeni kolonları yoksa ekle (idempotent)
 alter table mechanics add column if not exists featured boolean default false;
+alter table mechanics add column if not exists google_maps_url text;
+alter table mechanics add column if not exists notes text;
 create index if not exists mechanics_featured_idx on mechanics (featured) where featured = true;
 
 -- 2) Eski veriyi temizle

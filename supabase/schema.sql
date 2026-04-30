@@ -24,6 +24,8 @@ create table mechanics (
   neighborhood    text,                              -- mahalle (adresten parse edildi)
   opening_hours   text,                              -- "09:00-20:00" gibi düz metin
   featured        boolean default false,             -- yönetici tarafından PRO işaretli (üstte gözükür)
+  google_maps_url text,                              -- yönetici tarafından özelleştirilen Google Maps URL'si (yoksa otomatik arama)
+  notes           text,                              -- yönetici notları (özel açıklama)
   created_at      timestamptz default now(),
   updated_at      timestamptz default now()
 );

@@ -112,7 +112,9 @@ function getDisplayWord(name) {
 }
 
 function googleMapsSearchUrl(mechanic) {
-  // Mahalle + Etimesgut Ankara → Google Maps doğru yere götürür
+  // Eğer admin tarafından özel URL set edildiyse onu kullan
+  if (mechanic.googleMapsUrl) return mechanic.googleMapsUrl;
+  // Yoksa mahalle + Etimesgut Ankara ile arama
   const parts = [
     mechanic.name,
     mechanic.neighborhood,
@@ -120,6 +122,8 @@ function googleMapsSearchUrl(mechanic) {
   ].filter(Boolean);
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(parts.join(' '))}`;
 }
+
+const PAGE_SIZE = 30;
 
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
@@ -147,6 +151,8 @@ function mapRow(row) {
     avgLaborTL: null,
     verifiedShop: prices.length > 0,
     featured: row.featured === true,
+    googleMapsUrl: row.google_maps_url ?? null,
+    notes: row.notes ?? null,
   };
 }
 
@@ -610,6 +616,328 @@ function BottomNav({ active, onChange }) {
   );
 }
 
+function MapView({ onBack }) {
+  return (
+    <main className="max-w-6xl mx-auto px-5 pt-6 pb-32 lg:pb-12">
+      <div className="flex items-center justify-between mb-5 fadeUp">
+        <div>
+          <h2 className="serif text-[28px] sm:text-[34px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
+            Etimesgut Haritası
+          </h2>
+          <p className="sans text-[13px] mt-1" style={{ color:'var(--ink-3)' }}>
+            Sanayi bölgelerine ve ustalara hızlıca git. Yol tarifi için karta tıkla.
+          </p>
+        </div>
+        <button onClick={onBack}
+          className="sans text-[13px] font-medium px-4 py-2 rounded-full"
+          style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+          ← Listeye dön
+        </button>
+      </div>
+
+      <div className="rounded-3xl overflow-hidden fadeUp" style={{ border:'1px solid var(--line)', boxShadow:'var(--shadow-md)', animationDelay:'80ms' }}>
+        <iframe
+          title="Etimesgut Haritası"
+          src="https://www.google.com/maps?q=Etimesgut+Sasmaz+Oto+Sanayi+Sitesi+Ankara&output=embed"
+          width="100%" height="500"
+          style={{ border: 0 }}
+          loading="lazy"
+          allowFullScreen
+        />
+      </div>
+
+      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-3 fadeUp" style={{ animationDelay:'150ms' }}>
+        {[
+          { name: 'Şaşmaz Oto Sanayi Sitesi', q: 'Sasmaz Oto Sanayi Sitesi Etimesgut Ankara', desc: 'Etimesgut\'un en büyük oto sanayisi' },
+          { name: 'Bahçekapı', q: 'Bahcekapi Etimesgut Ankara', desc: 'Yoğun usta merkezi' },
+          { name: 'Bağlıca Sanayi', q: 'Baglica Etimesgut Ankara', desc: 'Lastik ve ekspertiz yoğun' },
+          { name: 'Eryaman', q: 'Eryaman Etimesgut Ankara', desc: 'Yıkama ve kaporta' },
+          { name: 'Süvari / Ahi Mesut', q: 'Suvari Ahi Mesut Etimesgut Ankara', desc: 'Karışık servisler' },
+          { name: 'Piyade / İstasyon', q: 'Piyade Istasyon Etimesgut Ankara', desc: 'Yol yardım merkezi' },
+        ].map((spot) => (
+          <a key={spot.name}
+             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.q)}`}
+             target="_blank" rel="noreferrer"
+             className="block rounded-2xl p-4 hover:-translate-y-0.5 transition-all"
+             style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-sm)' }}>
+            <div className="flex items-start gap-3">
+              <div className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background:'var(--accent-soft)' }}>
+                <MapPin size={18} color="var(--accent)" />
+              </div>
+              <div className="min-w-0">
+                <div className="serif text-[16px] font-semibold" style={{ color:'var(--ink)' }}>{spot.name}</div>
+                <div className="sans text-[12px] mt-0.5" style={{ color:'var(--ink-3)' }}>{spot.desc}</div>
+                <div className="sans text-[11px] mt-2 flex items-center gap-1" style={{ color:'var(--accent)' }}>
+                  Google Maps'te aç <ExternalLink size={11} />
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </main>
+  );
+}
+
+function AdminView({ onBack }) {
+  const [password, setPassword] = useState('');
+  const [authed, setAuthed] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+
+  const [mechanics, setMechanics] = useState([]);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [saveMsg, setSaveMsg] = useState('');
+
+  const callApi = async (action, data = {}) => {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, action, ...data }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Hata');
+    return json;
+  };
+
+  const tryLogin = async (e) => {
+    e?.preventDefault?.();
+    setAuthError('');
+    setAuthLoading(true);
+    try {
+      await callApi('verify');
+      setAuthed(true);
+      loadList();
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const loadList = async (q = '') => {
+    setLoading(true);
+    try {
+      const { mechanics } = await callApi('list_mechanics', { search: q });
+      setMechanics(mechanics);
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSave = async (id, fields) => {
+    setSaveMsg('Kaydediliyor...');
+    try {
+      await callApi('update_mechanic', { id, fields });
+      setSaveMsg('✓ Kaydedildi');
+      setTimeout(() => setSaveMsg(''), 2000);
+      loadList(search);
+      setEditing(null);
+    } catch (err) {
+      setSaveMsg('✗ ' + err.message);
+    }
+  };
+
+  const onDelete = async (id, name) => {
+    if (!confirm(`"${name}" silinsin mi? Geri alınamaz.`)) return;
+    try {
+      await callApi('delete_mechanic', { id });
+      loadList(search);
+      setEditing(null);
+    } catch (err) {
+      alert('Silme hatası: ' + err.message);
+    }
+  };
+
+  if (!authed) {
+    return (
+      <main className="max-w-md mx-auto px-5 pt-20 pb-32 lg:pb-12">
+        <div className="rounded-3xl p-8 fadeUp" style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-md)' }}>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="serif text-[24px] font-semibold" style={{ color:'var(--ink)' }}>Yönetici Girişi</h2>
+              <p className="sans text-[12.5px] mt-1" style={{ color:'var(--ink-3)' }}>Şifre ile devam et</p>
+            </div>
+            <Shield size={28} color="var(--accent)" />
+          </div>
+          <form onSubmit={tryLogin}>
+            <input
+              type="password"
+              autoFocus
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Admin şifresi"
+              className="w-full sans text-[14px] py-3 px-4 rounded-2xl outline-none"
+              style={{ background:'var(--bg-warm)', border:'1px solid var(--line)' }}
+            />
+            {authError && (
+              <div className="sans text-[12.5px] mt-3" style={{ color:'#B91C1C' }}>{authError}</div>
+            )}
+            <button type="submit" disabled={authLoading || !password}
+              className="sans w-full mt-4 py-3 rounded-2xl text-[14px] font-semibold transition-all"
+              style={{ background:'var(--ink)', color:'white', opacity: authLoading || !password ? 0.5 : 1 }}>
+              {authLoading ? 'Kontrol ediliyor...' : 'Giriş Yap'}
+            </button>
+          </form>
+          <button onClick={onBack}
+            className="sans w-full mt-3 py-2 text-[12.5px]" style={{ color:'var(--ink-3)' }}>
+            ← Siteye dön
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="max-w-6xl mx-auto px-5 pt-6 pb-32 lg:pb-12">
+      <div className="flex items-center justify-between mb-5 fadeUp">
+        <div>
+          <h2 className="serif text-[28px] sm:text-[34px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
+            Yönetici Paneli
+          </h2>
+          <p className="sans text-[13px] mt-1" style={{ color:'var(--ink-3)' }}>
+            {mechanics.length} usta · arama yap, düzenle, PRO işaretle
+          </p>
+        </div>
+        <div className="flex gap-2 items-center">
+          {saveMsg && <span className="sans text-[12px]" style={{ color:'var(--ink-2)' }}>{saveMsg}</span>}
+          <button onClick={onBack}
+            className="sans text-[13px] font-medium px-4 py-2 rounded-full"
+            style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+            ← Çık
+          </button>
+        </div>
+      </div>
+
+      <form onSubmit={(e) => { e.preventDefault(); loadList(search); }}
+        className="flex items-center gap-2 rounded-full p-1.5 mb-6"
+        style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+        <div className="pl-4"><Search size={17} color="var(--ink-3)" /></div>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Usta adı ile ara..."
+          className="flex-1 bg-transparent outline-none sans text-[14px] py-2.5"
+          style={{ color:'var(--ink)' }}
+        />
+        <button type="submit"
+          className="sans text-[13px] font-semibold px-5 py-2.5 rounded-full"
+          style={{ background:'var(--ink)', color:'white' }}>Ara</button>
+      </form>
+
+      {loading && <div className="sans text-center py-10" style={{ color:'var(--ink-3)' }}>Yükleniyor...</div>}
+
+      <div className="space-y-2">
+        {mechanics.map((m) => (
+          <div key={m.id}
+            className={`rounded-2xl p-4 cursor-pointer transition-all ${editing === m.id ? 'ring-2' : ''}`}
+            style={{
+              background: 'var(--card)',
+              border: m.featured ? '2px solid #DC2626' : '1px solid var(--line)',
+              ...(editing === m.id ? { '--tw-ring-color': 'var(--accent)' } : {}),
+            }}>
+            <div className="flex items-start justify-between gap-3" onClick={() => setEditing(editing === m.id ? null : m.id)}>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  {m.featured && (
+                    <span className="sans text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ background:'#DC2626', color:'white' }}>★ PRO</span>
+                  )}
+                  <span className="serif text-[16px] font-semibold truncate" style={{ color:'var(--ink)' }}>{m.name}</span>
+                </div>
+                <div className="sans text-[12px]" style={{ color:'var(--ink-3)' }}>
+                  {m.sector} · {m.neighborhood ?? '—'} · {m.phone ?? 'tel yok'} · ★ {m.rating} ({m.review_count})
+                </div>
+              </div>
+              <ChevronRight size={18} color="var(--ink-3)"
+                style={{ transform: editing === m.id ? 'rotate(90deg)' : 'none', transition: 'transform .2s' }} />
+            </div>
+
+            {editing === m.id && (
+              <AdminEditForm mechanic={m} onSave={onSave} onDelete={onDelete} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {!loading && mechanics.length === 0 && (
+        <div className="text-center py-10 sans text-[13px]" style={{ color:'var(--ink-3)' }}>
+          Sonuç yok. Aramayı temizle.
+        </div>
+      )}
+    </main>
+  );
+}
+
+function AdminEditForm({ mechanic, onSave, onDelete }) {
+  const [f, setF] = useState({
+    name: mechanic.name ?? '',
+    sector: mechanic.sector ?? 'mekanik',
+    neighborhood: mechanic.neighborhood ?? '',
+    phone: mechanic.phone ?? '',
+    rating: mechanic.rating ?? 4.5,
+    review_count: mechanic.review_count ?? 0,
+    featured: mechanic.featured ?? false,
+    google_maps_url: mechanic.google_maps_url ?? '',
+    notes: mechanic.notes ?? '',
+  });
+
+  const update = (k, v) => setF(prev => ({ ...prev, [k]: v }));
+
+  return (
+    <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3" style={{ borderTop:'1px solid var(--line)' }} onClick={(e) => e.stopPropagation()}>
+      <Field label="Dükkan Adı"><input value={f.name} onChange={(e) => update('name', e.target.value)} className="admin-input" /></Field>
+      <Field label="Sektör">
+        <select value={f.sector} onChange={(e) => update('sector', e.target.value)} className="admin-input">
+          {['mekanik','servis','kaporta','lastik','elektrik','ekspertiz','yikama'].map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </Field>
+      <Field label="Mahalle"><input value={f.neighborhood} onChange={(e) => update('neighborhood', e.target.value)} className="admin-input" /></Field>
+      <Field label="Telefon"><input value={f.phone} onChange={(e) => update('phone', e.target.value)} className="admin-input" /></Field>
+      <Field label="Puan"><input type="number" step="0.1" min="0" max="5" value={f.rating} onChange={(e) => update('rating', parseFloat(e.target.value))} className="admin-input" /></Field>
+      <Field label="Yorum Sayısı"><input type="number" min="0" value={f.review_count} onChange={(e) => update('review_count', parseInt(e.target.value) || 0)} className="admin-input" /></Field>
+      <Field label="Google Maps URL (özel — boş bırakırsan otomatik arama yapar)" full>
+        <input value={f.google_maps_url} onChange={(e) => update('google_maps_url', e.target.value)}
+               placeholder="https://www.google.com/maps/place/... veya boş"
+               className="admin-input" />
+      </Field>
+      <Field label="Yönetici Notu" full>
+        <textarea value={f.notes} onChange={(e) => update('notes', e.target.value)} rows={2}
+          placeholder="İç not, kullanıcılar görmez"
+          className="admin-input" />
+      </Field>
+      <div className="sm:col-span-2 flex items-center justify-between mt-2">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={f.featured} onChange={(e) => update('featured', e.target.checked)} />
+          <span className="sans text-[13px] font-semibold" style={{ color:'#DC2626' }}>★ PRO olarak işaretle (en üstte gözükür)</span>
+        </label>
+        <div className="flex gap-2">
+          <button onClick={() => onDelete(mechanic.id, mechanic.name)}
+            className="sans text-[12.5px] font-medium px-3 py-2 rounded-xl"
+            style={{ background:'transparent', color:'#B91C1C', border:'1px solid #FECACA' }}>Sil</button>
+          <button onClick={() => onSave(mechanic.id, f)}
+            className="sans text-[13px] font-semibold px-5 py-2 rounded-xl"
+            style={{ background:'var(--ink)', color:'white' }}>Kaydet</button>
+        </div>
+      </div>
+      <style>{`.admin-input { width:100%; padding:0.55rem 0.75rem; border-radius:0.6rem; background:var(--bg-warm); border:1px solid var(--line); font-family:'Geist',sans-serif; font-size:13px; color:var(--ink); outline:none; }`}</style>
+    </div>
+  );
+}
+
+function Field({ label, children, full }) {
+  return (
+    <div className={full ? 'sm:col-span-2' : ''}>
+      <div className="sans text-[10.5px] uppercase tracking-[0.12em] mb-1" style={{ color:'var(--ink-3)' }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
 function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
@@ -645,6 +973,25 @@ function FloatingActions() {
 }
 
 export default function App() {
+  // URL'den admin/harita view'ı algıla
+  const initialView = (() => {
+    if (typeof window === 'undefined') return 'home';
+    const path = window.location.pathname;
+    const hash = window.location.hash;
+    if (path === '/admin' || hash === '#admin') return 'admin';
+    if (path === '/harita' || hash === '#harita') return 'map';
+    return 'home';
+  })();
+  const [view, setView] = useState(initialView);
+  const goToView = (v) => {
+    setView(v);
+    if (typeof window !== 'undefined') {
+      const newHash = v === 'home' ? '' : `#${v === 'map' ? 'harita' : v}`;
+      window.history.replaceState(null, '', window.location.pathname + window.location.search + newHash);
+      window.scrollTo({ top: 0 });
+    }
+  };
+
   const [activeCat, setActiveCat] = useState('all');
   const [activeNeighborhood, setActiveNeighborhood] = useState('all');
   const [neighborhoods, setNeighborhoods] = useState([]);
@@ -655,6 +1002,7 @@ export default function App() {
   const [mechanics, setMechanics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
     fetchAvailableNeighborhoods()
@@ -695,6 +1043,11 @@ export default function App() {
     return () => { cancelled = true; };
   }, [activeCat, activeNeighborhood, submittedQuery]);
 
+  // Filtre değiştiğinde sayfalamayı sıfırla
+  useEffect(() => {
+    setDisplayCount(PAGE_SIZE);
+  }, [activeCat, activeNeighborhood, submittedQuery]);
+
   const handleWriteReview = (mechanic) => {
     // place_id olmadığı için Google Maps aramasına yönlendir;
     // kullanıcı oradan "Yorum yaz" diyebilir.
@@ -713,19 +1066,33 @@ export default function App() {
       <header className="sticky top-0 z-20 backdrop-blur-xl"
         style={{ background:'rgba(250,250,246,0.82)', borderBottom:'1px solid var(--line)' }}>
         <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
-          <Logo />
+          <button onClick={() => goToView('home')} className="cursor-pointer">
+            <Logo />
+          </button>
           <div className="hidden lg:flex items-center gap-7 sans text-[13.5px]" style={{ color:'var(--ink-2)' }}>
-            <a className="hover:text-[var(--ink)] transition" href="#">Keşfet</a>
-            <a className="hover:text-[var(--ink)] transition" href="#">Şeffaflık</a>
-            <a className="hover:text-[var(--ink)] transition" href="#">Usta misin?</a>
+            <button onClick={() => goToView('home')}
+              className={`hover:text-[var(--ink)] transition ${view === 'home' ? 'text-[var(--ink)] font-semibold' : ''}`}>
+              Keşfet
+            </button>
+            <button onClick={() => goToView('map')}
+              className={`hover:text-[var(--ink)] transition ${view === 'map' ? 'text-[var(--ink)] font-semibold' : ''}`}>
+              Harita
+            </button>
+            <a href={`mailto:${CONTACT_EMAIL}?subject=Usta kayıt başvurusu`}
+              className="hover:text-[var(--ink)] transition">Usta misin?</a>
           </div>
-          <button className="sans text-[13px] font-medium px-4 py-2 rounded-full"
+          <button onClick={() => goToView('admin')}
+            className="sans text-[13px] font-medium px-4 py-2 rounded-full"
             style={{ background:'var(--ink)', color:'white' }}>
-            Giriş Yap
+            {view === 'admin' ? '✓ Yönetici' : 'Giriş Yap'}
           </button>
         </div>
       </header>
 
+      {view === 'map' && <MapView onBack={() => goToView('home')} />}
+      {view === 'admin' && <AdminView onBack={() => goToView('home')} />}
+
+      {view === 'home' && (
       <main className="max-w-6xl mx-auto px-5 pt-8 pb-32 lg:pb-12">
         <section className="fadeUp">
           <div className="flex items-center gap-2 sans text-[11px] uppercase tracking-[0.18em] mb-4"
@@ -789,11 +1156,39 @@ export default function App() {
         <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} delay={i * 60} />)
-            : mechanics.map((m, i) => (
-                <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={i * 70} />
+            : mechanics.slice(0, displayCount).map((m, i) => (
+                <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={Math.min(i, 12) * 60} />
               ))
           }
         </section>
+
+        {!loading && mechanics.length > displayCount && (
+          <div className="mt-8 flex flex-col items-center gap-3 fadeUp">
+            <div className="sans text-[13px]" style={{ color:'var(--ink-3)' }}>
+              {displayCount} / {mechanics.length} usta gösteriliyor
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setDisplayCount(c => Math.min(c + PAGE_SIZE, mechanics.length))}
+                className="sans text-[13.5px] font-semibold px-6 py-3 rounded-full transition-all hover:scale-[1.02]"
+                style={{ background:'var(--ink)', color:'white', boxShadow:'var(--shadow-md)' }}>
+                Daha Fazla Göster (+{Math.min(PAGE_SIZE, mechanics.length - displayCount)})
+              </button>
+              <button
+                onClick={() => setDisplayCount(mechanics.length)}
+                className="sans text-[13px] font-medium px-5 py-3 rounded-full"
+                style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+                Tümünü Göster
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!loading && mechanics.length > 0 && displayCount >= mechanics.length && mechanics.length > PAGE_SIZE && (
+          <div className="mt-8 text-center sans text-[13px]" style={{ color:'var(--ink-3)' }}>
+            ✓ Tüm {mechanics.length} usta gösterildi
+          </div>
+        )}
 
         {!loading && mechanics.length === 0 && !error && (
           <div className="mt-10 rounded-3xl p-10 text-center"
@@ -829,7 +1224,7 @@ export default function App() {
               </div>
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
                 {[
-                  { k:'442', v:'Doğrulanmış usta' },
+                  { k:'417', v:'Doğrulanmış usta' },
                   { k:'≥4.5', v:'Puan filtresi' },
                   { k:'7', v:'Sade kategori' },
                 ].map((s,i)=>(
@@ -876,13 +1271,18 @@ export default function App() {
           <div className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[12px]"
             style={{ borderTop:'1px solid var(--line)' }}>
             <div>© 2026 ototamircimonline · Ankara</div>
-            <div>Etimesgut · 442 doğrulanmış usta</div>
+            <div>Etimesgut · 417 doğrulanmış usta</div>
           </div>
         </footer>
       </main>
+      )}
 
       <DetailSheet mechanic={selected} onClose={()=>setSelected(null)} onWriteReview={handleWriteReview} />
-      <BottomNav active={navTab} onChange={setNavTab} />
+      <BottomNav active={navTab} onChange={(tab) => {
+        setNavTab(tab);
+        if (tab === 'home') goToView('home');
+        if (tab === 'map') goToView('map');
+      }} />
       <FloatingActions />
     </div>
   );
