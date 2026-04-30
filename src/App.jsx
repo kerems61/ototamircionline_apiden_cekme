@@ -698,9 +698,15 @@ function BottomNav({ active, onChange, savedCount = 0 }) {
   ];
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 lg:hidden"
-      style={{ paddingBottom:'max(env(safe-area-inset-bottom), 8px)' }}>
-      <div className="mx-3 mb-3 rounded-3xl px-2 py-2 backdrop-blur-xl"
-        style={{ background:'rgba(255,255,255,0.92)', border:'1px solid var(--line)', boxShadow:'var(--shadow-lg)' }}>
+      style={{ paddingBottom:'env(safe-area-inset-bottom)' }}>
+      <div className="px-2 pt-2 pb-2 backdrop-blur-xl"
+        style={{
+          background:'rgba(255,255,255,0.96)',
+          borderTop:'1px solid var(--line)',
+          borderTopLeftRadius: '20px',
+          borderTopRightRadius: '20px',
+          boxShadow: '0 -8px 24px -4px rgba(20,17,15,0.08)',
+        }}>
         <div className="grid grid-cols-4">
           {items.map(({id,label,icon:Icon,badge})=>{
             const isActive = active===id;
@@ -1841,29 +1847,6 @@ export default function App() {
             </button>
           </form>
 
-          {/* Trust strip */}
-          <div className="mt-8 grid grid-cols-3 gap-3 w-full max-w-2xl fadeUp" style={{ animationDelay:'200ms' }}>
-            {[
-              { k: totalMechanics ?? '...', v: 'Doğrulanmış usta', icon: BadgeCheck },
-              { k: '≥4.5', v: 'Puan filtresi', icon: Star },
-              { k: '7', v: 'Sade kategori', icon: Sparkles },
-            ].map((s, i) => {
-              const Ic = s.icon;
-              return (
-                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl text-left"
-                  style={{ background:'var(--card)', border:'1px solid var(--line-2)' }}>
-                  <div className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
-                    style={{ background:'var(--accent-soft)' }}>
-                    <Ic size={16} color="var(--accent)" strokeWidth={2.4} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="serif text-[20px] font-semibold leading-none" style={{ color:'var(--ink)' }}>{s.k}</div>
-                    <div className="sans text-[11px] mt-1 truncate" style={{ color:'var(--ink-3)' }}>{s.v}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         </section>
 
         <section className="mt-12 fadeUp" style={{ animationDelay:'140ms' }}>
@@ -1873,14 +1856,6 @@ export default function App() {
           <CategoryPills active={activeCat} onChange={setActiveCat} />
         </section>
 
-        {neighborhoods.length > 0 && (
-          <section className="mt-5 fadeUp" style={{ animationDelay:'170ms' }}>
-            <div className="sans text-[10.5px] uppercase tracking-[0.16em] font-semibold mb-3" style={{ color:'var(--ink-3)' }}>
-              Mahalle
-            </div>
-            <NeighborhoodPills active={activeNeighborhood} options={neighborhoods} onChange={setActiveNeighborhood} />
-          </section>
-        )}
 
         <div className="mt-9 flex items-center justify-between gap-3 flex-wrap fadeUp" style={{ animationDelay:'200ms' }}>
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
