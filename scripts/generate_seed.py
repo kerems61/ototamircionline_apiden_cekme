@@ -24,11 +24,18 @@ Yeni kategoriler:
 
 import openpyxl
 import re
+import json
 from pathlib import Path
 
 EXCEL_PATH = Path(r"C:\Users\Kerem SOYLU\Downloads\Etimesgut_Oto_Rehberi_Gruplanmis_Son.xlsx")
 OUTPUT_PATH = Path(__file__).parent.parent / "supabase" / "seed_data.sql"
+GEOCODE_CACHE_PATH = Path(__file__).parent.parent / "supabase" / "geocode_cache.json"
 MIN_RATING = 4.5
+
+# Google Places ile çekilmiş gerçek koordinatlar (varsa kullan)
+GEOCODE_CACHE = {}
+if GEOCODE_CACHE_PATH.exists():
+    GEOCODE_CACHE = json.loads(GEOCODE_CACHE_PATH.read_text(encoding="utf-8"))
 
 # Türkçe karakter normalize
 def normalize(s):
@@ -329,10 +336,19 @@ def main():
         sector_counts[sector_id] = sector_counts.get(sector_id, 0) + 1
 
         nb = extract_neighborhood(adres)
-        lat, lng = get_lat_lng(nb, name)
+
+        # Önce Google Places cache'inden gerçek koordinat ara, yoksa mahalle merkezi
+        place_id = None
+        cached = GEOCODE_CACHE.get(name.strip())
+        if cached and cached.get("lat") and cached.get("lng"):
+            lat, lng = cached["lat"], cached["lng"]
+            place_id = cached.get("place_id")
+        else:
+            lat, lng = get_lat_lng(nb, name)
 
         rows.append({
             "name": name.strip(),
+            "place_id": place_id,
             "sector": sector_id,
             "google_category": kategori,
             "rating": float(puan),
@@ -366,12 +382,14 @@ def main():
         f.write("create index if not exists mechanics_featured_idx on mechanics (featured) where featured = true;\n\n")
         f.write("-- 2) Eski veriyi temizle\n")
         f.write("delete from mechanics;\n\n")
-        f.write(f"-- 3) Yeni {len(rows)} ustayı yükle\n")
-        f.write("insert into mechanics (name, sector, google_category, rating, review_count, phone, address, neighborhood, opening_hours, lat, lng) values\n")
+        # Place_id istatistiği
+        with_pid = sum(1 for r in rows if r.get("place_id"))
+        f.write(f"-- 3) Yeni {len(rows)} ustayı yükle ({with_pid} tanesi gerçek Google place_id ile)\n")
+        f.write("insert into mechanics (name, place_id, sector, google_category, rating, review_count, phone, address, neighborhood, opening_hours, lat, lng) values\n")
         lines = []
         for r in rows:
             lines.append(
-                f"  ({sql_str(r['name'])}, {sql_str(r['sector'])}, {sql_str(r['google_category'])}, "
+                f"  ({sql_str(r['name'])}, {sql_str(r.get('place_id'))}, {sql_str(r['sector'])}, {sql_str(r['google_category'])}, "
                 f"{sql_num(r['rating'])}, {sql_num(r['review_count'])}, {sql_str(r['phone'])}, "
                 f"{sql_str(r['address'])}, {sql_str(r['neighborhood'])}, {sql_str(r['opening_hours'])}, "
                 f"{sql_num(r['lat'])}, {sql_num(r['lng'])})"

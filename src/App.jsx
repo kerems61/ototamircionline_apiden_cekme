@@ -159,15 +159,35 @@ function getDisplayWord(name) {
 }
 
 function googleMapsSearchUrl(mechanic) {
-  // Eğer admin tarafından özel URL set edildiyse onu kullan
+  // 1) Admin tarafından özel URL set edildiyse onu kullan
   if (mechanic.googleMapsUrl) return mechanic.googleMapsUrl;
-  // Yoksa mahalle + Etimesgut Ankara ile arama
+  // 2) Gerçek place_id varsa direkt o yere git (en doğrusu)
+  if (mechanic.placeId) {
+    return `https://www.google.com/maps/place/?q=place_id:${mechanic.placeId}`;
+  }
+  // 3) Fallback: isim + mahalle + Etimesgut Ankara araması
   const parts = [
     mechanic.name,
     mechanic.neighborhood,
     'Etimesgut Ankara',
   ].filter(Boolean);
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(parts.join(' '))}`;
+}
+
+function googleWriteReviewUrl(mechanic) {
+  // place_id varsa direkt yorum yazma sayfasına git
+  if (mechanic.placeId) {
+    return `https://search.google.com/local/writereview?placeid=${mechanic.placeId}`;
+  }
+  return googleMapsSearchUrl(mechanic);
+}
+
+function googleDirectionsUrl(mechanic) {
+  if (mechanic.placeId) {
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mechanic.name)}&destination_place_id=${mechanic.placeId}`;
+  }
+  const parts = [mechanic.name, mechanic.neighborhood, 'Etimesgut Ankara'].filter(Boolean);
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(parts.join(' '))}`;
 }
 
 const PAGE_SIZE = 30;
@@ -200,6 +220,9 @@ function mapRow(row) {
     featured: row.featured === true,
     googleMapsUrl: row.google_maps_url ?? null,
     notes: row.notes ?? null,
+    placeId: row.place_id ?? null,
+    lat: row.lat != null ? Number(row.lat) : null,
+    lng: row.lng != null ? Number(row.lng) : null,
   };
 }
 
@@ -592,7 +615,7 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
               <Phone size={15} /> {mechanic.phone ?? 'Telefon yok'}
             </a>
             <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent([mechanic.name, mechanic.neighborhood, 'Etimesgut Ankara'].filter(Boolean).join(' '))}`}
+              href={googleDirectionsUrl(mechanic)}
               target="_blank" rel="noreferrer"
               className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
               style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
@@ -1240,9 +1263,8 @@ export default function App() {
   }, [activeCat, activeNeighborhood, submittedQuery]);
 
   const handleWriteReview = (mechanic) => {
-    // place_id olmadığı için Google Maps aramasına yönlendir;
-    // kullanıcı oradan "Yorum yaz" diyebilir.
-    window.open(googleMapsSearchUrl(mechanic), '_blank', 'noopener,noreferrer');
+    // place_id varsa direkt Google "yorum yaz" formuna git
+    window.open(googleWriteReviewUrl(mechanic), '_blank', 'noopener,noreferrer');
   };
 
   const submitSearch = (e) => {

@@ -1,0 +1,3187 @@
+{
+  "AKT LUXURY AUTO AIRBAG": {
+    "place_id": "ChIJnQjjSvxL0xQRHZt0Psttb2g",
+    "lat": 39.9323791,
+    "lng": 32.7146808,
+    "matched_name": "AKT LUXURY AUTO AİRBAG",
+    "matched_address": "Ankara Şaşmaz, Erler, 2554 Sokak No:4, 06145 Etimesgut/Ankara, Türkiye"
+  },
+  "Atakann elektrik": {
+    "place_id": "ChIJ54fnOfw90xQRCIxGNWn-RKA",
+    "lat": 39.889037300000005,
+    "lng": 32.6288216,
+    "matched_name": "Atakann elektrik",
+    "matched_address": "Ankara, Bağlıca, 06690 Etimesgut/Ankara, Türkiye"
+  },
+  "Computest Etimesgut Oto Ekspertiz": {
+    "place_id": "ChIJvQuUD48x0xQRf1vooPGp4Ug",
+    "lat": 39.9650789,
+    "lng": 32.6120394,
+    "matched_name": "Computest Etimesgut Oto Ekspertiz",
+    "matched_address": "ANKAVEGA Konutları, Yeşilova, 4016. Cad. No:96, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Ersoy Oto Elektrik": {
+    "place_id": "ChIJMzpMnaY30xQRL_0H4I_gzvA",
+    "lat": 39.9372472,
+    "lng": 32.7100406,
+    "matched_name": "Ersoy Oto Elektrik",
+    "matched_address": "Bahçekapı, 2476 Cad 6f D:2, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "FT GARAGE Etimesgut": {
+    "place_id": "ChIJ5a-sn-w50xQR21iPWBqjWkQ",
+    "lat": 39.9425434,
+    "lng": 32.646297,
+    "matched_name": "FT GARAGE Etimesgut",
+    "matched_address": "Süvari, Ahi Mesut Blv 26/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "GUMUS OTO 7/24": {
+    "place_id": "ChIJ6b5Les430xQRnQzhAiq0kWA",
+    "lat": 39.9385926,
+    "lng": 32.710165599999996,
+    "matched_name": "GÜMÜŞ OTO 7/24",
+    "matched_address": "BAHÇEKAPI MAH. 2472.CAD. 2/40 ETİMESGUT/ANK, Bahçekapı, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Karadag Elektrik": {
+    "place_id": "ChIJqZCWTSs70xQRGu3quMuln8o",
+    "lat": 39.9400234,
+    "lng": 32.6051918,
+    "matched_name": "Karadağ Elektrik",
+    "matched_address": "Oğuzlar, 1562. Cd., 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozgur elektrik yapi market": {
+    "place_id": "ChIJR1MirVgx0xQR33CpbI4KefU",
+    "lat": 39.9710641,
+    "lng": 32.615952799999995,
+    "matched_name": "Özgür elektrik yapı market",
+    "matched_address": "Eryaman, Emiryaman Cd 14/A, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "Yapracik Elektrik": {
+    "place_id": "ChIJU2UyO2IX0xQRFmYonAHZvZA",
+    "lat": 39.8310228,
+    "lng": 32.5576229,
+    "matched_name": "Yapracık Elektrik",
+    "matched_address": "Atayurt, 4438. Cad., 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "ETIMESGUT YIGITER OTO ELEKTRIK": {
+    "place_id": "ChIJIfAB0yg50xQRTbvWxVby9fE",
+    "lat": 39.9409226,
+    "lng": 32.651769099999996,
+    "matched_name": "ETİMESGUT YİĞİTER OTO ELEKTRİK",
+    "matched_address": "30 Ağustos, 1773. Cd. 35A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "MM GARAGE ANKARA FAR TEMIZLEME ve TASARIM MERKEZI": {
+    "place_id": "ChIJLZ12QRY70xQRzTGA7mWZdb4",
+    "lat": 39.948088299999995,
+    "lng": 32.6210626,
+    "matched_name": "MM GARAGE ANKARA FAR TEMİZLEME ve TASARIM MERKEZİ",
+    "matched_address": "Elvan, Topçu, 1544. Cd. No:174 D:c, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "RS Ankara Etimesgut Oto Ekspertiz": {
+    "place_id": "ChIJ1frjkdgx0xQRFtrPHzvR3EU",
+    "lat": 39.9692219,
+    "lng": 32.61243210000001,
+    "matched_name": "RS Ankara Etimesgut Oto Ekspertiz",
+    "matched_address": "yeşilova mahallesi ayaş, Yeşilova, bulvarı no 123, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Seref Oto Elektrik": {
+    "place_id": "ChIJac03bf430xQRYZFc5lfL_d4",
+    "lat": 39.9323531,
+    "lng": 32.7165968,
+    "matched_name": "Şeref Oto Elektrik",
+    "matched_address": "Bahçekapı, 2563. Sk. Oto San.Sit. 4/A D:4/A, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Show Oto Elektrik Tamir bakim Servisi": {
+    "place_id": "ChIJtzVCOf830xQRuL-kiHDsG88",
+    "lat": 39.9314481,
+    "lng": 32.715385999999995,
+    "matched_name": "Show Oto Elektrik Tamir bakim Servisi",
+    "matched_address": "Bahçekapı, 2560. Sk. No:7, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "TERCAN OTO KILIT": {
+    "place_id": "ChIJPTqkx8BJ0xQRQw151XuND6M",
+    "lat": 39.943041199999996,
+    "lng": 32.7157151,
+    "matched_name": "TERCAN OTO KİLİT",
+    "matched_address": "Bahçekapı, 2492. Cd. No:7, 06460 Etimesgut/Ankara, Türkiye"
+  },
+  "YUCEL OTO ELEKTRIK ELEKTRONIK ANKARA SASMAZ - KLIMA GAZI - PETEK TEMIZLIK - ANKARA OTO ELEKTRIK - GIZLI OZELLIK ACMA TUM ARAC": {
+    "place_id": "ChIJ01Xn_SE30xQRonF1_7W9ncw",
+    "lat": 39.927580999999996,
+    "lng": 32.7193797,
+    "matched_name": "YÜCEL OTO ELEKTRİK ELEKTRONİK ANKARA ŞAŞMAZ - KLIMA GAZI - PETEK TEMİZLİK - ANKARA OTO ELEKTRİK - GİZLİ ÖZELLİK AÇMA TÜM ARAÇ",
+    "matched_address": "Mega Şaşmaz, Bahçekapı, 2685.Sok No:11, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Aden Oto Tamir Sasmaz": {
+    "place_id": "ChIJ2cunFkA30xQR1nR0yK4StmU",
+    "lat": 39.939661699999995,
+    "lng": 32.7119569,
+    "matched_name": "Aden Oto Tamir Şaşmaz",
+    "matched_address": "BAHÇEKAPI MAH. 2474 SOK. ARIKANLAR A, Bahçekapı, BLOK NO:9, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "OGUZ ELEKTRIK": {
+    "place_id": "ChIJ176zLfA30xQRzn35iee7UDc",
+    "lat": 39.930484799999995,
+    "lng": 32.7158321,
+    "matched_name": "OĞUZ ELEKTRİK",
+    "matched_address": "Bahçekapı, 2567. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Serdar Oto Elektrik": {
+    "place_id": "ChIJvb_YAf830xQR0XIFjeMHmys",
+    "lat": 39.9312807,
+    "lng": 32.7149424,
+    "matched_name": "Serdar Oto Elektrik",
+    "matched_address": "Bahçekapı, Oto Sanayi Sitesi, 2560. Sokak No:12, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankara Oto Sanayi Rehberi": {
+    "place_id": "ChIJ3200eFox0xQRJsj9ZDFKDP8",
+    "lat": 39.9646087,
+    "lng": 32.6093338,
+    "matched_name": "Ankara Oto Sanayi Rehberi",
+    "matched_address": "Yeşilova Mh. 4022 Sk. Pozitif Life Plaza No: 7/A No:62, Eryaman, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Baglica Oto Elektrik Ve Tamir Esmin Garage": {
+    "place_id": "ChIJ2ViF32k50xQRJ6uhZerupM4",
+    "lat": 39.895266299999996,
+    "lng": 32.6475713,
+    "matched_name": "Bağlıca Oto Elektrik Ve Tamir Esmin Garage",
+    "matched_address": "Bağlıca, Etimesgut Blv. No:83, 06936 Etimesgut/Ankara, Türkiye"
+  },
+  "Baskent Naci Oto Elektrik": {
+    "place_id": "ChIJGZdlxANI0xQRWGPSRZ3ve9A",
+    "lat": 39.932640899999996,
+    "lng": 32.721731999999996,
+    "matched_name": "Başkent Naci Oto Elektrik",
+    "matched_address": "Bahçekapı, 2571. Sk. No:5, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Emin Oto Elektrik": {
+    "place_id": "ChIJwfMX_2U30xQRznzJ0usHgUo",
+    "lat": 39.9371996,
+    "lng": 32.7163172,
+    "matched_name": "Emin Oto Elektrik",
+    "matched_address": "Bahçekapı 2551 Cad./2524 Sok, Bahçekapı, D:10, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Karaca Oto Elektrik & Murat usta": {
+    "place_id": "ChIJ2yGWBrU30xQRIKSxlr_WLxs",
+    "lat": 39.9314106,
+    "lng": 32.7138029,
+    "matched_name": "Karaca Oto Elektrik & Murat usta",
+    "matched_address": "Bahçekapı, şaşmaz oto sanayi sitesi 2. cadde, Bahçekapı, 2558. Sk. no 12, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Pratik Oto Elektrik": {
+    "place_id": "ChIJu24wyAJI0xQRIn8KJfdeyG4",
+    "lat": 39.936357099999995,
+    "lng": 32.7195122,
+    "matched_name": "Pratik Oto Elektrik",
+    "matched_address": "Bahçekapı, 2538 Sk. No:51, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Rise Auto Performance Oto Tamir Bakim": {
+    "place_id": "ChIJC3Q9NJg30xQRrCn5Lkf8W7U",
+    "lat": 39.938254900000004,
+    "lng": 32.708925,
+    "matched_name": "Rise Auto Performance Oto Tamir Bakım",
+    "matched_address": "Bahçekapı, 2475. Sk. Arıkanlar İş Merkezi No:C12, 06200 Etimesgut/Ankara, Türkiye"
+  },
+  "SAFAK OTO AKSESUAR": {
+    "place_id": "ChIJYzLctV8x0xQRrH5m3SW7-AY",
+    "lat": 39.9348114,
+    "lng": 32.64787090000001,
+    "matched_name": "ŞAFAK OTO AKSESUAR",
+    "matched_address": "Alsancak, Mehmet Akif Ersoy Cd. No:44/B, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "CAKMAK OTO ELEKTRIK": {
+    "place_id": "ChIJS6pJQIBJ0xQRZXf-fS2rVlA",
+    "lat": 39.9368627,
+    "lng": 32.719127,
+    "matched_name": "ÇAKMAK OTO ELEKTRİK",
+    "matched_address": "Bahçekapı, 2530. Sk. No:54, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Gokturk Bmw": {
+    "place_id": "ChIJAXMyMNs30xQRPxJkjRNX1Uk",
+    "lat": 39.935820199999995,
+    "lng": 32.7169794,
+    "matched_name": "Göktürk Bmw",
+    "matched_address": "Bahçekapı 2551. Cadde, Bahçekapı, 2530. Sk. No:18, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Red GARAJ Etimesgut": {
+    "place_id": "ChIJey6PbL830xQRJG5U2PZfGFM",
+    "lat": 39.952504999999995,
+    "lng": 32.641633999999996,
+    "matched_name": "Red GARAJ Etimesgut",
+    "matched_address": "Piyade, İstasyon Cad. 185/A, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Bal Oto | Elektrik - Klima Servisi | Umit Usta": {
+    "place_id": "ChIJH014lb9J0xQRH-yFcdfwwn8",
+    "lat": 39.930850799999995,
+    "lng": 32.7194346,
+    "matched_name": "Bal Oto | Elektrik - Klima Servisi | Ümit Usta",
+    "matched_address": "Bahçekapı, 2567. Sk. No: 41/A, 06900 Etimesgut/Ankara, Türkiye"
+  },
+  "D&S Garaj Oto Aksesuar": {
+    "place_id": "ChIJ5aHqhWBJ0xQRB_7bT8tzPY0",
+    "lat": 39.936643499999995,
+    "lng": 32.719494499999996,
+    "matched_name": "D&S Garaj Oto Aksesuar",
+    "matched_address": "Şaşmaz oto sanayi sitesi 2540 Cadde, Bahçekapı, 2537. Sk. No:54, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Deniz Oto Elektrik Elektronik": {
+    "place_id": "ChIJ_aLO07030xQRn07lcTm41j8",
+    "lat": 39.938306999999995,
+    "lng": 32.7083052,
+    "matched_name": "Deniz Oto Elektrik Elektronik",
+    "matched_address": "Bahçekapı, 2475. Sk. no:4A, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "ENKA OTO ELEKTRIK": {
+    "place_id": "ChIJS56rsko70xQRKIF3Ay1ByZc",
+    "lat": 39.947856,
+    "lng": 32.618529099999996,
+    "matched_name": "ENKA OTO ELEKTRİK",
+    "matched_address": "TOPÇU MAH, MERKEZ, 1537. Sk. NO: 1 B D:B, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut Oto Elektrik - Oto Tamir - Korkut Oto - Murat Usta": {
+    "place_id": "ChIJH-P8sJE30xQRSnMOYpUuh_I",
+    "lat": 39.9531275,
+    "lng": 32.6347405,
+    "matched_name": "Etimesgut Oto Elektrik - Oto Tamir - Korkut Oto - Murat Usta",
+    "matched_address": "Piyade, 1965. Sk. 10A, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "KERIM OTOMOTIV ELEKTRIK ELEKTRONIK": {
+    "place_id": "ChIJI5myiIs30xQRUHTnhV6cnXA",
+    "lat": 39.9379877,
+    "lng": 32.7164538,
+    "matched_name": "KERİM OTOMOTİV ELEKTRİK ELEKTRONİK",
+    "matched_address": "Bahçekapı, 2517. Sk. No:26, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Los angaraj": {
+    "place_id": "ChIJSVkfUV430xQRcui3HytTXEA",
+    "lat": 39.9402042,
+    "lng": 32.6502627,
+    "matched_name": "Los angaraj",
+    "matched_address": "30 Ağustos, 2068. Sk. No:38 D:b, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Yapar Oto Elektrik & Aksesuar & Yikama": {
+    "place_id": "ChIJ4zB47fc50xQRS5jS1pbTqO8",
+    "lat": 39.9466903,
+    "lng": 32.632571299999995,
+    "matched_name": "Yapar Oto Elektrik & Aksesuar & Yıkama",
+    "matched_address": "Elvan, Ahi Elvan Cd. 60 b, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "06 Picasso Garage | Ankara Detayli Temizlik, Pasta Cila, Seramik PPF Kaplama, Boya Koruma, Celik Rotus, Cizik Giderme": {
+    "place_id": "ChIJA9D3fEtJ0xQR7-Byo-W8ThA",
+    "lat": 39.9528074,
+    "lng": 32.6287464,
+    "matched_name": "06 Picasso Garage | Ankara Detaylı Temizlik, Pasta Cila, Seramik PPF Kaplama, Boya Koruma, Çelik Rötuş, Çizik Giderme",
+    "matched_address": "Elvan, 1939. Sk. No:2/A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "AGR MEKANIK SERVIS": {
+    "place_id": "ChIJ9_EfdQY30xQRa1kxzb9sGa0",
+    "lat": 39.9382084,
+    "lng": 32.7078019,
+    "matched_name": "AGR MEKANİK SERVİS",
+    "matched_address": "Bahçekapı, 2475. Sk. 4 I, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "ANKA YEDEK PARCA VE BAKIM ONARIM MERKEZI": {
+    "place_id": "ChIJfUh9g4I50xQRM8qsZQtfawk",
+    "lat": 39.943792099999996,
+    "lng": 32.6520562,
+    "matched_name": "ANKA YEDEK PARÇA VE BAKIM ONARIM MERKEZİ",
+    "matched_address": "30 Ağustos, 2084. Sk. No:8 D:A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "AR-M TURBO BAKIM REVIZYON": {
+    "place_id": "ChIJRW-DbsI30xQRtZiL5m0SYAQ",
+    "lat": 39.929892900000006,
+    "lng": 32.7158629,
+    "matched_name": "AR-M TURBO BAKIM REVİZYON",
+    "matched_address": "Bahçekapı, 2561. Sk. Şaşmaz Sanayi Sitesi No: 49, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "ASYATEK MOTORS SERVIS": {
+    "place_id": "ChIJO0lUMz5J0xQRamN8LS5OunA",
+    "lat": 39.9376288,
+    "lng": 32.7112684,
+    "matched_name": "ASYATEK MOTORS SERVİS",
+    "matched_address": "Bahçekapı, 2487. Cad., 06374 Etimesgut/Ankara, Türkiye"
+  },
+  "Acar opel ankara": {
+    "place_id": "ChIJ28U-Yds2lGERd1QiR8c4S-Q",
+    "lat": 39.9351754,
+    "lng": 32.7093742,
+    "matched_name": "Acar opel ankara",
+    "matched_address": "Bahçekapı, 2479. cadde no.3/B, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Arslan mekanik sasmaz": {
+    "place_id": "ChIJbcULIpE30xQRWrcauQil-u8",
+    "lat": 39.9421234,
+    "lng": 32.716863,
+    "matched_name": "Arslan mekanik şaşmaz",
+    "matched_address": "İÇ KAPI, Bahçekapı, 2500. Cd. NO: 11 NO: 13, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Arslanlar Otomotiv": {
+    "place_id": "ChIJBTIaj-E30xQRvu-uoMlBFtM",
+    "lat": 39.942879,
+    "lng": 32.7161621,
+    "matched_name": "Arslanlar Otomotiv",
+    "matched_address": "2492 Cad.5. Blok No:1 06060, Bahçekapı Mahallesi, Bahçekapı, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "AtaseverGarage": {
+    "place_id": "ChIJFV7lhIQ50xQRsSMsiBzXL7Q",
+    "lat": 39.9479052,
+    "lng": 32.637276,
+    "matched_name": "AtaseverGarage",
+    "matched_address": "Piyade, Atilla Eşer Cd., 06932 Etimesgut/Ankara, Türkiye"
+  },
+  "Atlas Garaj (Otomotiv)": {
+    "place_id": "ChIJwyRdBEk30xQR8AyOUkF0vu4",
+    "lat": 39.9526353,
+    "lng": 32.6343856,
+    "matched_name": "Atlas Garaj (Otomotiv)",
+    "matched_address": "Piyade, 1966. Sk. no:6B, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Ayar Oto Kaporta boya servisi boyasiz gocuk onarim": {
+    "place_id": "ChIJV9E1wkA30xQRK49u0KiCu0w",
+    "lat": 39.929924899999996,
+    "lng": 32.7164356,
+    "matched_name": "Ayar Oto Kaporta boya servisi boyasız göçük onarım",
+    "matched_address": "Bahçekapı, 2562. Sk. No:45, 06150 Etimesgut/Ankara, Türkiye"
+  },
+  "BAY OTOMOTIV - Madeni Yag, Aku, Antifriz, Silecek, Ampul": {
+    "place_id": "ChIJNagX5h070xQR1wZVZiFJXPE",
+    "lat": 39.956429199999995,
+    "lng": 32.6174432,
+    "matched_name": "BAY OTOMOTİV - Madeni Yağ, Akü, Antifriz, Silecek, Ampul",
+    "matched_address": "Topçu mahallesi istasyon caddesi, üzerinde, 1501. Sk. no:1/a, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "BI-LUX OTOMOTIV SERVISI": {
+    "place_id": "ChIJPT408tI30xQRmbWVSSS2gO0",
+    "lat": 39.9392405,
+    "lng": 32.7101755,
+    "matched_name": "Bİ-LUX OTOMOTİV SERVİSİ",
+    "matched_address": "Bahçekapı, 2474. Cd no: 4 D:1B, 06200 Etimesgut/Ankara, Türkiye"
+  },
+  "Baglica Oto Tamir": {
+    "place_id": "ChIJR2_2Ukg50xQROsUe5wEATS4",
+    "lat": 39.8935284,
+    "lng": 32.6487507,
+    "matched_name": "Bağlıca Oto Tamir",
+    "matched_address": "Bağlıca, Hüseyinbey Sk. No:2, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "CMK Service": {
+    "place_id": "ChIJc-49jyA30xQRMFAnwQ7SvuE",
+    "lat": 39.938167199999995,
+    "lng": 32.7011043,
+    "matched_name": "CMK Service",
+    "matched_address": "Bahçekapı, 2689. Cadde No:3/8, 06150 Etimesgut/Ankara, Türkiye"
+  },
+  "CarFix Oto Tamir Bakim Servisi": {
+    "place_id": "ChIJf38HMuc30xQRYPn_zPQR4mU",
+    "lat": 39.946687499999996,
+    "lng": 32.704812499999996,
+    "matched_name": "CarFix Oto Tamir Bakım Servisi",
+    "matched_address": "Bahçekapı, WPW3+MW9, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Carlive Oto Aksesuar & Arac Uygulama Merkezi | Sasmaz Ankara": {
+    "place_id": "ChIJEeCG7g830xQRnBykACSPjZI",
+    "lat": 39.9366689,
+    "lng": 32.7159841,
+    "matched_name": "Carlive Oto Aksesuar & Araç Uygulama Merkezi | Şaşmaz Ankara",
+    "matched_address": "Bahçekapı, 2527. Sk. Şaşmaz Oto Sanayi Sitesi No: 11, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Carter auto garage": {
+    "place_id": "ChIJjcogi8o30xQRTnSqUKLSowY",
+    "lat": 39.9388438,
+    "lng": 32.7078352,
+    "matched_name": "Carter auto garage",
+    "matched_address": "Bahçekapı, 2474. Cd no : 4 /1/G, 06030 Etimesgut/Ankara, Türkiye"
+  },
+  "DAGLI OTOMOTIV FORD OZEL SERVIS": {
+    "place_id": "ChIJJ9VZ0Qk30xQRr7s0dzOTUws",
+    "lat": 39.9411118,
+    "lng": 32.7074959,
+    "matched_name": "DAĞLI OTOMOTİV FORD ÖZEL SERVİS",
+    "matched_address": "Bahçekapı, 2465. Sk. No:10 betimesgut, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Defne Akulu Araba Tamir Servisi": {
+    "place_id": "ChIJX2GIsbA50xQRdmPKeNceVT4",
+    "lat": 39.9400902,
+    "lng": 32.645083299999996,
+    "matched_name": "Defne Akülü Araba Tamir Servisi",
+    "matched_address": "Süvari, 1747. Cd. 10/C, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Dinler Oto Servis": {
+    "place_id": "ChIJV8UzJ_830xQR5KgYWMuKNH8",
+    "lat": 39.9317833,
+    "lng": 32.7135813,
+    "matched_name": "Dinler Oto Servis",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "EBRAR Oto Tamir Bakim Servisi": {
+    "place_id": "ChIJ9cytOi430xQR7Sw629_LQ5w",
+    "lat": 39.9302248,
+    "lng": 32.7169737,
+    "matched_name": "EBRAR Oto Tamir Bakım Servisi",
+    "matched_address": "Bahçe kapı mahallesi 2563 sok, Bahçekapı, Şaşmaz Blv. No:37, 06370 Etimesgut/Ankara, Türkiye"
+  },
+  "EMRAH DEMIREL Eryaman | PPF Arac Kaplama | Cam Filmi | Seramik | Pasta Cila-Boya Koruma | Far Temizleme | Sigara Yanik Tamiri": {
+    "place_id": "ChIJIfuNETM30xQRaQ14Fe-2gKA",
+    "lat": 39.9877064,
+    "lng": 32.6543677,
+    "matched_name": "EMRAH DEMİREL Eryaman | PPF Araç Kaplama | Cam Filmi | Seramik | Pasta Cila-Boya Koruma | Far Temizleme | Sigara Yanık Tamiri",
+    "matched_address": "Şehit Osman Avcı, Malazgirt 1071. Cd. No:51/A-G, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "Elektrikli arac sarj istasyonu": {
+    "place_id": "ChIJXyULonw_0xQRaIs0AGkbS4Q",
+    "lat": 39.8605623,
+    "lng": 32.6323442,
+    "matched_name": "Elektrikli araç şarj istasyonu",
+    "matched_address": "Yapracık, 3263. Cadde No:21F, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut Cekici Kazim Oto Kurtarici": {
+    "place_id": "ChIJ9YmpIFg50xQRK_mqf3ykx8o",
+    "lat": 39.9357998,
+    "lng": 32.6296434,
+    "matched_name": "Etimesgut Çekici Kazım Oto Kurtarıcı",
+    "matched_address": "Ahi Mesut, 1864. Sk No:1, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut Oto Tamirhanesi - Soylu Otomotiv - Motor Mekanik ve Bakim Servisi": {
+    "place_id": "ChIJub_z4pg30xQRKIOof-lHqog",
+    "lat": 39.939251999999996,
+    "lng": 32.711506,
+    "matched_name": "Etimesgut Oto Tamirhanesi - Soylu Otomotiv - Motor Mekanik ve Bakım Servisi",
+    "matched_address": "Bahçekapı Mahallesi 2487 Cadde, Oto Tamirhanesi - Soylu Otomotiv - Motor Mekanik ve Bakım Servisi, Bahçekapı, Şaşmaz Blv. No:2/22, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "GARAJHAN MEKANIK SERVIS": {
+    "place_id": "ChIJa45ME2c30xQRCJX-WTtpExQ",
+    "lat": 39.9367693,
+    "lng": 32.7177931,
+    "matched_name": "GARAJHAN MEKANIK SERVIS",
+    "matched_address": "Bahçekapı, 2528. Sk. No:38, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "GRC MOTORS OTO SERVISI": {
+    "place_id": "ChIJ6RVU825J0xQRNBfvKqAOqC0",
+    "lat": 39.930951,
+    "lng": 32.7198628,
+    "matched_name": "GRC MOTORS OTO SERVİSİ",
+    "matched_address": "Şaşmaz sanayi sitesi 2551. Cadde, Bahçekapı, 2573. Sk. 34/A, 06690 Etimesgut/Ankara, Türkiye"
+  },
+  "Gencnam Ozel BMW Servisi": {
+    "place_id": "ChIJjdl-qEw30xQR3vByn-Vq9vA",
+    "lat": 39.9380844,
+    "lng": 32.7088878,
+    "matched_name": "Gençnam Özel BMW Servisi",
+    "matched_address": "Şaşmaz, Bahçekapı, 2477. Sk. No:3, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Gundogar Oto Tamir Bakim": {
+    "place_id": "ChIJgVMB_1E30xQRuV7io3AJcQI",
+    "lat": 39.943223499999995,
+    "lng": 32.716710299999995,
+    "matched_name": "Gündoğar Oto Tamir Bakım",
+    "matched_address": "Şaşmaz Bahçekapı mahallesi 2492 CAD. 7/B_D, Bahçekapı, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Harun Impreza - Turbo 61 Garaj": {
+    "place_id": "ChIJkT1_2ow30xQRBsTGEzI3ZB8",
+    "lat": 39.940592599999995,
+    "lng": 32.7137094,
+    "matched_name": "Harun İmpreza - Turbo 61 Garaj",
+    "matched_address": "Şaşmaz Oto Sanayi Sitesi, Bahçekapı, 2502. Sk., 06974 Etimesgut/Ankara, Türkiye"
+  },
+  "KARDESLER OTOMOTIV MY MECHANIC": {
+    "place_id": "ChIJm4YPv_E30xQROeA9UFWeQI8",
+    "lat": 39.9320077,
+    "lng": 32.7217744,
+    "matched_name": "KARDEŞLER OTOMOTİV MY MECHANIC",
+    "matched_address": "Oto sanayi sitesi, Bahçekapı, 2567. Sk. Eski 4. Cadde numara 9, 06210 Etimesgut/Ankara, Türkiye"
+  },
+  "Kayalar Oto Servis": {
+    "place_id": "ChIJ8-2Gzvw30xQRpOK3dW0f0To",
+    "lat": 39.9381258,
+    "lng": 32.71441610000001,
+    "matched_name": "KAYALAR OTO SAN VE TİC. LTD. ŞTİ",
+    "matched_address": "Bahçekapı, 2551. Cd. 3/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Kenan Usta Oto Servis": {
+    "place_id": "ChIJ17adBSY_0xQRACQsfUPfBCs",
+    "lat": 39.825369699999996,
+    "lng": 32.7175917,
+    "matched_name": "Kenan Usta Oto Servis",
+    "matched_address": "Bahçekapı, 2689. Sk. no: 5, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Kita otomotiv": {
+    "place_id": "ChIJi-cdzAJI0xQRenk_qhuICtA",
+    "lat": 39.9356309,
+    "lng": 32.7185152,
+    "matched_name": "Kıta otomotiv",
+    "matched_address": "Şaşmaz oto sanayi sitesi, Bahçekapı, 2538 Sk. No:54, 06562 Etimesgut/Ankara, Türkiye"
+  },
+  "Kutlucan garaj": {
+    "place_id": "ChIJXYIdMABJ0xQRfdSakVP6UUQ",
+    "lat": 39.9311473,
+    "lng": 32.7209499,
+    "matched_name": "Kutlucan garaj",
+    "matched_address": "Bahçekapı, 2573. Sk. No:23, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Kuzenler Mekanik": {
+    "place_id": "ChIJF6ASZKs50xQRrixr-t3abwI",
+    "lat": 39.938326599999996,
+    "lng": 32.701420299999995,
+    "matched_name": "Kuzenler Mekanik",
+    "matched_address": "Bahçekapı, 2689. Cadde no:3/14, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "LAND ROVER SERVIS ANKARA OTO LAND": {
+    "place_id": "ChIJtZ0XDV1rbQ0RmoUxIk6BsLk",
+    "lat": 39.9313314,
+    "lng": 32.7213288,
+    "matched_name": "LAND ROVER SERVİS ANKARA OTO LAND",
+    "matched_address": "BAHÇEKAPI MAHALLESİ, 2573. SOKAK, Bahçekapı, Şaşmaz Blv. NO:17, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Land World Otomotiv": {
+    "place_id": "ChIJH-UIkA050xQRa1ZIdsNT274",
+    "lat": 39.9362111,
+    "lng": 32.7121001,
+    "matched_name": "Land World Otomotiv",
+    "matched_address": "Bahçekapı, 2483. Sk. No:4 D:N, 06060 Etimesgut/Ankara, Türkiye"
+  },
+  "MD Garaj": {
+    "place_id": "ChIJP3PJE6c30xQRtr-FHnvsGUo",
+    "lat": 39.944317399999996,
+    "lng": 32.706076599999996,
+    "matched_name": "MD Garaj",
+    "matched_address": "Bahçekapı, 2460. Sk. NO: 23, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "NAM OTO MEKANIK SERVIS": {
+    "place_id": "ChIJpVKjV8E50xQROCMdsULYwWU",
+    "lat": 39.9389416,
+    "lng": 32.708970199999996,
+    "matched_name": "NAM OTO MEKANIK SERVİS",
+    "matched_address": "Bahçekapı, 2474. Cd ARIKANLAR İş Merkezi A Blok No : 9, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "OZ KELES OTOMOTIV": {
+    "place_id": "ChIJzXgorOg20xQRR7qiAE_7BFc",
+    "lat": 39.933741,
+    "lng": 32.723042,
+    "matched_name": "ÖZ KELEŞ OTOMOTİV",
+    "matched_address": "2578/sok, Bahçekapı, Şaşmaz Blv no20, 06060 Etimesgut/Ankara, Türkiye"
+  },
+  "Okan oto fuul servis": {
+    "place_id": "ChIJXwDcnTtJ0xQR3HatOXGwlWs",
+    "lat": 39.9360819,
+    "lng": 32.719473199999996,
+    "matched_name": "Okan oto fuul servis",
+    "matched_address": "Bahçekapi mahallesi Şaşmaz oto sanayi sitesi, Bahçekapı, 2538 Sk. no 46, 06010 Etimesgut/Ankara, Türkiye"
+  },
+  "Onarim otomotiv kaporta ve boya": {
+    "place_id": "ChIJsx2o0Q030xQRp0eltsmf1Os",
+    "lat": 39.9329754,
+    "lng": 32.7144737,
+    "matched_name": "Onarım otomotiv kaporta ve boya",
+    "matched_address": "Bahçekapı, 2473. Cad. no:2A D:19, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Oto Anka Performans- Chip Tuning": {
+    "place_id": "ChIJcznxFnA50xQR4pOQEOaFQPU",
+    "lat": 39.9002756,
+    "lng": 32.6839614,
+    "matched_name": "Oto Anka Performans- Chip Tuning",
+    "matched_address": "Erler, 2717.Sokak No:6/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Otohane Oto Bakim Onarim Servisi": {
+    "place_id": "ChIJW19ZKAA30xQRTgMKO3Smpco",
+    "lat": 39.9422412,
+    "lng": 32.7173848,
+    "matched_name": "Otohane Oto Bakım Onarım Servisi",
+    "matched_address": "Bahçekapı Mahallesi, 2500.Cadde, Bahçekapı, Şaşmaz Blv. No:11/25, 06180 Etimesgut/Ankara, Türkiye"
+  },
+  "Otorapor Ankara Etimesgut Baglica Oto Ekspertiz": {
+    "place_id": "ChIJA-f7XQo50xQR707u7z318jo",
+    "lat": 39.895567199999995,
+    "lng": 32.658847099999996,
+    "matched_name": "Otorapor Ankara Etimesgut Bağlıca Oto Ekspertiz",
+    "matched_address": "Bağlıca, 1251. Sk No:1/1, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Otorapor Ankara Etimesgut Eryaman Oto Ekspertiz": {
+    "place_id": "ChIJ7yuMwqA30xQRJgTcN-b5t-w",
+    "lat": 39.9775317,
+    "lng": 32.6565696,
+    "matched_name": "Otorapor Ankara Etimesgut Eryaman Oto Ekspertiz",
+    "matched_address": "Şehit Osman Avcı, Malazgirt 1071. Cd. 1071 Bulvar, 06460 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozcet otomotiv": {
+    "place_id": "ChIJg5XlejxJ0xQR6__Q5jdRTW0",
+    "lat": 39.933052499999995,
+    "lng": 32.7238713,
+    "matched_name": "Özçet otomotiv",
+    "matched_address": "Bahçekapı, 2567. Sk. no:1, 06630 Etimesgut/Ankara, Türkiye"
+  },
+  "Pro Mekanik Mesut Otomotiv": {
+    "place_id": "ChIJhxLsGxg30xQRWPc716-82Tc",
+    "lat": 39.9450663,
+    "lng": 32.7060806,
+    "matched_name": "Pro Mekanik Mesut Otomotiv",
+    "matched_address": "Şaşmaz Oto Sanayi 2460 Cad 2 Etimesgut Ankara/Yenimahalle, İş yeri, Bahçekapı, 06110 Etimesgut/Ankara, Türkiye"
+  },
+  "Renom Otomotiv": {
+    "place_id": "ChIJCVAElAJI0xQR419we4aCKY0",
+    "lat": 39.935471199999995,
+    "lng": 32.719220899999996,
+    "matched_name": "Renom Otomotiv",
+    "matched_address": "Bahçekapı, 2539. Sk. 36A, 06737 Etimesgut/Ankara, Türkiye"
+  },
+  "Sasmaz Mekanik - Arac Tamir, Bakim & Onarim Servisi": {
+    "place_id": "ChIJV-HfBto30xQRx3kWWvJkSxU",
+    "lat": 39.9381792,
+    "lng": 32.7160851,
+    "matched_name": "Şaşmaz Mekanik - Araç Tamir, Bakım & Onarım Servisi",
+    "matched_address": "Bahçekapı mahallesi 2512 sokak, mekanik, Bahçekapı, Şaşmaz Blv. 5 B A blok, 06006 Etimesgut/Ankara, Türkiye"
+  },
+  "Sistem otomotiv": {
+    "place_id": "ChIJExB5ksI30xQRJ5PSaqkZb8M",
+    "lat": 39.942412499999996,
+    "lng": 32.7114401,
+    "matched_name": "Sistem otomotiv",
+    "matched_address": "Birlik sanayi sitesi 2467 no 16, sistem oto tamirci, Bahçekapı, 06697 Etimesgut/Ankara, Türkiye"
+  },
+  "Trend Oto Ekspertiz Sincan Otonomi Vega": {
+    "place_id": "ChIJ6degAbAx0xQRPxmhvEcqPVI",
+    "lat": 39.9722706,
+    "lng": 32.5970732,
+    "matched_name": "Trend Oto Ekspertiz Sincan Otonomi Vega",
+    "matched_address": "Plevne mahallesi, Çayboyu sokak, No: 2/A 17 Sincan, Plevne, 06934 Etimesgut/Ankara, Türkiye"
+  },
+  "Trugo Sarj Istasyonu": {
+    "place_id": "ChIJKzIVR7Q90xQRTc-geQsHj2k",
+    "lat": 39.8509904,
+    "lng": 32.6009915,
+    "matched_name": "Trugo Şarj İstasyonu",
+    "matched_address": "Orhun, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "Uzman Motorlu Araclar": {
+    "place_id": "ChIJ1Y66UoI30xQRgA481riMnDQ",
+    "lat": 39.942905599999996,
+    "lng": 32.7103733,
+    "matched_name": "Uzman Motorlu Araçlar",
+    "matched_address": "Bahçekapı, 2464. Sk. No:2/A, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "X Car Detailing Studio": {
+    "place_id": "ChIJV8nuFm830xQR6SvJ-7CK6Io",
+    "lat": 39.950279,
+    "lng": 32.655386,
+    "matched_name": "BOSS CAR DETAİLİNG 06",
+    "matched_address": "Kazım Karabekir, İstasyon Cad. No: 80/A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "YUKSEL MEKANIK": {
+    "place_id": "ChIJi9LIFgA30xQRXvnAt0SIghM",
+    "lat": 39.929915099999995,
+    "lng": 32.7136238,
+    "matched_name": "YÜKSEL MEKANİK",
+    "matched_address": "Bahçekapı, 2557. Sk, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Yagiz OTO": {
+    "place_id": "ChIJWb2bPhM30xQRRe8Aqdh3Ons",
+    "lat": 39.944320999999995,
+    "lng": 32.706069299999996,
+    "matched_name": "Yağız OTO",
+    "matched_address": "Bahçekapı, 2460. Sk. 23/8, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Yildiz Garage Oto Tamir Bakim Servisi": {
+    "place_id": "ChIJIcOaZoM30xQRfqYt2sOQyfw",
+    "lat": 39.9364524,
+    "lng": 32.7086922,
+    "matched_name": "Yıldız Garage Oto Tamir Bakım Servisi",
+    "matched_address": "Haymanalı faruk usta, Bahçekapı, 06812 Etimesgut/Ankara, Türkiye"
+  },
+  "Yildiz Hasar Onarim Merkezi": {
+    "place_id": "ChIJO0ciAgA30xQRtHENCwOiMUM",
+    "lat": 39.940782899999995,
+    "lng": 32.712181199999996,
+    "matched_name": "Ayyıldız hasar onarım merkezi",
+    "matched_address": "Bahçekapı, 2470. Sk. No:2, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Yildiz Otomotiv": {
+    "place_id": "ChIJG2_QYuQ30xQRznOdeStjQus",
+    "lat": 39.9416729,
+    "lng": 32.7115923,
+    "matched_name": "Yıldız Otomotiv",
+    "matched_address": "Bahçekapı, 2467. Sk. 6/3, 06730 Etimesgut/Ankara, Türkiye"
+  },
+  "Yilmaz oto servis sasmaz": {
+    "place_id": "ChIJsbEjuno30xQRcbD-vBaqBkU",
+    "lat": 39.9312811,
+    "lng": 32.713314600000004,
+    "matched_name": "Yılmaz oto servis şaşmaz",
+    "matched_address": "Şaşmaz oto sanayi sitesi, Bahçekapı, 2557. Sk No:16, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Yurdusev BMW Ozel Servisi": {
+    "place_id": "ChIJEb0-il030xQRsg40OmdY-Bw",
+    "lat": 39.9337235,
+    "lng": 32.7121172,
+    "matched_name": "Yurdusev BMW Özel Servisi",
+    "matched_address": "Bahçekapı, Sanayi Blv. No:32/3, 06020 Etimesgut/Ankara, Türkiye"
+  },
+  "demirbas otomotiv": {
+    "place_id": "ChIJIc-BpQQ30xQRc2Tm6bQw4rI",
+    "lat": 39.943256,
+    "lng": 32.7115758,
+    "matched_name": "demirbaş otomotiv",
+    "matched_address": "bahçekapı mahallesi 2487 cadde, Bahçekapı, Şaşmaz Blv. no: D, 06300 Etimesgut/Ankara, Türkiye"
+  },
+  "oz oto kurtarma yol yardim": {
+    "place_id": "ChIJJSfpp5Q30xQRZ1HdMFMG2Ac",
+    "lat": 39.9298723,
+    "lng": 32.7138425,
+    "matched_name": "oz oto kurtarma yol yardım",
+    "matched_address": "Bahçekapı, 2558. Sk. No:52, 06697 Etimesgut/Ankara, Türkiye"
+  },
+  "ALSANCAK BEYAZ ESYA, TEKNIK SERVIS": {
+    "place_id": "ChIJ2ZXsu9E50xQRipweQVO0f_c",
+    "lat": 39.9337842,
+    "lng": 32.6522667,
+    "matched_name": "ALSANCAK BEYAZ EŞYA, TEKNİK SERVİS",
+    "matched_address": "Alsancak, 2153. Sk. 5/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "ANKARA CHIP TUNING GIZLI OZELLIK": {
+    "place_id": "ChIJLZI2UFU30xQROfCsujPAsDc",
+    "lat": 39.931556,
+    "lng": 32.7169867,
+    "matched_name": "ANKARA CHİP TUNİNG GİZLİ ÖZELLİK",
+    "matched_address": "BAHÇEKAPI MAH. 2563 SK, Bahçekapı, Şaşmaz Blv. NO:17/A, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "ARISTON merkez servis": {
+    "place_id": "ChIJwVr67JM50xQRxEtgMiD4Ip4",
+    "lat": 39.950165,
+    "lng": 32.642846999999996,
+    "matched_name": "ARİSTON merkez servis",
+    "matched_address": "Süvari, 1698. Sk. 1-D, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "ASIL OTO MEKANIK": {
+    "place_id": "ChIJLRzCx_w30xQRBoxZ7FORCYI",
+    "lat": 39.931007099999995,
+    "lng": 32.7149424,
+    "matched_name": "ASİL OTO MEKANİK",
+    "matched_address": "Bahçekapı, 2560. Sk. No:18, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Ahmet Ford Ozel Servis": {
+    "place_id": "ChIJhd1gsdI30xQRiJ27LmNVXek",
+    "lat": 39.9374475,
+    "lng": 32.700850599999995,
+    "matched_name": "Ahmet Ford Özel Servis",
+    "matched_address": "Bahçekapı, 2689. Cadde no:24, 06100 Etimesgut/Ankara, Türkiye"
+  },
+  "Ariston Servisi Sincan iletisim Merkezi Destek": {
+    "place_id": "ChIJF3VU-v470xQRre7Yr7lusIA",
+    "lat": 39.9676233,
+    "lng": 32.5838581,
+    "matched_name": "Ariston Servisi Sincan iletişim Merkezi Destek",
+    "matched_address": "İstasyon, Kartal Sk., 06934 Etimesgut/Ankara, Türkiye"
+  },
+  "Baglica Adresinizde Telefon Tamiri": {
+    "place_id": "ChIJRecPDKs30xQRTDQYv_b88Zc",
+    "lat": 39.9200477,
+    "lng": 32.653614,
+    "matched_name": "Bağlıca Adresinizde Telefon Tamiri",
+    "matched_address": "Bağlıca, Etimesgut Blv. No:6/C, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "CIK GEL ILETISIM ETIMESGUT TEKNIK SERVIS": {
+    "place_id": "ChIJJe8Zl0M50xQRtZhagbZJJT0",
+    "lat": 39.9454991,
+    "lng": 32.6532288,
+    "matched_name": "ÇIK GEL İLETİŞİM ETİMESGUT TEKNİK SERVİS",
+    "matched_address": "30 Ağustos, Şht. Hasan Öztürk Cd. no:57/B, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Cagsan Premium Service": {
+    "place_id": "ChIJC8OQ7ctJ0xQRuwWcbklmtSU",
+    "lat": 39.931698399999995,
+    "lng": 32.719629499999996,
+    "matched_name": "Çağsan Premium Service",
+    "matched_address": "Bahçekapı, 2571. Sk. Şaşmaz Oto Sanayi No:31, 06370 Etimesgut/Ankara, Türkiye"
+  },
+  "Cozum Pimapen Winsa Pvc Ozel Servis": {
+    "place_id": "ChIJLX8fXxg60xQRP8h-HnAftBs",
+    "lat": 39.971616999999995,
+    "lng": 32.619389,
+    "matched_name": "Çözüm Pimapen Winsa Pvc Özel Servis",
+    "matched_address": "Eryaman, 2. Cd. 19/A, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "DEMIRLER OTO Ozel Servis | Porsche, Volkswagen, Audi, Skoda, Seat": {
+    "place_id": "ChIJfSAkRgA30xQRinUUCq5FAZ4",
+    "lat": 39.941087499999995,
+    "lng": 32.7093505,
+    "matched_name": "DEMİRLER OTO Özel Servis | Porsche, Volkswagen, Audi, Skoda, Seat",
+    "matched_address": "Bahçekapı, 2472. Cd. No:7 D:21b, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Diyar Otomotiv - Otokar- Atlas foton Ozel Servis": {
+    "place_id": "ChIJ1U2G1P430xQRN-vfrFyvy3Q",
+    "lat": 39.9358222,
+    "lng": 32.70829,
+    "matched_name": "Diyar Otomotiv – Otokar- Atlas foton Özel Servis",
+    "matched_address": "Bahçekapı Ma. 2478.Sok, Bahçekapı, 2481. Sk. No:32, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Dover Balata": {
+    "place_id": "ChIJqVUnS-w30xQRfm9F3Da4Z64",
+    "lat": 39.8788536,
+    "lng": 32.649387,
+    "matched_name": "Dover Balata",
+    "matched_address": "Bahçekapı, 1. Cad./10. Sok. No:4, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "E-SUBARU & CITROEN OZEL SERVISI": {
+    "place_id": "ChIJazkWXnbxMiIRiW7aE3SkknU",
+    "lat": 39.930720799999996,
+    "lng": 32.720023499999996,
+    "matched_name": "E-SUBARU & CİTROEN ÖZEL SERVİSİ",
+    "matched_address": "Bahçekapı Mahallesi 2573 Sokak, Bahçekapı, Şaşmaz Blv. No:33, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Erbil Ford Yedek Parca": {
+    "place_id": "ChIJwXl04Fo30xQR1Cx2jNKMWtk",
+    "lat": 39.9365871,
+    "lng": 32.7143855,
+    "matched_name": "Erbil Ford Yedek Parça",
+    "matched_address": "Bahçekapı, 2519. Sk. No:9A, 06010 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut teknik elektrik": {
+    "place_id": "ChIJnRY48wL252QRXSSlC7DTjHs",
+    "lat": 39.9450644,
+    "lng": 32.656410199999996,
+    "matched_name": "Etimesgut teknik elektrik",
+    "matched_address": "İstasyon, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Gunes Oto Ozel Servis": {
+    "place_id": "ChIJ4zT6fjg30xQRJLFCptCK8fc",
+    "lat": 39.9642511,
+    "lng": 32.6886693,
+    "matched_name": "Güneş Oto Özel Servis",
+    "matched_address": "Batı Sitesi, 5. Sok. D:50, 06370 Etimesgut/Ankara, Türkiye"
+  },
+  "HRS Far Tampon": {
+    "place_id": "ChIJWxBrXddJ0xQRrMatesNjoqc",
+    "lat": 39.938468799999995,
+    "lng": 32.718560499999995,
+    "matched_name": "HRS Far Tampon",
+    "matched_address": "BAHÇEKAPI MAHALLESİ 2521.SOKAK, Bahçekapı, Şaşmaz Blv. NO:4/C, 06980 Etimesgut/Ankara, Türkiye"
+  },
+  "KORAY RENO OZEL SERVIS": {
+    "place_id": "ChIJpzORc4k30xQR-vjEZS4WysA",
+    "lat": 39.9319979,
+    "lng": 32.719414799999996,
+    "matched_name": "KORAY RENO ÖZEL SERVİS",
+    "matched_address": "Bahçekapı, 2571. Sk. Şaşmaz Oto Sanayi Sitesi No:32/B, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Karacan Mercedes-Benz Ozel Servis - Sasmaz Ankara": {
+    "place_id": "ChIJH-aCmGlJ0xQRsG8lYtPEdIg",
+    "lat": 39.9333473,
+    "lng": 32.721448599999995,
+    "matched_name": "Karacan Mercedes-Benz Özel Servis - Şaşmaz Ankara",
+    "matched_address": "Bahçekapı, 2570. Sk. Şaşmaz Oto Sanayi No:3, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Kardesler Oto Ankara Peugeot Citroen Ozel Servis": {
+    "place_id": "ChIJvZYGF_xJ0xQRgfTWjXMGU2U",
+    "lat": 39.931,
+    "lng": 32.713811,
+    "matched_name": "Kardeşler Oto Ankara Peugeot Citroen Özel Servis",
+    "matched_address": "Bahçekapı, 2558. Sk. Şaşmaz Oto Sanayi Sitesi No:26, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Land Rover Ozel Servis Ankara - Dirilis": {
+    "place_id": "ChIJL_ZDcwJI0xQRBea81g0hEWA",
+    "lat": 39.9336487,
+    "lng": 32.7185901,
+    "matched_name": "Land Rover Özel Servis Ankara - Diriliş",
+    "matched_address": "Bahçekapı Mah. 2543. Cad. No:22 Şaşmaz Etimesgut Ankara, Bahçekapı, 06105 etimesgut/Etimesgut/Ankara, Türkiye"
+  },
+  "M Teknik BMW Mini Cooper Ozel Servis": {
+    "place_id": "ChIJG_EF0UM30xQRs4oUU2RoQaQ",
+    "lat": 39.9310219,
+    "lng": 32.717462999999995,
+    "matched_name": "M Teknik BMW Mini Cooper Özel Servis",
+    "matched_address": "Bahçekapı, 2564. Sk. no27A, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "MEKATECH OZEL SERVIS": {
+    "place_id": "ChIJj9K0zQI30xQRMafY7Vk1QbU",
+    "lat": 39.9419828,
+    "lng": 32.718232799999996,
+    "matched_name": "MEKATECH ÖZEL SERVİS",
+    "matched_address": "Bahçekapı, 2493. Cd No:13/28, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "MK MERCEDES": {
+    "place_id": "ChIJCXUDYqk30xQRE_xReeQDZN8",
+    "lat": 39.932589899999996,
+    "lng": 32.7145051,
+    "matched_name": "MK MERCEDES",
+    "matched_address": "BAHÇEKAPI MAH. 2554 SOK, Bahçekapı, Şaşmaz Blv. NO:6, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Mk Mekanik": {
+    "place_id": "ChIJs1RXSUs30xQRwWGWbVbJnUI",
+    "lat": 39.943041199999996,
+    "lng": 32.7157151,
+    "matched_name": "Mk Mekanik",
+    "matched_address": "Bahçekapı, 2492. Cd. 7b D:13, 06500 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozen Volkswagen Murat Usta - Ankara Skoda Ozel Servis - Audi - Seat - Porsche - Cupra Ozel Servis - Chip Tuning": {
+    "place_id": "ChIJ526RSTs30xQRfR8BPmyxOd0",
+    "lat": 39.9381057,
+    "lng": 32.715333099999995,
+    "matched_name": "Özen Volkswagen Murat Usta - Ankara Skoda Özel Servis - Audi - Seat - Porsche - Cupra Özel Servis - Chip Tuning",
+    "matched_address": "Bahçekapı, 2513. Sk. Şaşmaz Oto Sanayi Sitesi No:2, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Premium Otomatik Sanziman": {
+    "place_id": "ChIJla_bH7c30xQRr4Jkxgh4JmM",
+    "lat": 39.9355396,
+    "lng": 32.713844,
+    "matched_name": "Premium Otomatik Şanzıman",
+    "matched_address": "Bahçekapı, 2532. Sk. No:6 D:1, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Prestige Full Auto Service": {
+    "place_id": "ChIJkRD-nd830xQROCl0RJ4vtKo",
+    "lat": 39.9365196,
+    "lng": 32.709598,
+    "matched_name": "Prestige Full Auto Service",
+    "matched_address": "Bahcekapı Mah. 2478. Sk, Bahçekapı, 2481. Sk. 2/C, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "SEN KARDESLER FORD OZEL SERVISI": {
+    "place_id": "ChIJP-mgCgBJ0xQR5WLOdccQlA8",
+    "lat": 39.9339079,
+    "lng": 32.7241867,
+    "matched_name": "ŞEN KARDEŞLER FORD ÖZEL SERVİSİ",
+    "matched_address": "Bahçekapı, 2578. Sk. No:5, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "SIMSEKLER BOYASIZ GOCUK ONARIM - SASMAZ OTO SANAYI": {
+    "place_id": "ChIJRXawR-k30xQRvNqx72qoNrc",
+    "lat": 39.9347272,
+    "lng": 32.7178004,
+    "matched_name": "ŞİMŞEKLER BOYASIZ GÖÇÜK ONARIM - ŞAŞMAZ OTO SANAYİ",
+    "matched_address": "BAHÇE KAPI MAHALLESİ 1.CADDE 2539.SOKAK NO:10 oto sanayi sitesi 1 cadde 2539 sokak, Bahçekapı, Şaşmaz Blv. No:10, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "TUNC Volkswagen Audi Seat Skoda Porsche Ozel servis": {
+    "place_id": "ChIJFVsRqVE30xQR0og7vzda4Yc",
+    "lat": 39.934250399999996,
+    "lng": 32.7181245,
+    "matched_name": "TUNÇ Volkswagen Audi Seat Skoda Porsche Özel servis",
+    "matched_address": "Bahçekapı, 2542. Sk. No:5, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Tuna Ozel Servis": {
+    "place_id": "ChIJeRTlu_830xQR5Ei47vYAUYw",
+    "lat": 39.9298922,
+    "lng": 32.7144285,
+    "matched_name": "Tuna Özel Servis",
+    "matched_address": "Bahçekapı, 2559. Sk. No:50, 06797 Şaşmaz-Etimesgut/Etimesgut/Ankara, Türkiye"
+  },
+  "U.C OZEL SERVIS KAPORTA BOYA": {
+    "place_id": "ChIJDeZZpi430xQRHPcVmNvTcJ0",
+    "lat": 39.91695980000001,
+    "lng": 32.710988199999996,
+    "matched_name": "U.Ç ÖZEL SERVİS KAPORTA BOYA",
+    "matched_address": "Bahçekapı mahallesi, 2557.sokak No.23, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Ulusoy Teknoloji - Teknik Servis Hizmetleri": {
+    "place_id": "ChIJb47TU0Ix0xQR1y-3NxS2tHU",
+    "lat": 39.9746655,
+    "lng": 32.616187,
+    "matched_name": "Ulusoy Teknoloji - Teknik Servis Hizmetleri",
+    "matched_address": "Eryaman, Emiryaman Cd 49/A, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "Usta lpg tamir": {
+    "place_id": "ChIJRUS70dI50xQRwPa2F_AkgR8",
+    "lat": 39.9423661,
+    "lng": 32.6545889,
+    "matched_name": "Usta lpg tamir",
+    "matched_address": "30 Ağustos, Şehit lokman biçinci sokak No:6, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Uzunoglu Elektronik": {
+    "place_id": "ChIJt2IhKtk50xQR5fGskwulyX4",
+    "lat": 39.9450812,
+    "lng": 32.656435099999996,
+    "matched_name": "Uzunoğlu Elektronik",
+    "matched_address": "48/8 Şehittahir, 30 Ağustos, 06780 Etimesgut/Ankara, Türkiye"
+  },
+  "Vestel Yetkili Servisi - Etimesgut- Unalmis": {
+    "place_id": "ChIJJys6qclF0xQRi-iY5iXEME8",
+    "lat": 39.9249526,
+    "lng": 32.6541248,
+    "matched_name": "Vestel Yetkili Servisi - Etimesgut- Ünalmış",
+    "matched_address": "Şehit, Alsancak, Hikmet Özer Cd. No:186, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Vipcar Otomotiv Ozel Servis": {
+    "place_id": "ChIJfZrYkZc30xQRe1VPXslBImw",
+    "lat": 39.9372,
+    "lng": 32.711953799999996,
+    "matched_name": "Vipcar Otomotiv Özel Servis",
+    "matched_address": "Bahçekapı mahallesi Sanayi Bulvarı, Bahçekapı, 2487. Cad. No:24 D:16, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Vizyon Mercedes Ozel Servis Ankara": {
+    "place_id": "ChIJcaRjyew30xQRWZEkw9GQbIc",
+    "lat": 39.9351529,
+    "lng": 32.710622,
+    "matched_name": "Vizyon Mercedes Özel Servis Ankara",
+    "matched_address": "Bahçekapı, 2472. Cd. Şaşmaz Oto Sanayi No:17, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Wass car servis": {
+    "place_id": "ChIJsWgvbRI30xQRObeKcOaqJJA",
+    "lat": 39.931166399999995,
+    "lng": 32.7136473,
+    "matched_name": "Wass car servis",
+    "matched_address": "Etmesgut bahce kapı, Bahçekapı, 2557. Sk No:19, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "YASIN OTO TAMIR BAKIM MERKEZI": {
+    "place_id": "ChIJc_Z1UMY30xQRyGP1HypOd6g",
+    "lat": 39.936427699999996,
+    "lng": 32.7161574,
+    "matched_name": "YASİN OTO TAMİR BAKIM MERKEZİ",
+    "matched_address": "Bahçekapı mahallesi 2527 sokak, Bahçekapı, Şaşmaz Blv. no:8, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "kaya global motorlu araclar": {
+    "place_id": "ChIJ8dbUuts30xQR8JcJWz03PoQ",
+    "lat": 39.939221599999996,
+    "lng": 32.7104673,
+    "matched_name": "kaya global motorlu araçlar",
+    "matched_address": "Bahçekapı, 2474. Cd NO:6 D D:13, 06010 Etimesgut/Ankara, Türkiye"
+  },
+  "ABI & KARDES - Arac Bakim Studyosu": {
+    "place_id": "ChIJdSsPbR050xQR2jIl9exwfp4",
+    "lat": 39.9421118,
+    "lng": 32.6474445,
+    "matched_name": "ABİ & KARDEŞ - Araç Bakım Stüdyosu",
+    "matched_address": "Süvari, Ahi Mesut Blv 17A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "ASYA MOTORLU ARACLAR MERCEDES-BENZ SERVISI": {
+    "place_id": "ChIJ9UJW7sw30xQRjgis7CsyIDI",
+    "lat": 39.9358371,
+    "lng": 32.708366999999996,
+    "matched_name": "ASYA MOTORLU ARAÇLAR MERCEDES-BENZ SERVİSİ",
+    "matched_address": "Şaşmaz oto sanayi sitesi 2478 cadde, Bahçekapı, 2481. Sk. No:5/h, 06600 Etimesgut/Ankara, Türkiye"
+  },
+  "AYYILDIZ OTO YIKAMA": {
+    "place_id": "ChIJUdxfgVjcPKgRU-kWfXwtgiw",
+    "lat": 39.9683767,
+    "lng": 32.6090249,
+    "matched_name": "AYYILDIZ OTO YIKAMA",
+    "matched_address": "Yeşil ova mahallesi Necmettin Erbakan caddesi 4020, Yeşilova, cadde 2/1, 06300 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankara ABS & Oto Beyin Tamiri": {
+    "place_id": "ChIJibanCso30xQRVa40DNijr70",
+    "lat": 39.934767099999995,
+    "lng": 32.7193614,
+    "matched_name": "Ankara ABS & Oto Beyin Tamiri",
+    "matched_address": "2542. no:, Bahçekapı, Şaşmaz Blv. No:29, 06100 Etimesgut/Ankara, Türkiye"
+  },
+  "Baglica Omer Garage": {
+    "place_id": "ChIJ25vn4wc50xQRreCIoAI1J_g",
+    "lat": 39.9109297,
+    "lng": 32.6491733,
+    "matched_name": "Bağlıca Ömer Garage",
+    "matched_address": "Bağlıca, Etimesgut Blv. no:50, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Baris Opel ve Chevrolet": {
+    "place_id": "ChIJHdoqRtQ30xQRJuWm2-adS_A",
+    "lat": 39.9369404,
+    "lng": 32.7175838,
+    "matched_name": "Barış Opel ve Chevrolet",
+    "matched_address": "Eski, Bahçekapı, 2528. Sk. no:43, 06587 Etimesgut/Ankara, Türkiye"
+  },
+  "Basegmez Oto Bakim": {
+    "place_id": "ChIJ9c_0X-Q30xQRL5xIciDaexc",
+    "lat": 39.9312487,
+    "lng": 32.7215126,
+    "matched_name": "Başeğmez Oto Bakım",
+    "matched_address": "Bahçekapı, 2574. Sk. No:18, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Can Otomotiv Kaporta Boya Onarim Merkezi": {
+    "place_id": "ChIJh6od4XI30xQRSw2SNFb8Zh0",
+    "lat": 39.93683,
+    "lng": 32.7084222,
+    "matched_name": "Can Otomotiv Kaporta Boya Onarım Merkezi",
+    "matched_address": "Bahçekapı, 2473. Cad. 2B, 06150 Etimesgut/Ankara, Türkiye"
+  },
+  "Carline Teknik Servis": {
+    "place_id": "ChIJh3eXDz430xQRMgJU_iss0EI",
+    "lat": 39.9409164,
+    "lng": 32.7084754,
+    "matched_name": "Carline Teknik Servis",
+    "matched_address": "Bahçekapı Mahallesi 2472. Cadde, Tr İnvest, Bahçekapı, Şaşmaz No:6, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Cinar Oto Tamir ve Bakim Seevisi": {
+    "place_id": "ChIJ__hFmv030xQRjhlDNx3D-rM",
+    "lat": 39.9347905,
+    "lng": 32.717191,
+    "matched_name": "Çınar Oto Tamir ve Bakım Seevisi",
+    "matched_address": "Bahçekapı, 2539. Sk. No:1, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "DONMEZ OTO BMW SERVISI": {
+    "place_id": "ChIJ9bANMP830xQRfBA836cHxUs",
+    "lat": 39.9312927,
+    "lng": 32.7131608,
+    "matched_name": "DÖNMEZ OTO BMW SERVİSİ",
+    "matched_address": "Bahçekapı, 2556. Sk. No:15, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "EFALI AUTO": {
+    "place_id": "ChIJ9eugxs430xQRcmAF8Qd1ls4",
+    "lat": 39.932553999999996,
+    "lng": 32.717084,
+    "matched_name": "EFALİ AUTO",
+    "matched_address": "Bahçekapı, 2564. Sk. no:2, 06100 Etimesgut/Ankara, Türkiye"
+  },
+  "ERC OTO MADENI YAG": {
+    "place_id": "ChIJn0Hrc_1J0xQR5VN6j5lLm1c",
+    "lat": 39.9363776,
+    "lng": 32.7184579,
+    "matched_name": "ERC OTO MADENİ YAĞ",
+    "matched_address": "Bahçekapı, 2537. Sk. NO:41, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "ETIMESGUT OTO KILITCI IBO": {
+    "place_id": "ChIJVZRYkGQ50xQRP1e1INi1GMg",
+    "lat": 39.9532588,
+    "lng": 32.6347661,
+    "matched_name": "ETİMESGUT OTO KİLİTCİ İBO",
+    "matched_address": "Piyade, 1965. Sk. 10/B, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Frenci Enes": {
+    "place_id": "ChIJe0k-0JRJ0xQR71s23Sg1iW8",
+    "lat": 39.934761,
+    "lng": 32.7189392,
+    "matched_name": "Frenci Enes",
+    "matched_address": "Bahçekapı, 2575. Sk. Şaşmaz Oto Sanayi Sitesi No:20, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Guvenilir Oto": {
+    "place_id": "ChIJX_hC6gFI0xQRhYvpli64oI4",
+    "lat": 39.9312283,
+    "lng": 32.7193396,
+    "matched_name": "Güvenilir Oto",
+    "matched_address": "Şaşmaz Oto Sanayi Sitesi 2567. Cad. No:62, Bahçekapı, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Hayali Usta": {
+    "place_id": "ChIJrcZTzwJI0xQRUhP5RSslxLo",
+    "lat": 39.9359883,
+    "lng": 32.7197854,
+    "matched_name": "Hayali Usta",
+    "matched_address": "Bahçekapı, 2539. Sk. No:47, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Ilgun Otomotiv": {
+    "place_id": "ChIJq_JkSeM30xQRU3dw78tcdhQ",
+    "lat": 39.9384971,
+    "lng": 32.714214399999996,
+    "matched_name": "Olgun Oto LPG",
+    "matched_address": "Bahçekapı, 2551. Cd. No:7, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Kardesler Oto": {
+    "place_id": "ChIJa0qmOwJI0xQRZwbanAbsfVQ",
+    "lat": 39.9328544,
+    "lng": 32.7199496,
+    "matched_name": "Kardeşler Oto",
+    "matched_address": "Bahçekapı, 2570. Sk. No:98, 06737 Etimesgut/Ankara, Türkiye"
+  },
+  "Lineer Oto Yikama & Oto Kuafor": {
+    "place_id": "ChIJkd867UE50xQRP5CzOpqA6r8",
+    "lat": 39.8980783,
+    "lng": 32.6474256,
+    "matched_name": "Lineer Oto Yıkama & Oto Kuaför",
+    "matched_address": "Yalınkılıç Plaza kapalı otoparkı, Bağlıca, Bağlıca Blv. No:75 D:74, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "MERT MEKANIK": {
+    "place_id": "ChIJoRqtV-k30xQRQs7sk1jMOaA",
+    "lat": 39.946453399999996,
+    "lng": 32.7055293,
+    "matched_name": "MERT MEKANİK",
+    "matched_address": "Bahçekapı, 2453. Sk. No:24, 06630 Etimesgut/Ankara, Türkiye"
+  },
+  "OTOHAN TAMIR BAKIM SERVISI": {
+    "place_id": "ChIJpVVO7mE30xQR3UOCeA0io8w",
+    "lat": 39.9411458,
+    "lng": 32.7087764,
+    "matched_name": "OTOHAN TAMİR BAKIM SERVİSİ",
+    "matched_address": "mahalesi, Bahçekapı, 2472. Cd. No:8, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Otoser Otomotiv Toyota Ozel Servis": {
+    "place_id": "ChIJrXpnd1hJ0xQRkcHgbhP56o8",
+    "lat": 39.9306227,
+    "lng": 32.7196821,
+    "matched_name": "Otoser Otomotiv Toyota Özel Servis",
+    "matched_address": "Bahçekapı, 2573. Sk. D:no 37, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "PARS Ford Ankara ozel servisi": {
+    "place_id": "ChIJ7ycXPrM30xQR_BHR2SafNYs",
+    "lat": 39.9341912,
+    "lng": 32.711580600000005,
+    "matched_name": "PARS Ford Ankara özel servisi",
+    "matched_address": "Bahçekapı, Sanayi Blv. no:36/11, 06150 Etimesgut/Ankara, Türkiye"
+  },
+  "Pilot Garage Eryaman Oto Ekspertiz": {
+    "place_id": "ChIJye1WMfQ30xQRh-q0ez6ksGw",
+    "lat": 39.9732227,
+    "lng": 32.6602713,
+    "matched_name": "Pilot Garage Eryaman Oto Ekspertiz",
+    "matched_address": "Şehit Osman Avcı, Kaplan Cd. mahallesino 16 bosphorus sitesi c blok 13, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "Pilot Garage Etimesgut Merkez Oto Ekspertiz": {
+    "place_id": "ChIJ2QKrn_A30xQRwbtj2RxdAuQ",
+    "lat": 39.9501829,
+    "lng": 32.6557391,
+    "matched_name": "Pilot Garage Etimesgut Merkez Oto Ekspertiz",
+    "matched_address": "Kazım Karabekir, İstasyon Cad. no:76, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Randiman Volkswagen": {
+    "place_id": "ChIJV7HUqAJI0xQRjrs0bgA6iBs",
+    "lat": 39.9366427,
+    "lng": 32.7177625,
+    "matched_name": "Randıman Volkswagen",
+    "matched_address": "şaşmaz oto sanayi sitesi 1.cadde, Bahçekapı, 2530. Sk. No:32, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Safak Otomotiv": {
+    "place_id": "ChIJc-pTpf830xQR3J0XZ0ZgpFg",
+    "lat": 39.930431999999996,
+    "lng": 32.7160023,
+    "matched_name": "Şafak Otomotıv",
+    "matched_address": "Bahçekapı, 2567. Sk. No:59, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Sasmaz Oto Tamir Bakim Servisi Erol Oto": {
+    "place_id": "ChIJJZvx4xM30xQR_ED_6-J4Rwo",
+    "lat": 39.9311092,
+    "lng": 32.7174939,
+    "matched_name": "Şaşmaz Oto Tamir Bakım Servisi Erol Oto",
+    "matched_address": "Bahçekapı, 2564. Sk. no:25, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "TURK-MER Motorlu Araclar": {
+    "place_id": "ChIJP9U-_xQ30xQRKhe5-o7PQAI",
+    "lat": 39.9404883,
+    "lng": 32.710150999999996,
+    "matched_name": "TÜRK-MER Motorlu Araçlar",
+    "matched_address": "Bahçekapı, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Tampon Klinik Far Temizligi Mehmet Usta ve Tampon Plastik Tamiri": {
+    "place_id": "ChIJLwSxTxQ30xQRHRRaqfTvj9M",
+    "lat": 39.9353684,
+    "lng": 32.7180896,
+    "matched_name": "Tampon Klinik Far Temizliği Mehmet Usta ve Tampon Plastik Tamiri",
+    "matched_address": "Bahçekapı, 2538 Sk. No:20, 06374 Etimesgut/Ankara, Türkiye"
+  },
+  "Trend Teknik Boyasiz Onarim ve Egitim Merkezi": {
+    "place_id": "ChIJVZgxHVs30xQRID3xFOrwi_s",
+    "lat": 39.9400471,
+    "lng": 32.7179194,
+    "matched_name": "Trend Teknik Boyasız Onarım ve Eğitim Merkezi",
+    "matched_address": "Bahçekapı, 2506. Sk No:3 D:A, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "USTALAR OTOMOTIV": {
+    "place_id": "ChIJEVJRsIo30xQR-Cepb2s4KRM",
+    "lat": 39.941417300000005,
+    "lng": 32.7152721,
+    "matched_name": "USTALAR OTOMOTİV",
+    "matched_address": "Bahçekapı, 2492. Cd. No:13 D:3, 06123 Etimesgut/Ankara, Türkiye"
+  },
+  "Unsal kayra otomotiv": {
+    "place_id": "ChIJQbr7v-E30xQRKJEy3Sl0opg",
+    "lat": 39.9434007,
+    "lng": 32.716698799999996,
+    "matched_name": "Ünsal kayra otomotiv",
+    "matched_address": "Bahçekapı, 81. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Vagcom Eryaman & Ankara Gizli ozellik Acma & Carplay": {
+    "place_id": "ChIJpxDE-xI30xQRWFQl9OLyW_U",
+    "lat": 39.9637786,
+    "lng": 32.664782599999995,
+    "matched_name": "Vagcom Eryaman & Ankara Gizli özellik Açma & Carplay",
+    "matched_address": "Şeker, Yüzbaşı Mustafa Ertuğrul caddesi No 7/A, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "XENON GARAGE - Yapracik & Turkuaz OTO YIKAMA": {
+    "place_id": "ChIJfX1EHNc90xQReC6s9HLgrBQ",
+    "lat": 39.840704699999996,
+    "lng": 32.5401938,
+    "matched_name": "XENON GARAGE - Yapracık & Turkuaz OTO YIKAMA",
+    "matched_address": "Atayurt, Evliya Çelebi Cd No:20/113, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "Yamanlar Oto Ekspertiz Etimesgut Baglica": {
+    "place_id": "ChIJU0qnUGs50xQRVTzwFEFVUi8",
+    "lat": 39.8968069,
+    "lng": 32.6522983,
+    "matched_name": "Yamanlar Oto Ekspertiz Etimesgut Bağlıca",
+    "matched_address": "Lim-Ka İşyerleri, Bağlıca, Bağlıca Blv. No:31F, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Yasin Mekanik / Ford Ozel Servis / Fiat Ozel Servis / Volkswagen ozel servis": {
+    "place_id": "ChIJTdB0TKo30xQRSS4rFeaLUUk",
+    "lat": 39.929730899999996,
+    "lng": 32.7138997,
+    "matched_name": "Yasin Mekanik / Ford Özel Servis / Fiat Özel Servis / Volkswagen özel servis",
+    "matched_address": "Bahçekapı, 2558. Sk. No:56, 06380 Etimesgut/Ankara, Türkiye"
+  },
+  "ek oto tamir": {
+    "place_id": "ChIJp7GLo_830xQRezq2zkrGHG4",
+    "lat": 39.930250099999995,
+    "lng": 32.7157688,
+    "matched_name": "ek oto tamir",
+    "matched_address": "Bahçekapı, 2561. Sk. No:34, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "tezcan kardesler oto bakim": {
+    "place_id": "ChIJfb_knwJI0xQRqp0dvhEovEI",
+    "lat": 39.9357459,
+    "lng": 32.7172257,
+    "matched_name": "tezcan kardeşler oto bakım",
+    "matched_address": "oto sanayi sitesi 2551 cadde.2537 sokak no:19 BAHÇEKAPI/ETİMESGUT, Bahçekapı, 06600 ETİMESGUT/Etimesgut/Ankara, Türkiye"
+  },
+  "Adiguzel Premium Service": {
+    "place_id": "ChIJ155dsnZJ0xQRqY5_57i3C9Q",
+    "lat": 39.933223,
+    "lng": 32.7103158,
+    "matched_name": "Adıgüzel Premium Service",
+    "matched_address": "Erkanlar İş Merkezi, Bahçekapı, 2473. Cad. No:23, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankara Gokturk Klima Servisi": {
+    "place_id": "ChIJNaHPPJ450xQRBLXAraofqPU",
+    "lat": 39.948375999999996,
+    "lng": 32.641779,
+    "matched_name": "Ankara Göktürk Klima Servisi",
+    "matched_address": "Piyade, 2004 Sk No:9/a, 06700 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankatek Panasonic Lg Samsung Yetkili Servis": {
+    "place_id": "ChIJtb0V_Fw50xQRnuHz1cPXMdA",
+    "lat": 39.952838199999995,
+    "lng": 32.6328789,
+    "matched_name": "Ankatek Panasonic Lg Samsung Yetkili Servis",
+    "matched_address": "Elvan, 1939. Sk. No:7/A, 06200 Etimesgut/Ankara, Türkiye"
+  },
+  "Avize Tamir": {
+    "place_id": "ChIJ6UCnZbo70xQR8mazkyT3X3g",
+    "lat": 39.951808,
+    "lng": 32.619699,
+    "matched_name": "Avize Tamir",
+    "matched_address": "Topçu, 1514. Sk. 40/B, 06976 Etimesgut/Ankara, Türkiye"
+  },
+  "Cagdas Ozel Servis": {
+    "place_id": "ChIJlcv8NN030xQRrE5RTUCFFrc",
+    "lat": 39.9350421,
+    "lng": 32.7154938,
+    "matched_name": "Çağdaş Özel Servis",
+    "matched_address": "Oto Sanayi Sitesi 2551. Cadde 2534. Sokak No:11, Bahçekapı, 06540 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut kombi servisi": {
+    "place_id": "ChIJV_gq_Oo50xQR9_ma64DOL50",
+    "lat": 39.9338586,
+    "lng": 32.6477784,
+    "matched_name": "Etimesgut kombi servisi",
+    "matched_address": "Alsancak, 2190. Sk. No:5 D:A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "HS Oto Servis": {
+    "place_id": "ChIJUwbU1kJJ0xQRqgRGnDPvVAs",
+    "lat": 39.932242599999995,
+    "lng": 32.7209895,
+    "matched_name": "HS Oto Servis",
+    "matched_address": "Bahçekapı, 2571. Sk. No:15, 06797, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Hayat Honda Ozel Servis": {
+    "place_id": "ChIJq401RoQ30xQRIrYDkxzjqFY",
+    "lat": 39.937530699999996,
+    "lng": 32.715212,
+    "matched_name": "Hayat Honda Özel Servis",
+    "matched_address": "BAHÇEKAPI MH. 2517 CADDE, Bahçekapı, Şaşmaz Blv. NO:8, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Kardesler oto tamir bakim kilima webasto servisi sasmaz": {
+    "place_id": "ChIJW6QfRStP0xQRc4RKb7-fFNs",
+    "lat": 39.931728,
+    "lng": 32.722263999999996,
+    "matched_name": "Kardeşler oto tamir bakım kılima webasto servisi şaşmaz",
+    "matched_address": "Bahçekapı, 2573. Sk. no:7/A, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Koc teknik servis Etimesgut/ANKARA": {
+    "place_id": "ChIJ4-AAD4I50xQR0He8H5h_Faw",
+    "lat": 39.949188299999996,
+    "lng": 32.6443669,
+    "matched_name": "Koç teknik servis Etimesgut/ANKARA",
+    "matched_address": "Süvari, Alperen Sk. 34/A, 06200 Etimesgut/Ankara, Türkiye"
+  },
+  "LIONS Bmw Ozel Servisi | Mini Cooper | Land Rover": {
+    "place_id": "ChIJcwgd7H830xQR16FKBRvMxn4",
+    "lat": 39.9363688,
+    "lng": 32.7122872,
+    "matched_name": "LİONS Bmw Özel Servisi | Mini Cooper | Land Rover",
+    "matched_address": "Bahçekapı, 2483. Sk. No:4/C, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Land Rover Servisi / Land Lover / Bmw Ozel Servis": {
+    "place_id": "ChIJzYKOsXZJ0xQRGzhSVRGGIG0",
+    "lat": 39.9323526,
+    "lng": 32.7219818,
+    "matched_name": "Land Rover Servisi / Land Lover / Bmw Özel Servis",
+    "matched_address": "Bahçekapı, 2567. Sk. No: 30 A, 06797, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "MERTUR MOTORLU ARACLAR ORJINAL VE YAN SANAYI YEDEKPARCA": {
+    "place_id": "ChIJcft8tRE30xQRO2QOKfAyU5c",
+    "lat": 39.9371181,
+    "lng": 32.7158967,
+    "matched_name": "MERTUR MOTORLU ARAÇLAR ORJİNAL VE YAN SANAYİ YEDEKPARÇA",
+    "matched_address": "Bahçekapı mah. 2524 sok, Bahçekapı, Şaşmaz Blv. No17, 06600 Etimesgut/Ankara, Türkiye"
+  },
+  "MEVLUT USTA": {
+    "place_id": "ChIJ9fQqiQJI0xQRe6Jubm4509Q",
+    "lat": 39.93485,
+    "lng": 32.718989400000005,
+    "matched_name": "MEVLÜT USTA",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Mercan Gsm - Eryaman iPhone Servis - Eryaman Samsung Servis -Eryaman Xiaomi Servis": {
+    "place_id": "ChIJJSq1obkw0xQRkMbXMf99HDk",
+    "lat": 39.9760117,
+    "lng": 32.613763899999995,
+    "matched_name": "Mercan Gsm - Eryaman iPhone Servis - Eryaman Samsung Servis -Eryaman Xiaomi Servis",
+    "matched_address": "Eryaman, 3. Cd. CUMHURİYET 26 Blok No:26A D:3, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "Orjinal Garaj": {
+    "place_id": "ChIJjydqqeNM0xQRJ5ven00znWw",
+    "lat": 39.9350599,
+    "lng": 32.7188856,
+    "matched_name": "Orjinal Garaj",
+    "matched_address": "Bahçekapı, 2575. Sk. no:23, 06280 Etimesgut/Ankara, Türkiye"
+  },
+  "Rota elektronik": {
+    "place_id": "ChIJhxtU-FM30xQRn3SZnjvibOw",
+    "lat": 39.938038999999996,
+    "lng": 32.709483899999995,
+    "matched_name": "Rota elektronik",
+    "matched_address": "Bahçe kapı mahallesi, 2477. Sk. 3C no 6, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "STARMER Ankara Mercedes Servisi": {
+    "place_id": "ChIJFbtSOVQ30xQROfhowzqHVl4",
+    "lat": 39.935865799999995,
+    "lng": 32.711915999999995,
+    "matched_name": "STARMER Ankara Mercedes Servisi",
+    "matched_address": "Bahçekapı mahallesi 2487 sokak, Bahçekapı, Şaşmaz Blv. no:9/B, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Sah Oto Servis": {
+    "place_id": "ChIJP0adNw030xQRXC4E2VRGcBg",
+    "lat": 39.9400471,
+    "lng": 32.7179194,
+    "matched_name": "Şah Oto Servis",
+    "matched_address": "Bahçekapı, 2506. Sk No:29/A, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "TEK BOYASIZ GOCUK ONARIM MERKEZI": {
+    "place_id": "ChIJnY1KTqlJ0xQRkSbyC-i760Q",
+    "lat": 39.936740300000004,
+    "lng": 32.7185166,
+    "matched_name": "TEK BOYASIZ GÖÇÜK ONARIM MERKEZİ",
+    "matched_address": "Bahçekapı mah.2530.sk eski 8. Sk, Bahçekapı, Şaşmaz Blv. No:53, 06370 Etimesgut/Ankara, Türkiye"
+  },
+  "TREND GSM CEP TELEFONU TEKNIK SERVIS": {
+    "place_id": "ChIJaRYvA3g70xQR-2v2xHEh998",
+    "lat": 39.9481387,
+    "lng": 32.662206,
+    "matched_name": "TREND GSM CEP TELEFONU TEKNİK SERVİS",
+    "matched_address": "İstasyon, 2309. Sk. Etimesgut iş merkezi no: 2E, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "TV TAMIR SERVISI BEYAZ ESYA TAMIRI BERKAY ELEKTRONIK LG SAMSUNG VESTEL SONY PHILIPS ARCELIK BEKO AXEN SUNNY OZEL SERVIS": {
+    "place_id": "ChIJ7X9Ytxwx0xQR1V2GH3z_eFE",
+    "lat": 39.971371,
+    "lng": 32.612696,
+    "matched_name": "TV TAMİR SERVİSİ BEYAZ EŞYA TAMİRİ BERKAY ELEKTRONİK LG SAMSUNG VESTEL SONY PHILIPS ARCELİK BEKO AXEN SUNNY ÖZEL SERVİS",
+    "matched_address": "Eryaman, Akıncı Cd. no:8, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "UZMANLAR FORD OZEL SERVIS": {
+    "place_id": "ChIJjQcUDks30xQR1_Hzu-ldmBA",
+    "lat": 39.930236099999995,
+    "lng": 32.7165952,
+    "matched_name": "UZMANLAR FORD ÖZEL SERVİS",
+    "matched_address": "Bahçekapı, 2563. Sk. Şaşmaz Oto Sanayi Sitesi No: 38, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Volvo Master Bagimsiz Ozel Servis Ankara - Sasmaz": {
+    "place_id": "ChIJjxmjunBJ0xQRukNueUfNQWA",
+    "lat": 39.932148999999995,
+    "lng": 32.7151152,
+    "matched_name": "Volvo Master Bağımsız Özel Servis Ankara - Şaşmaz",
+    "matched_address": "Bahçekapı, 2684. Sokak Şaşmaz Oto Sanayi Sitesi No:14, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Yavuz Teknik Servis": {
+    "place_id": "ChIJ4SbaUtk50xQRDERXAMNe9D4",
+    "lat": 39.943491,
+    "lng": 32.6561041,
+    "matched_name": "Yavuz Teknik Servis",
+    "matched_address": "30 Ağustos, 2105. Sk. No15/A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Yigit Otomotiv Ramazan Usta": {
+    "place_id": "ChIJYeisbBQ30xQRTOW7XmoAq1Y",
+    "lat": 39.9370864,
+    "lng": 32.7112032,
+    "matched_name": "Yiğit Otomotiv Ramazan Usta",
+    "matched_address": "Bahçekapı, 2487. Cad. No:57, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Yunus Peugeot & Citroen Ozel Servis": {
+    "place_id": "ChIJRTHnuPU30xQRy0OCy9W7CEc",
+    "lat": 39.9447007,
+    "lng": 32.706738099999995,
+    "matched_name": "Yunus Peugeot & Citroen Özel Servis",
+    "matched_address": "Bahçekapı, 2461 Sk 10/11, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "40 yildiz airbag sasmaz": {
+    "place_id": "ChIJnzZIN5ZJ0xQR7tIzDtEQiOs",
+    "lat": 39.9352939,
+    "lng": 32.7174743,
+    "matched_name": "40 yıldız airbag şaşmaz",
+    "matched_address": "Bahçekapı, 2538 Sk. no:15, 06100 Etimesgut/Ankara, Türkiye"
+  },
+  "ARSE BMW": {
+    "place_id": "ChIJLxOB5HA30xQREq6qDO_8WsI",
+    "lat": 39.93205770000001,
+    "lng": 32.711597499999996,
+    "matched_name": "ARSE BMW",
+    "matched_address": "Bahçekapı, 2480. Sk. No:2/1, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "AYBARS OTO KAPORTA": {
+    "place_id": "ChIJ6YWsrt030xQR2rXYr8VWShw",
+    "lat": 39.937545199999995,
+    "lng": 32.7167747,
+    "matched_name": "AYBARS OTO KAPORTA",
+    "matched_address": "Bahçekapı mahallesi. Oto sanayi sitesi.2551 cadde, Bahçekapı, 2524. Sk. No:29, 06679 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankara Oto Boya | Kaya Oto Kaporta Boya | Ankara Oto Kaporta | Ankara Oto Kaporta Boya": {
+    "place_id": "ChIJl7Hq76o50xQRV89kzvQZI00",
+    "lat": 39.9255038,
+    "lng": 32.7078316,
+    "matched_name": "Ankara Oto Boya | Kaya Oto Kaporta Boya | Ankara Oto Kaporta | Ankara Oto Kaporta Boya",
+    "matched_address": "Etimesgut / Ankra Bahçekapı Mahallesi Şaşmaz Sanayi, Bahçekapı, 2472. Cd. Arıkanlar İş Merkezi A Blok NO: 15, 06148 Etimesgut/Ankara, Türkiye"
+  },
+  "Arslan mekanik": {
+    "place_id": "ChIJN8Lon7A30xQR-siIwjQsj_Q",
+    "lat": 39.935036,
+    "lng": 32.7090306,
+    "matched_name": "Arslan mekanik",
+    "matched_address": "Ankara, Bahçekapı, 06797, Bahçekapı, Şaşmaz Blv., 06760 Etimesgut/Ankara, Türkiye"
+  },
+  "Auto Mekanik": {
+    "place_id": "ChIJgcv6SR1I0xQRMPPPLNXCQ3I",
+    "lat": 39.935299,
+    "lng": 32.7095844,
+    "matched_name": "Auto Mekanik",
+    "matched_address": "Bahçekapı, 2479. cadde Numara :3, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "AutoX | Premium Oto Servis, Tamir ve Bakim | Ekspertiz Hizmeti": {
+    "place_id": "ChIJ7SGqSmA50xQRTDx6xBtYwwE",
+    "lat": 39.940669,
+    "lng": 32.7191323,
+    "matched_name": "AutoX | Premium Oto Servis, Tamir ve Bakım | Ekspertiz Hizmeti",
+    "matched_address": "Bahçekapı, 2504.Cadde Numara 26, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Cagri Otomotiv - Kaporta Boya & Gocuk Onarim Servisi Ankara": {
+    "place_id": "ChIJ3764f_430xQRqDfbYvhEw_Y",
+    "lat": 39.9334318,
+    "lng": 32.7156184,
+    "matched_name": "Çağrı Otomotiv - Kaporta Boya & Göçük Onarım Servisi Ankara",
+    "matched_address": "Bahçekapı, 2549. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Car Garaj Honda & Mercedes Servisi": {
+    "place_id": "ChIJMexDbdU_0xQR5xLGRv91J9Q",
+    "lat": 39.9377241,
+    "lng": 32.69968670000001,
+    "matched_name": "Car Garaj Honda & Mercedes Servisi",
+    "matched_address": "Bahçekapı, 2689. cadde no:5b/26, 06312 Etimesgut/Ankara, Türkiye"
+  },
+  "Car Tech": {
+    "place_id": "ChIJOcUdxeI30xQROWPo5QEeZXs",
+    "lat": 39.9386083,
+    "lng": 32.7161331,
+    "matched_name": "Car Tech",
+    "matched_address": "Bahçekapı, 2512. Sk. No:3, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Celik Oto Mekanik": {
+    "place_id": "ChIJGW37_6BJ0xQRiENBGRG2zeU",
+    "lat": 39.9355288,
+    "lng": 32.7197434,
+    "matched_name": "Çelik Oto Mekanik",
+    "matched_address": "Bahçe Kapı Mahallesi Oto Sanayi, cadde Yeni, Bahçekapı, 2575. Sk. No:39/A Sitesi 1, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Cinar Otomotiv Kaporta Boya Ve Mekanik Servis": {
+    "place_id": "ChIJv05bvAFI0xQRnSJ0-86S3HM",
+    "lat": 39.942228799999995,
+    "lng": 32.710407499999995,
+    "matched_name": "Çınar Otomotiv Kaporta Boya Ve Mekanik Servis",
+    "matched_address": "Şaşmaz Oto Sanayi Sitesi, Bahçekapı, 2464. Sk. 21 / 2-3-4, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "EMEK OTO VOSVOS VE KAPORTA TAMIRI": {
+    "place_id": "ChIJk5zZFcc30xQRz1vAxq4tlpk",
+    "lat": 39.9421475,
+    "lng": 32.7173344,
+    "matched_name": "EMEK OTO VOSVOS VE KAPORTA TAMİRİ",
+    "matched_address": "Dökmediler sanayi sitesi 2500 cadde, Bahçekapı, 2538 Sk. 11/26, 06330 Etimesgut/Ankara, Türkiye"
+  },
+  "Erceylan Oto Servis": {
+    "place_id": "ChIJMwedR9o50xQRdvIUgesXGpw",
+    "lat": 39.9310229,
+    "lng": 32.7160739,
+    "matched_name": "Erceylan Oto Servis",
+    "matched_address": "Bahçekapı, 2562. Sk. D:28, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Erdemler Rot Balans": {
+    "place_id": "ChIJ65QwNR1I0xQRqbuiXe66IyQ",
+    "lat": 39.936878199999995,
+    "lng": 32.7197508,
+    "matched_name": "Erdemler Rot Balans",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "FANATIK VOLKSWAGEN OZEL SERVISI": {
+    "place_id": "ChIJM7qHOQY30xQRJe_9nQ0kug0",
+    "lat": 39.936538999999996,
+    "lng": 32.7199898,
+    "matched_name": "FANATİK VOLKSWAGEN ÖZEL SERVİSİ",
+    "matched_address": "Bahçekapı, 2538 Sk. 63/A D:1. Cadde, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Far Garage": {
+    "place_id": "ChIJkbuFxQg30xQR5EVhRG46Q0E",
+    "lat": 39.937361599999996,
+    "lng": 32.7170948,
+    "matched_name": "Far Garage",
+    "matched_address": "Bahçekapı, 2524. Sk. No:34, 06160 Etimesgut/Ankara, Türkiye"
+  },
+  "Fix Oto": {
+    "place_id": "ChIJce4yGwJI0xQRsuKAkBxRaRI",
+    "lat": 39.9327903,
+    "lng": 32.718984899999995,
+    "matched_name": "Fix Oto",
+    "matched_address": "Bahçekapı, 2473. Sk. No:4, 06737 Etimesgut/Ankara, Türkiye"
+  },
+  "Gunes Oto Servisi": {
+    "place_id": "ChIJl6bcJeI30xQRcOj3QKz48uk",
+    "lat": 39.942442199999995,
+    "lng": 32.7160175,
+    "matched_name": "Güneş Oto Servisi",
+    "matched_address": "Bahçekapı, 2500. Cd. Dökmeciler Sanayi Sitesi 9/3, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Gunes Renault Ozel Servisi": {
+    "place_id": "ChIJMy89VB1I0xQRB7kACuAwsmA",
+    "lat": 39.9374308,
+    "lng": 32.7183926,
+    "matched_name": "Güneş Renault Özel Servisi",
+    "matched_address": "Bahçekapı, 2527. Sk. No:50, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "ISIK OTO ELEKTRIK": {
+    "place_id": "ChIJF9qmMko30xQRUWurzCyptMc",
+    "lat": 39.9499962,
+    "lng": 32.6382895,
+    "matched_name": "IŞIK OTO ELEKTRİK",
+    "matched_address": "Piyade, Emirler elvanket, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Iklim Otomotiv sasmaz bahcekapi mahallesi": {
+    "place_id": "ChIJAW-qxvs30xQRhI3Z6jq4xLg",
+    "lat": 39.9382084,
+    "lng": 32.7078019,
+    "matched_name": "İklim Otomotiv şaşmaz bahçekapı mahallesi",
+    "matched_address": "Bahçekapı, 2475. Sk. no:4 D:E, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Koroglu Oto": {
+    "place_id": "ChIJZfYUIJQ30xQRhKNAakA-BaU",
+    "lat": 39.936651999999995,
+    "lng": 32.7102041,
+    "matched_name": "Köroğlu Oto",
+    "matched_address": "Bahçekapı, 2478. Sk. no:2B, 06200 Etimesgut/Ankara, Türkiye"
+  },
+  "M&K Garage Dizel-Enjektor Klima-Tamir Servisi": {
+    "place_id": "ChIJNwpXAOM30xQRmFyQ0tbh1hM",
+    "lat": 39.9403679,
+    "lng": 32.715296699999996,
+    "matched_name": "M&K Garage Dizel-Enjektör Klima-Tamir Servisi",
+    "matched_address": "Bahçekapı, 2474. Cd No:17 D:12, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "MERT KAPORTA GOCUK": {
+    "place_id": "ChIJcRKt_Xs30xQRksHtp3cOdLU",
+    "lat": 39.9435742,
+    "lng": 32.7180439,
+    "matched_name": "MERT KAPORTA GÖCÜK",
+    "matched_address": "DÖKMECİLER SİTESİ 2492 CADDE 1/4, Bahçekapı, Şaşmaz Oto Sanayi Sitesi, 06310 Etimesgut/Ankara, Türkiye"
+  },
+  "My Garaj Oto Yikama": {
+    "place_id": "ChIJn0NpN9050xQRYum_RTSCb_0",
+    "lat": 39.935553,
+    "lng": 32.656225,
+    "matched_name": "My Garaj Oto Yıkama",
+    "matched_address": "Şehit, Alsancak, Hikmet Özer Cd. no:110c, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "NAIR OPEL OZEL SERVIS": {
+    "place_id": "ChIJmTTD3hk30xQR-tcIrYxFLEw",
+    "lat": 39.9355975,
+    "lng": 32.7120809,
+    "matched_name": "NAİR OPEL ÖZEL SERVİS",
+    "matched_address": "Bahçekapı Mahallesi 2487 Cadde Numara:9/D, Bahçekapı, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "NEHIR OTO SERVIS": {
+    "place_id": "ChIJo2cNU_430xQRkZDynyXtJdA",
+    "lat": 39.931215,
+    "lng": 32.715927,
+    "matched_name": "NEHİR OTO SERVİS",
+    "matched_address": "Oto Sanayi, Cadde, Bahçekapı, 2561. Sk. No:23 Sitesi 2, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Otopratik Mahmut Ejder Otomotiv": {
+    "place_id": "ChIJQ9sYRv430xQRKMWEO6bsUSg",
+    "lat": 39.972819699999995,
+    "lng": 32.656710499999996,
+    "matched_name": "Otopratik Mahmut Ejder Otomotiv",
+    "matched_address": "Şehit Osman Avcı, Malazgirt 1071. Cd. no:10, 06100 Etimesgut/Ankara, Türkiye"
+  },
+  "Otorapor Ankara Etimesgut Istasyon Oto Ekspertiz": {
+    "place_id": "ChIJp4OD8hM30xQRoNvj30HXYgc",
+    "lat": 39.9510953,
+    "lng": 32.6508411,
+    "matched_name": "Otorapor Ankara Etimesgut İstasyon Oto Ekspertiz",
+    "matched_address": "Kazım Karabekir, İstasyon Cad. no:122, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "Otorapor Ankara Etimesgut Umitkoy Oto Ekspertiz": {
+    "place_id": "ChIJyaonPcM50xQR8Dmh-BDggUk",
+    "lat": 39.905413900000006,
+    "lng": 32.698062199999995,
+    "matched_name": "Otorapor Ankara Etimesgut Ümitköy Oto Ekspertiz",
+    "matched_address": "Erler Mah. Eskişehir Yolu, Peugeot Göral Yanı, Shell Benzinlik İçi, Ümit, 12. Km A Blok No:356, 06750 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozkar Oto Tamir Ve Bakim Servisi": {
+    "place_id": "ChIJgxFM8x1I0xQRj5-1d04XBog",
+    "lat": 39.9405881,
+    "lng": 32.7186855,
+    "matched_name": "Özkar Oto Tamir Ve Bakım Servisi",
+    "matched_address": "Bahçekapı Yeşilçam İşyerleri Yapı.Koop, Bahçekapı, 2505. Sk. No:21, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "R&T Oto Motors": {
+    "place_id": "ChIJQW_mLAA50xQRM0WS9iGgUjA",
+    "lat": 39.90586940000001,
+    "lng": 32.6536548,
+    "matched_name": "R&T Oto Motors",
+    "matched_address": "Bağlıca, Höyük Cd. No:17, 06890 Etimesgut/Ankara, Türkiye"
+  },
+  "Rey Oto Servis": {
+    "place_id": "ChIJA_YoTfw30xQRm8KGaYv1hlg",
+    "lat": 39.9350491,
+    "lng": 32.715301499999995,
+    "matched_name": "Rey Oto Servis",
+    "matched_address": "Bahçekapı, 2534. Sk. No:13, 06767 Etimesgut/Ankara, Türkiye"
+  },
+  "ST Otomotiv - Tamir Bakim Ozel Servis": {
+    "place_id": "ChIJF6YvSv430xQR9Mj6jsbMKMY",
+    "lat": 39.931105599999995,
+    "lng": 32.7165853,
+    "matched_name": "ST Otomotiv - Tamir Bakım Özel Servis",
+    "matched_address": "Bahçekapı, 2563. Sk. No:26, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Sasmaz Oto Klima": {
+    "place_id": "ChIJrwS-5-430xQR0OzbsbDW0-A",
+    "lat": 39.937799600000005,
+    "lng": 32.7104025,
+    "matched_name": "Şaşmaz Oto Klima",
+    "matched_address": "Bahçekapı Mahallesi 2472.Cadde, Bahçekapı, Şaşmaz Blv. No:5, 06900 Etimesgut/Ankara, Türkiye"
+  },
+  "Secir Oto Tamir Bakim Servisi": {
+    "place_id": "ChIJvxeUjgJI0xQRD1iSeJgXfcQ",
+    "lat": 39.9301907,
+    "lng": 32.7194291,
+    "matched_name": "Seçir Oto Tamir Bakım Servisi",
+    "matched_address": "Bahçekapı, 2574. Sk. Oto Sanayi Sitesi NO 44, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Tekniker Oto Tamir ve Bakim Servisi": {
+    "place_id": "ChIJ9cYYZP030xQRleQ0bzhNkoo",
+    "lat": 39.9412373,
+    "lng": 32.707754,
+    "matched_name": "Tekniker Oto Tamir ve Bakım Servisi",
+    "matched_address": "Bahçekapı, 2472. Cd. No:10 D:K, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Toyota Ikizler Bakim onarim servisi": {
+    "place_id": "ChIJXwSFLeNJ0xQRLtgB1YC2vII",
+    "lat": 39.941526200000006,
+    "lng": 32.718802,
+    "matched_name": "Toyota İkizler Bakım onarım servisi",
+    "matched_address": "Bahçe Kapı Mahallesi Yeşilçam Sanayi Sitesi, Şaşmaz 2500.Cadde, Bahçekapı, Şaşmaz Blv. No:28, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Volan Otomotiv": {
+    "place_id": "ChIJCTy0IPw30xQRLaH7x0aq2jo",
+    "lat": 39.933892799999995,
+    "lng": 32.7140376,
+    "matched_name": "Volan Otomotiv",
+    "matched_address": "Bahçekapı, 2547. Sk. No:3, 06610 Etimesgut/Ankara, Türkiye"
+  },
+  "Yamanlar Oto Ekspertiz Etimesgut Eryaman": {
+    "place_id": "ChIJTYeWRWs30xQR9uXtYs45K1Y",
+    "lat": 39.977753299999996,
+    "lng": 32.6564623,
+    "matched_name": "Yamanlar Oto Ekspertiz Etimesgut Eryaman",
+    "matched_address": "Şehit Osman Avcı, Malazgirt 1071. Cd. No:12/D-A, 06793 Etimesgut/Ankara, Türkiye"
+  },
+  "Yuksel Mekanik": {
+    "place_id": "ChIJ3zvMZQNI0xQRSi0oXV3mDS4",
+    "lat": 39.934128099999995,
+    "lng": 32.723217999999996,
+    "matched_name": "Yüksel Mekanik",
+    "matched_address": "Şaşmaz Oto Sanayi Sitesi 2551 Cadde, Bahçekapı, 2577. Sk. No:15/A, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "ALPEREN OZEL SERVIS": {
+    "place_id": "ChIJgReeuQo30xQR6B0vV1xEB5E",
+    "lat": 39.9371061,
+    "lng": 32.7105487,
+    "matched_name": "ALPEREN ÖZEL SERVİS",
+    "matched_address": "Bahçekapı mahallesi 2487.cadde, Bahçekapı, Şaşmaz Blv. 2/55, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Anka Meydan Cep Shop Teknik Servis": {
+    "place_id": "ChIJP7VOiGs_0xQR_VswjiPyqV4",
+    "lat": 39.8572452,
+    "lng": 32.6352964,
+    "matched_name": "Anka Meydan Cep Shop Teknik Servis",
+    "matched_address": "Anka Meydan, Yapracık, 3250. Sk., 06810 Etimesgut/Ankara, Türkiye"
+  },
+  "BEFA Otomotiv Volvo bagimsiz ozel servis": {
+    "place_id": "ChIJG7UuSU430xQRcc5rio82N1Y",
+    "lat": 39.9384395,
+    "lng": 32.709513799999996,
+    "matched_name": "BEFA Otomotiv Volvo bağımsız özel servis",
+    "matched_address": "Bahçekapı Mahallesi 2474.cadde Arıkanlar iş merkezi, Bahçekapı, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Es Class Mercedes Ozel Servisi": {
+    "place_id": "ChIJgziJ9XI30xQR2B1cSYcKml4",
+    "lat": 39.935833099999996,
+    "lng": 32.7119552,
+    "matched_name": "Es Class Mercedes Özel Servisi",
+    "matched_address": "Bahçekapı, 2472. Cd. No:28 D:34, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Frencim": {
+    "place_id": "ChIJiWjomQI30xQRGPC53QNeT9Q",
+    "lat": 39.936998300000006,
+    "lng": 32.7151101,
+    "matched_name": "Frencim",
+    "matched_address": "Sitesi, Bahçekapı, 2520. Sk. Şaşmaz Oto Sanayi No:2/A, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Gumus Yildiz": {
+    "place_id": "ChIJt2fGsAJI0xQR6ZcmhiAmXxw",
+    "lat": 39.9363185,
+    "lng": 32.7192012,
+    "matched_name": "Gümüş Yıldız",
+    "matched_address": "Bahçekapı, 2537. Sk. No:44, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Isuzu Ozel Servis ve Yedek Parca Ankara Deniz Otomotiv A.S": {
+    "place_id": "ChIJSTwP8Ss30xQR1vJ9fLzEgRs",
+    "lat": 39.935099,
+    "lng": 32.7112109,
+    "matched_name": "Isuzu Özel Servis ve Yedek Parça Ankara Deniz Otomotiv A.Ş",
+    "matched_address": "Bahçekapı, Şaşmaz Blv. No:20/30, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Kocak Peugeot Citroen Ds Opel Ozel Servis Ankara": {
+    "place_id": "ChIJ_yYi_0Q30xQR3eKO1e7cvQY",
+    "lat": 39.931469,
+    "lng": 32.713586899999996,
+    "matched_name": "Koçak Peugeot Citroen Ds Opel Özel Servis Ankara",
+    "matched_address": "Bahçekapı Mah. 2557. Sk, Bahçekapı, Şaşmaz Blv. No: 11, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "OZ BASKENT ISUZU-MITSUBISHI OZEL SERVISI": {
+    "place_id": "ChIJG0lR1Bg30xQRQdrykNjdg7g",
+    "lat": 39.936246499999996,
+    "lng": 32.7103744,
+    "matched_name": "ÖZ BAŞKENT ISUZU-MITSUBIŞHI ÖZEL SERVİSİ",
+    "matched_address": "Bahçekapı, 2478. Sk. No:33, 06300 Etimesgut/Ankara, Türkiye"
+  },
+  "Pro Teknik Peugeot Ozel Servis": {
+    "place_id": "ChIJn-Eirf430xQR8z6Db4nLAj4",
+    "lat": 39.9341667,
+    "lng": 32.7119444,
+    "matched_name": "Pro Teknik Peugeot Özel Servis",
+    "matched_address": "Bahçekapı, 2481. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "TUNA BMW MINI COOPER OZEL SERVIS ANKARA ( BMW PROFESYONEL SERVIS HIZMETLERI )": {
+    "place_id": "ChIJtZk0_Po30xQRxzM63blgo48",
+    "lat": 39.938038999999996,
+    "lng": 32.709483899999995,
+    "matched_name": "Şaşmaz 2477.sokak no:3/13 Merkez",
+    "matched_address": "Bahçekapı, Şaşmaz 2477.sokak no:3/13 Merkez, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Turuncu Mercedes Ozel Servis": {
+    "place_id": "ChIJC1p9NAZJ0xQRsYV4hNG1fdk",
+    "lat": 39.935369099999996,
+    "lng": 32.7202226,
+    "matched_name": "Turuncu Mercedes Özel Servis",
+    "matched_address": "Şaşmaz, Bahçekapı, 2575. Sk. No:46, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Uzer Otomotiv / Ford ozel servis / Ford servisi": {
+    "place_id": "ChIJFZIMhuQ30xQRSmIMNqcZ0cQ",
+    "lat": 39.9412808,
+    "lng": 32.7118647,
+    "matched_name": "Uzer Otomotiv / Ford özel servis / Ford servisi",
+    "matched_address": "Bahçekapı, 2467. Sk. No:81, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "unlu motorsiklet tamir bakim": {
+    "place_id": "ChIJQVFW2UU70xQRDjUrIi41NAA",
+    "lat": 39.9517929,
+    "lng": 32.6144815,
+    "matched_name": "ünlü motorsiklet tamir bakim",
+    "matched_address": "Atakent, Şht. Ender Alper Sk. 2 A, 06660 Etimesgut/Ankara, Türkiye"
+  },
+  "AB SERVIS-ANKARA": {
+    "place_id": "ChIJV_vt0_s30xQRWyd0CWMqrHM",
+    "lat": 39.9356454,
+    "lng": 32.7100499,
+    "matched_name": "AB SERVİS-ANKARA",
+    "matched_address": "BAHÇEKAPI MH.2479.CD.NO:2B/A, Bahçekapı, 06797 ETİMESGUT/Etimesgut/Ankara, Türkiye"
+  },
+  "AYYILDIZ MERCEDES SERVISI ANKARA": {
+    "place_id": "ChIJ61bzBOM30xQRPf3yS9iqtUI",
+    "lat": 39.940115999999996,
+    "lng": 32.7149526,
+    "matched_name": "AYYILDIZ MERCEDES SERVİSİ ANKARA",
+    "matched_address": "Bahçekapı Mahallesi 2474. Caddesi, Bahçekapı, Şaşmaz Blv. No:17 D:3-4-5-6, 06120 Etimesgut/Ankara, Türkiye"
+  },
+  "Altiparmak Mercedez-Benz Ozel Servis": {
+    "place_id": "ChIJs48Tav430xQRdij3ju3aG7A",
+    "lat": 39.9320928,
+    "lng": 32.7164466,
+    "matched_name": "Altıparmak Mercedez-Benz Özel Servis",
+    "matched_address": "Bahçekapı, 2562. Sk. Oto Sanayi Sitesi No:11, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Arda Oto Bakim Servisi - Ankara Sasmaz": {
+    "place_id": "ChIJwY0Z3QJI0xQRjDSVT5dXMQY",
+    "lat": 39.9357434,
+    "lng": 32.7204147,
+    "matched_name": "Arda Oto Bakım Servisi - Ankara Şaşmaz",
+    "matched_address": "Sit, Bahçekapı, 2575. Sk. Şaşmaz Oto Sanayi No:49 Güverci, 06000, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Arici Oto Ankara Kaporta Boya": {
+    "place_id": "ChIJfZ-OzwJI0xQRg41oDciQMqo",
+    "lat": 39.9360304,
+    "lng": 32.7201677,
+    "matched_name": "Arıcı Oto Ankara Kaporta Boya",
+    "matched_address": "Bahçekapı, 2539. Sk. No:55, 06300 Etimesgut/Ankara, Türkiye"
+  },
+  "Arik Oto": {
+    "place_id": "ChIJT4v4n9c50xQR1nX1fWmzqt8",
+    "lat": 39.9305142,
+    "lng": 32.720017999999996,
+    "matched_name": "Arık Oto",
+    "matched_address": "Bahçekapı, 2574. Sk. Şaşmaz Oto Sanayi Sitesi No:36 D:36, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Arma Otomotiv Oto Servis": {
+    "place_id": "ChIJp90pwcU30xQRPoZEMwmbHig",
+    "lat": 39.9418028,
+    "lng": 32.7082106,
+    "matched_name": "Arma Otomotiv Oto Servis",
+    "matched_address": "Bahçe Kapı Mahallesi 2459. Cad, Bahçekapı, Şaşmaz Blv. No:1 D:E, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Artem Otomotiv": {
+    "place_id": "ChIJC9Wbx8Mw0xQRB57NyCL-U7Y",
+    "lat": 39.940335,
+    "lng": 32.7118124,
+    "matched_name": "Artem Otomotiv",
+    "matched_address": "Bahçekapı, 2488 Cad. 2470. Sok. Oto Sanayi Sitesi, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Atasoy Motorlu Araclar": {
+    "place_id": "ChIJu0MHToBA0xQR8o6RTG-gjnQ",
+    "lat": 39.8911596,
+    "lng": 32.6232726,
+    "matched_name": "Atasoy Motorlu Araçlar",
+    "matched_address": "Yeni, Bağlıca Blv. no:106/1, 06830 Etimesgut/Ankara, Türkiye"
+  },
+  "BB CAR": {
+    "place_id": "ChIJ5zWNEvs30xQRB08wPjPcMn8",
+    "lat": 39.937881399999995,
+    "lng": 32.7109403,
+    "matched_name": "BB CAR",
+    "matched_address": "Bahçekapı, 2485. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Baykus Garaj Motorsiklet Tamir": {
+    "place_id": "ChIJj0j6fzI70xQR2rBc489AI94",
+    "lat": 39.9740067,
+    "lng": 32.613383299999995,
+    "matched_name": "Baykuş Garaj Motorsiklet Tamir",
+    "matched_address": "Eryaman, Çiçek Sk. No:1/B, 06936 Etimesgut/Ankara, Türkiye"
+  },
+  "Bir Oto Motor": {
+    "place_id": "ChIJuyWdJJo30xQRc5KdYaiHoTM",
+    "lat": 39.9435061,
+    "lng": 32.7178685,
+    "matched_name": "Bir Oto Motor",
+    "matched_address": "Bahçekapı Mahallesi Dökmeciler San. Sitesi 2492. Cadde 1. Blok No:6, Bahçekapı, Şaşmaz Blv., 06150 Etimesgut/Ankara, Türkiye"
+  },
+  "CINAR OTO TAMIR BAKIM SERVISI": {
+    "place_id": "ChIJH4tTiJ830xQRU9YkFxaVUAM",
+    "lat": 39.9389375,
+    "lng": 32.711259999999996,
+    "matched_name": "ÇINAR OTO TAMİR BAKIM SERVİSİ",
+    "matched_address": "Bahcekapı mahallesi 2487.sokak, Bahçekapı, Şaşmaz Blv. No:52 a blok, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Camoglu Bosch Diesel Service": {
+    "place_id": "ChIJdT00LwJI0xQRKj1_mEdUrTE",
+    "lat": 39.932469999999995,
+    "lng": 32.720326,
+    "matched_name": "Çamoğlu Bosch Diesel Service",
+    "matched_address": "Bahçekapı, 2571. Sk. Oto Sanayi Sitesi No:20, 06125 Etimesgut/Ankara, Türkiye"
+  },
+  "Cozum Grup Oto Servis": {
+    "place_id": "ChIJR_jIH5BJ0xQRQfDkElksEFg",
+    "lat": 39.9333461,
+    "lng": 32.7100568,
+    "matched_name": "Çözüm Grup Oto Servis",
+    "matched_address": "Bahçekapı, 2473. Cad. No:23/1, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "EKOMOTOR - Arac Yakit Tasarruf Cihazi - Yakit Tasarruf - Sehir Ici %15 Sehirler Arasi %25": {
+    "place_id": "ChIJ2-fZKgQ60xQRcWgLlTug5q8",
+    "lat": 39.954606399999996,
+    "lng": 32.619128,
+    "matched_name": "EKOMOTOR - Araç Yakıt Tasarruf Cihazı - Yakıt Tasarruf - Şehir İçi %15 Şehirler Arası %25",
+    "matched_address": "Topçu, 1505. Sk. No:15 D:B, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Eurorepar Ankara Minimax Otomotiv": {
+    "place_id": "ChIJiwdtV_5I0xQRG_-3hwhg1so",
+    "lat": 39.8962669,
+    "lng": 32.678337,
+    "matched_name": "Eurorepar Ankara Minimax Otomotiv",
+    "matched_address": "No:4/E, Mesa Koru Kavşağı, Erler, Bağlıca Blv., 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "FIXXIT - Mobil Oto Servis": {
+    "place_id": "ChIJF8ahhUpP0xQRxDU4XZU5rlI",
+    "lat": 39.93896840000001,
+    "lng": 32.710143699999996,
+    "matched_name": "FİXXİT - Mobil Oto Servis",
+    "matched_address": "Bahçekapı, 2472. Cd. No:11/1 D:2, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Genel Otomotiv": {
+    "place_id": "ChIJ-7iTxgNI0xQRLQx7Gk1G2rA",
+    "lat": 39.9323787,
+    "lng": 32.7220235,
+    "matched_name": "Genel Otomotiv",
+    "matched_address": "Şaşmaz Oto sanayi sitesi 2567.cad (Eski 4.cad) No:30, Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Hasim Oto Nissan Ozel Servis.": {
+    "place_id": "ChIJF420uQNI0xQRBEydtbRY3NM",
+    "lat": 39.932734499999995,
+    "lng": 32.7215606,
+    "matched_name": "Haşim Oto Nissan Özel Servis.",
+    "matched_address": "Bahçekapı, 2571. Sk. No:3, 06115 Etimesgut/Ankara, Türkiye"
+  },
+  "ISIK BMW": {
+    "place_id": "ChIJEd6zI9s30xQRoppUYgZYY7o",
+    "lat": 39.946103799999996,
+    "lng": 32.7049732,
+    "matched_name": "IŞIK BMW",
+    "matched_address": "Bahçekapı, 2453. Sk. No:3/O Bağımsız Bölüm No:16, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Kavaklider Oto Kaporta ve Boya": {
+    "place_id": "ChIJl6ycepY30xQRJuwq2Q077h8",
+    "lat": 39.9386936,
+    "lng": 32.7166808,
+    "matched_name": "Kavaklıder Oto Kaporta ve Boya",
+    "matched_address": "Bahçekapı, 2492.caddeno:25, 06900 Etimesgut/Ankara, Türkiye"
+  },
+  "Kaymaz Oto": {
+    "place_id": "ChIJD04ia_w30xQRTyf8tsv8u2w",
+    "lat": 39.935222100000004,
+    "lng": 32.7136153,
+    "matched_name": "Kaymaz Oto",
+    "matched_address": "Bahçekapı, 2532. Sk. No:14, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Kaymaz Oto Tamir": {
+    "place_id": "ChIJaWtWTgJI0xQRDn0sEmW3Dtc",
+    "lat": 39.9335129,
+    "lng": 32.720301299999996,
+    "matched_name": "Kaymaz Oto Tamir",
+    "matched_address": "Bahçekapı, 2569. Cadde, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "ONUR OTO VOLKSWAGEN-AUDI-SKODA-SEAT OZEL SERVISI DSG ONARIM": {
+    "place_id": "ChIJKQxiZOQ30xQRD_-2Nfqx98M",
+    "lat": 39.942047,
+    "lng": 32.7116075,
+    "matched_name": "ONUR OTO VOLKSWAGEN-AUDİ-SKODA-SEAT ÖZEL SERVİSİ DSG ONARIM",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "OZG Garage - Ankara Firinli Oto Boya & Kaporta": {
+    "place_id": "ChIJnRnbO-NJ0xQRBItBStMZYjc",
+    "lat": 39.9426501,
+    "lng": 32.711017399999996,
+    "matched_name": "OZG Garage - Ankara Fırınlı Oto Boya & Kaporta",
+    "matched_address": "Bahçekapı, 2464. Sk. No:19/A, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Ortaklar Iveco": {
+    "place_id": "ChIJ0f1MNgJI0xQR5mXnhBvBReA",
+    "lat": 39.9330502,
+    "lng": 32.7204068,
+    "matched_name": "Ortaklar Iveco",
+    "matched_address": "Bahçekapı, 2570. Sk. No:74, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozge Otomotiv": {
+    "place_id": "ChIJjSuAav030xQRVW2SgqLZ-tQ",
+    "lat": 39.9365088,
+    "lng": 32.7168268,
+    "matched_name": "Özge Otomotiv",
+    "matched_address": "Bahçekapı, 2551. Cd. 19/A, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozkardesler oto sasmaz tamir bakim servisi": {
+    "place_id": "ChIJ8_o3sgE30xQRLSDTUXjxeDw",
+    "lat": 39.9419468,
+    "lng": 32.7086401,
+    "matched_name": "Özkardeşler oto şaşmaz tamir bakım servisi",
+    "matched_address": "Bahçekapı, 2472. Cd. No:10 D:I, 06678 Etimesgut/Ankara, Türkiye"
+  },
+  "SEREF OTO": {
+    "place_id": "ChIJV2lyD_030xQRmRqVXT63Upg",
+    "lat": 39.9359304,
+    "lng": 32.7176192,
+    "matched_name": "ŞEREF OTO",
+    "matched_address": "Bahçekapı, 2537. Sk. No: 23, 06600 Etimesgut/Ankara, Türkiye"
+  },
+  "Sevil Otomotiv": {
+    "place_id": "ChIJs7vjX-Q30xQRF46oxGvF0yA",
+    "lat": 39.9421471,
+    "lng": 32.710724899999995,
+    "matched_name": "Sevil Otomotiv",
+    "matched_address": "Bahçekapı mahallesi 2468.cad, Bahçekapı, Şaşmaz Blv. no:4/1, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "YON OTOMOTIV": {
+    "place_id": "ChIJpwRCa3xJ0xQRUGRG9y4A5mY",
+    "lat": 39.930823499999995,
+    "lng": 32.7206514,
+    "matched_name": "YÖN OTOMOTİV",
+    "matched_address": "Bahçekapı, 2574. Sk. No:30, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Yasarlar Oto Kaporta/Mekanik": {
+    "place_id": "ChIJqx3aN0A30xQRD-7VFmvxm4Q",
+    "lat": 39.9361773,
+    "lng": 32.709808599999995,
+    "matched_name": "Yaşarlar Oto Kaporta/Mekanik",
+    "matched_address": "Bahçekapı, 2478. Sk. No:5, 06800 Etimesgut/Ankara, Türkiye"
+  },
+  "E GARAJ ETIMESGUT": {
+    "place_id": "ChIJcam5X_tJ0xQRnL3IIUtoiDw",
+    "lat": 39.930720799999996,
+    "lng": 32.720023499999996,
+    "matched_name": "E GARAJ ETİMESGUT",
+    "matched_address": "Bahçekapı, 2573. Sk. No:33, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "ERYAMAN IPHONE SAMSUNG XIAOMI OZEL SERVIS": {
+    "place_id": "ChIJazmVJLQw0xQRxLwAZLbULzs",
+    "lat": 39.974312,
+    "lng": 32.622234999999996,
+    "matched_name": "ERYAMAN İPHONE SAMSUNG XİAOMİ ÖZEL SERVİS",
+    "matched_address": "Eryaman, Dolphin AVM No:3 D:41, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "ETIMESGUT TA SINEKLIK PIMAPEN TAMIRDE EN HIZLI VE GARANTILI COZUMU ICIN DEKA YAPI": {
+    "place_id": "ChIJe9ct35I50xQRJBWJKRV8AIo",
+    "lat": 39.9352301,
+    "lng": 32.6540393,
+    "matched_name": "ETİMESGUT TA SİNEKLİK PİMAPEN TAMİRDE EN HİZLİ VE GARANTİLİ ÇÖZÜMÜ İÇİN DEKA YAPI",
+    "matched_address": "Alsancak, Keskin Cd. 20/b, 06970 Etimesgut/Ankara, Türkiye"
+  },
+  "Ekiciler Ozel Servis": {
+    "place_id": "ChIJReS6uwNI0xQRIqlesq9PT2A",
+    "lat": 39.9329398,
+    "lng": 32.721746599999996,
+    "matched_name": "Ekiciler Özel Servis",
+    "matched_address": "Bahçekapı, 2571. Sk. No:2, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Eryaman - Kale GSM & Vodafone - Telefon Tamir Ozel Teknik Servis": {
+    "place_id": "ChIJ97E5SyI30xQRux4Ox4lpDi4",
+    "lat": 39.9812083,
+    "lng": 32.6475778,
+    "matched_name": "Eryaman - Kale GSM & Vodafone - Telefon Tamir Özel Teknik Servis",
+    "matched_address": "Göksu, Metrokent Sitesi Metrokent AVM 9/8, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "Eser Japon Suzuki": {
+    "place_id": "ChIJffq9O9pJ0xQRPoyZfNFgtbo",
+    "lat": 39.9356051,
+    "lng": 32.7190715,
+    "matched_name": "Eser Japon Suzuki",
+    "matched_address": "Bahçekapı, 2539. Sk. no 33, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Garaj Reno": {
+    "place_id": "ChIJmwJUlf830xQRc9Zd-la7XHU",
+    "lat": 39.929611099999995,
+    "lng": 32.7165639,
+    "matched_name": "Garaj Reno",
+    "matched_address": "Bahçekapı, 2563. Sk. No:52, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Gen Teknik Servis": {
+    "place_id": "ChIJ3bJjbEk70xQR43VlIULsyKg",
+    "lat": 39.954578399999995,
+    "lng": 32.6166157,
+    "matched_name": "Gen Teknik Servis",
+    "matched_address": "Topçu, 1512. Cd. No:70 D:c, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "Gundogdu Teknik": {
+    "place_id": "ChIJ77ZG-D060xQR5Cm_6fqi8z0",
+    "lat": 39.9435594,
+    "lng": 32.6116228,
+    "matched_name": "Gündoğdu Teknik",
+    "matched_address": "Oğuzlar Mahallesi, Eray Çarşısı, Atakent, 1599. Sk. B10, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "My Oto": {
+    "place_id": "ChIJ53GzGf830xQRgUeMXeFuOkg",
+    "lat": 39.9311291,
+    "lng": 32.714166999999996,
+    "matched_name": "My Oto",
+    "matched_address": "Bahçekapı, 2558. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "OTO MOTIVE SERVIS HIZMETLERI LTD STI peugeot & citroen & ds ozel servisi yedek parca ,bakim onarim elektrik elektironik hizmetleri verilmetedir": {
+    "place_id": "ChIJ-7A2H7FJ0xQRXJa9MijCReg",
+    "lat": 39.938175199999996,
+    "lng": 32.7188072,
+    "matched_name": "OTO MOTİVE SERVİS HİZMETLERI LTD ŞTİ peugeot & citroen & ds özel servisi yedek parca ,bakim onarim elektrik elektironik hizmetleri verilmetedir",
+    "matched_address": "Bahçekapi mahallesi 2523. Sokak, Bahçekapı, Şaşmaz Blv. no:4, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "OZKAL OTOMATIK SANZIMAN & OZEL SERVIS": {
+    "place_id": "ChIJvSMk-H430xQRa706S6uqejU",
+    "lat": 39.940504,
+    "lng": 32.718035799999996,
+    "matched_name": "ÖZKAL OTOMATİK ŞANZIMAN & ÖZEL SERVİS",
+    "matched_address": "Bahçekapı, 2505. Sk. No:20, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozguven Bulut Radyator Servisi": {
+    "place_id": "ChIJdYp_QAJI0xQRRMVyRRVVVZ8",
+    "lat": 39.9324313,
+    "lng": 32.717674599999995,
+    "matched_name": "Özgüven Bulut Radyatör Servisi",
+    "matched_address": "Bahçekapı, Etimesgut - Şaşmaz Yolu, 06690 Etimesgut/Ankara, Türkiye"
+  },
+  "Pilot Garage Sasmaz Etimesgut Oto Ekspertiz": {
+    "place_id": "ChIJs9n6ryg30xQRQe8BVN9ruHE",
+    "lat": 39.9339169,
+    "lng": 32.7133211,
+    "matched_name": "Pilot Garage Şaşmaz Etimesgut Oto Ekspertiz",
+    "matched_address": "Bahçekapı, Sanayi Blv. No: 45, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Pro Servis Etimesgut Telefon Tamir Samsung iPhone Xiaomi Oppo Realme Vivo Cep Telefonu Teknik Servis": {
+    "place_id": "ChIJOwC7muQ50xQRrJpKTWOSI5g",
+    "lat": 39.9341692,
+    "lng": 32.639492,
+    "matched_name": "Pro Servis Etimesgut Telefon Tamir Samsung iPhone Xiaomi Oppo Realme Vivo Cep Telefonu Teknik Servis",
+    "matched_address": "Ahi Mesut, 1904. Sk. No:21/4, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "TEMSA YETKILI SERVISI ANKARA UC KARDESLER": {
+    "place_id": "ChIJecRoTQw30xQRjKO2MS5o7gw",
+    "lat": 39.9353527,
+    "lng": 32.705737299999996,
+    "matched_name": "TEMSA YETKİLİ SERVİSİ ANKARA ÜÇ KARDEŞLER",
+    "matched_address": "Bahçekapı, 2680. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "VLV Servis Volvo Ozel Servis": {
+    "place_id": "ChIJO-a7cl430xQR_wIlZBuWj8c",
+    "lat": 39.9325602,
+    "lng": 32.7158705,
+    "matched_name": "VLV Servis Volvo Özel Servis",
+    "matched_address": "Şaşmaz oto Sanayi Sitesi 2561. Sokak, Bahçekapı, Şaşmaz Blv. No:1, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Yilmaz Honda, Ozel Servis": {
+    "place_id": "ChIJmd-cE_030xQRmI9w7lpCu6s",
+    "lat": 39.9363357,
+    "lng": 32.7163999,
+    "matched_name": "Yılmaz Honda, Özel Servis",
+    "matched_address": "No:13, Bahçekapı, 2528. Sk. No:9, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "uzay otomotiv boyasiz gocuk onarim merkezi": {
+    "place_id": "ChIJ44c5keQ30xQRqM7MTzSr2aQ",
+    "lat": 39.9408817,
+    "lng": 32.7119072,
+    "matched_name": "uzay otomotiv boyasız göçük onarım merkezi",
+    "matched_address": "Bahçekapı Mah. 2467 Sokak, Bahçekapı, Şaşmaz Blv. No:1/B, 06700 Etimesgut/Ankara, Türkiye"
+  },
+  "ANKARA OTO TAMIR VE BAKIM SERVISI": {
+    "place_id": "ChIJlaWoyQNI0xQRji-bewyUpZY",
+    "lat": 39.9325197,
+    "lng": 32.7215133,
+    "matched_name": "ANKARA OTO TAMİR VE BAKIM SERVİSİ",
+    "matched_address": "Bahçekapı, 2571. Sk. No:7, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "ARACIM GUVENDE": {
+    "place_id": "ChIJN0iRO_FJ0xQRtnIcr-ZTxV4",
+    "lat": 39.931847,
+    "lng": 32.7204543,
+    "matched_name": "ARACIM GÜVENDE",
+    "matched_address": "BAHÇEKAPI MAH. ŞAŞMAZ OTO. SAN. SİT. 2567. CAD. ( ESKİ 4. CAD. ) NO:48, Bahçekapı, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "ASM Teknik VOLKSWAGEN AUDI SKODA SEAT OZEL SERVIS": {
+    "place_id": "ChIJfWkyyK1J0xQRVk8gLuq6jVM",
+    "lat": 39.9322431,
+    "lng": 32.7134168,
+    "matched_name": "ASM Teknik VOLKSWAGEN AUDİ SKODA SEAT ÖZEL SERVİS",
+    "matched_address": "Bahçekapı, 2553. Sk No:1, 06797, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Ada volkswagen oto tamir": {
+    "place_id": "ChIJ1a-jIfU30xQRi7Bcv01uNOU",
+    "lat": 39.9439791,
+    "lng": 32.6968472,
+    "matched_name": "Ada volkswagen oto tamir",
+    "matched_address": "Bahçekapı, 2453. Sk. No:25, 06630 Etimesgut/Ankara, Türkiye"
+  },
+  "Ant madeni yaglar": {
+    "place_id": "ChIJKXHHUP430xQRxTX8wI0ll3Y",
+    "lat": 39.95309280000001,
+    "lng": 32.6415541,
+    "matched_name": "Ant madeni yağlar",
+    "matched_address": "Piyade, İstasyon Cad. No:202, 06795 Etimesgut/Ankara, Türkiye"
+  },
+  "Atalan Oto Tamir Sasmaz | Benzinli Enjektor Temizleme | Baski Balata Triger Degisimi | Ankara": {
+    "place_id": "ChIJ10KCIOI30xQRfSufvuClN6Q",
+    "lat": 39.9423356,
+    "lng": 32.716488399999996,
+    "matched_name": "Atalan Oto Tamir Şaşmaz | Benzinli Enjektör Temizleme | Baskı Balata Triger Değişimi | Ankara",
+    "matched_address": "Bahçekapı, 2500. Cd. No:9 D:9, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Audi Volkswagen Seat Skoda AVOSS Servis Sasmaz Ankara": {
+    "place_id": "ChIJ9XTVt_s30xQRkaKixKKNp0o",
+    "lat": 39.936207599999996,
+    "lng": 32.710163699999995,
+    "matched_name": "Audi Volkswagen Seat Skoda AVOSS Servis Şaşmaz Ankara",
+    "matched_address": "No: 3, Bahçekapı, 2478. Sk., 06800 Etimesgut/Ankara, Türkiye"
+  },
+  "Auto King - Ankara Cankaya Cayyolu Oto Ekspertiz": {
+    "place_id": "ChIJY_b_gx850xQRAx0FoYhwSis",
+    "lat": 39.8962607,
+    "lng": 32.6782524,
+    "matched_name": "Auto King - Ankara Çankaya Çayyolu Oto Ekspertiz",
+    "matched_address": "Erler, Bağlıca Blv. No 4/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Auto King - Ankara Sasmaz Oto Ekspertiz Etimesgut 4x4": {
+    "place_id": "ChIJ3-k1KMs30xQRL7r5Li5xFdk",
+    "lat": 39.9434301,
+    "lng": 32.7125218,
+    "matched_name": "Auto King - Ankara Şaşmaz Oto Ekspertiz Etimesgut 4x4",
+    "matched_address": "Bahçekapı, Sanayi Blv. No:5/E, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "CELIKTEN KARADAGLI OTOMOTIV ANKARA SANYONG": {
+    "place_id": "ChIJt5I8PwQ30xQR8u4Pcerq5Cc",
+    "lat": 39.931949499999995,
+    "lng": 32.7200381,
+    "matched_name": "ÇELİKTEN KARADAĞLI OTOMOTİV ANKARA SANYONG",
+    "matched_address": "Bahçekapı, 2571. Sk. No:27, 06420 Etimesgut/Ankara, Türkiye"
+  },
+  "DENT TEKNIK ALIM USTA BOYASIZ KAPORTA GOCUK ONARIM MERKEZI ANKARA": {
+    "place_id": "ChIJm3AJfOQ30xQRpgz12j7i_fs",
+    "lat": 39.9339101,
+    "lng": 32.7120618,
+    "matched_name": "DENT TEKNİK ALİM USTA BOYASIZ KAPORTA GÖÇÜK ONARIM MERKEZİ ANKARA",
+    "matched_address": "Bahçekapı Mah Sanayi Bul 2481.cad, Bahçekapı, Şaşmaz Blv. 1/10, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "DUNDAR OTO YIKAMA & DETAILING": {
+    "place_id": "ChIJZ0y3MtE70xQRO0-lyJkKzLw",
+    "lat": 39.9293666,
+    "lng": 32.618226799999995,
+    "matched_name": "DUNDAR OTO YIKAMA & DETAİLİNG",
+    "matched_address": "Ayyıldız, 1666. Sk. No:14 D:2B, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "DYNOBIL ETIMESGUT - OTO EKSPERTIZ": {
+    "place_id": "ChIJcaeP5Ws30xQRvKk7SA4jvNY",
+    "lat": 39.9531005,
+    "lng": 32.6416703,
+    "matched_name": "DYNOBİL ETİMESGUT - OTO EKSPERTİZ",
+    "matched_address": "Piyade, İstasyon Cad. No:200 D:1, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "ERCANLAR OTOMOTIV": {
+    "place_id": "ChIJ361EoQJI0xQR8R1FjIDcRqU",
+    "lat": 39.9363927,
+    "lng": 32.7191289,
+    "matched_name": "ERCANLAR OTOMOTİV",
+    "matched_address": "Bahçekapı, 2537. Sk. NO:43, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "Emre Oto Servis": {
+    "place_id": "ChIJ7eKmnQFI0xQRhbf6GbWJd5w",
+    "lat": 39.931373,
+    "lng": 32.7208008,
+    "matched_name": "Emre Oto Servis",
+    "matched_address": "Bahçekapı, 1. Cad. & 2573 Sok., Oto Sanayi Sitesi No:25, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Engin Usta Ford Garage Ozel Servis Ankara Sasmaz": {
+    "place_id": "ChIJ0zP5SI5J0xQRJy-6-u-mRbM",
+    "lat": 39.934896699999996,
+    "lng": 32.719075,
+    "matched_name": "Engin Usta Ford Garage Özel Servis Ankara Şaşmaz",
+    "matched_address": "Bahçekapı, 2575. Sk. Şaşmaz Oto Sanayi Sitesi No:26, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Esin Garage": {
+    "place_id": "ChIJAQAjPP830xQRWYlNzxCSX0I",
+    "lat": 39.930937799999995,
+    "lng": 32.7136485,
+    "matched_name": "Eşin Garage",
+    "matched_address": "Bahçekapı, 2557. Sk No:27/A, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Frenci Mesut Usta": {
+    "place_id": "ChIJrW6MYcxJ0xQRD66jDNQh4ZM",
+    "lat": 39.935355,
+    "lng": 32.7202207,
+    "matched_name": "Frenci Mesut Usta",
+    "matched_address": "Oto Sanayi Sitesi 1.Cadde 2575.Sokak, Bahçekapı, Şaşmaz Blv. No:46, 06506 Etimesgut/Ankara, Türkiye"
+  },
+  "Furkan Otomotiv Tamir Bakim": {
+    "place_id": "ChIJ5ScZX_030xQRGbio9KO0AIY",
+    "lat": 39.9431363,
+    "lng": 32.7180998,
+    "matched_name": "Furkan Otomotiv Tamir Bakım",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Gencmer Otomatik Sanziman Tamiri Ankara": {
+    "place_id": "ChIJBz4blto50xQR0TfbfDwEqqU",
+    "lat": 39.9303289,
+    "lng": 32.7141532,
+    "matched_name": "Gençmer Otomatik Şanzıman Tamiri Ankara",
+    "matched_address": "Şaşmaz Oto Sanayi Sitesi Bahçekapı Mahallesi 2567 Cad. 2558 Sok. No:35 ve 37, Bahçekapı, Şaşmaz Blv., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Gokcan Balata": {
+    "place_id": "ChIJA2xdmAJI0xQRMhPxqYQWyPU",
+    "lat": 39.9358266,
+    "lng": 32.718432199999995,
+    "matched_name": "Gökcan Balata",
+    "matched_address": "Bahçekapı, 2538 Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Haymanali faruk usta": {
+    "place_id": "ChIJU0glcq030xQR8WuJxlRl6BU",
+    "lat": 39.9366997,
+    "lng": 32.7084666,
+    "matched_name": "Haymanalı faruk usta",
+    "matched_address": "Bahçekapı, 06812 Etimesgut/Ankara, Türkiye"
+  },
+  "OTO YILDIRIM OTO TAMIR & BAKIM MERKEZI": {
+    "place_id": "ChIJ74kHoQJI0xQR03qX0GK1jAc",
+    "lat": 39.936257399999995,
+    "lng": 32.7182069,
+    "matched_name": "OTO YILDIRIM OTO TAMİR & BAKIM MERKEZİ",
+    "matched_address": "Oto sanayi sitesi 1.cad, Bahçekapı, 2537. Sk. no:37, 06200 Etimesgut/Ankara, Türkiye"
+  },
+  "Pilot Garage Etimesgut Baglica Oto Ekspertiz": {
+    "place_id": "ChIJc_N1fig50xQRQtdmFkw1NZ0",
+    "lat": 39.896561,
+    "lng": 32.652173399999995,
+    "matched_name": "Pilot Garage Etimesgut Bağlıca Oto Ekspertiz",
+    "matched_address": "Bağlıca, Bağlıca Blv. No: 31 / G, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Senturk Otomotiv ( Tum Sigortalarla Anlasmali Servis )": {
+    "place_id": "ChIJm4EJfNA50xQRV8YH_50LFMA",
+    "lat": 39.9314985,
+    "lng": 32.7155248,
+    "matched_name": "Şentürk Otomotiv ( Tüm Sigortalarla Anlaşmalı Servis )",
+    "matched_address": "Bahçekapı mah. 2561.sk, Bahçekapı, Şaşmaz Blv. no : 6, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Sg Garaj": {
+    "place_id": "ChIJ1VBjRfo30xQR4NpOuqa0gQc",
+    "lat": 39.936057999999996,
+    "lng": 32.7119815,
+    "matched_name": "Sg Garaj",
+    "matched_address": "Bahçekapı, 2487. Cad. No: 9 D:I, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Taka Teknoloji Akulu Araba Teknik Servisi": {
+    "place_id": "ChIJXwVFdDtJ0xQRPyGy7p6wNRY",
+    "lat": 39.9001857,
+    "lng": 32.6516228,
+    "matched_name": "Taka Teknoloji Akülü Araba Teknik Servisi",
+    "matched_address": "Bağlıca, Murat Cd. No:B12/5, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Tan Servis": {
+    "place_id": "ChIJxadbzf830xQRYx-1QMFPmWA",
+    "lat": 39.930566,
+    "lng": 32.713499999999996,
+    "matched_name": "Tan Servis",
+    "matched_address": "Bahçekapı, 2557. Sk, 06797 Şaşmaz-Etimesgut/Etimesgut/Ankara, Türkiye"
+  },
+  "Tatlicesme Otomotiv": {
+    "place_id": "ChIJXcdfw7c30xQR0ZkHdVzaycA",
+    "lat": 39.933980299999995,
+    "lng": 32.7113663,
+    "matched_name": "Tatlıçeşme Otomotiv",
+    "matched_address": "Sanayi bulvarı, Bahçekapı, Şaşmaz Blv. No:1/1, 06679 Etimesgut/Ankara, Türkiye"
+  },
+  "Tertipler Oto Aksesuar": {
+    "place_id": "ChIJc1UlBBs60xQRuqtrMrmrWEo",
+    "lat": 39.948051199999995,
+    "lng": 32.6197032,
+    "matched_name": "Tertipler Oto Aksesuar",
+    "matched_address": "Elvankent, Topçu, 1544. Cd. No:184 D:B, 06769 Etimesgut/Ankara, Türkiye"
+  },
+  "Titiz Buharli Oto Yikama Ve Detailing": {
+    "place_id": "ChIJA-UPVa0X0xQRg6mqkU2h4vg",
+    "lat": 39.8207974,
+    "lng": 32.569764,
+    "matched_name": "Titiz Buharlı Oto Yikama Ve Detailing",
+    "matched_address": "Turkuaz, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "A&Y TEKNIK SAMSUNG SERVIS MERKEZI": {
+    "place_id": "ChIJI3L_kA030xQRBkLnR1sSvw8",
+    "lat": 39.9669282,
+    "lng": 32.662454499999996,
+    "matched_name": "A&Y TEKNİK SAMSUNG SERVİS MERKEZİ",
+    "matched_address": "Şeker, 1408. Cadde No:3, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "BASARAN SASE": {
+    "place_id": "ChIJVW9YFcxJ0xQRCUe_MlDAr5I",
+    "lat": 39.937201,
+    "lng": 32.7188575,
+    "matched_name": "BAŞARAN ŞASE",
+    "matched_address": "Bahçekapı, 2529. Sk NO:12, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "BIROTO KAPORTA BOYA HASAR": {
+    "place_id": "ChIJcSw0k1c30xQRN7787D__OqU",
+    "lat": 39.943132899999995,
+    "lng": 32.7161537,
+    "matched_name": "BİROTO KAPORTA BOYA HASAR",
+    "matched_address": "DÖKMECİLER SANAYİ SİTESİ 2492.CAD, DOĞUŞ OTO YANI, Bahçekapı, Şaşmaz Blv. NO:12/14, 06520 Etimesgut/Ankara, Türkiye"
+  },
+  "Kaan teknik servis": {
+    "place_id": "ChIJRUFJr2o50xQRVNgqrJydItI",
+    "lat": 39.930694599999995,
+    "lng": 32.6497202,
+    "matched_name": "Kaan teknik servis",
+    "matched_address": "Alsancak, 2167. Sk. 9/A, 06940 Etimesgut/Ankara, Türkiye"
+  },
+  "Metu Bilgisayar Elektronik-Digiturk Yetkili Bayi": {
+    "place_id": "ChIJJyUU19g50xQRnkAd0qA2Yts",
+    "lat": 39.945389999999996,
+    "lng": 32.6566,
+    "matched_name": "Metu Bilgisayar Elektronik-Digitürk Yetkili Bayi",
+    "matched_address": "30 Ağustos, Öğretmenler Sokağı 28/A D:B, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "OTO RENO Ozel Servis": {
+    "place_id": "ChIJr5RnogFI0xQRCM3J2jfnW9w",
+    "lat": 39.9308864,
+    "lng": 32.7204881,
+    "matched_name": "OTO RENO Özel Servis",
+    "matched_address": "Bahçekapı, 2574. Sk., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Oto Vega Ozel Servis": {
+    "place_id": "ChIJD7jXchlJ0xQRyjmjql02cpU",
+    "lat": 39.9334353,
+    "lng": 32.710620999999996,
+    "matched_name": "Oto Vega Özel Servis",
+    "matched_address": "Bahçekapı mah. 2473. cad, Bahçekapı, Şaşmaz Blv. no: 23/17, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "SAHRA ILETISIM ERYAMAN IPHONE&SAMSUNG OZEL SERVIS": {
+    "place_id": "ChIJUQllM7Qw0xQROGyumT8lABI",
+    "lat": 39.974449899999996,
+    "lng": 32.622592,
+    "matched_name": "SAHRA İLETİŞİM ERYAMAN İPHONE&SAMSUNG ÖZEL SERVİS",
+    "matched_address": "Eryaman Dil Devrimi Cad./285. Sok, Eryaman, Dolphin AVM No:4 D:31, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "TURKCELL MTC ELEKTRONIK TEKNIK SERVIS": {
+    "place_id": "ChIJLbjlp-c50xQRdERKqzVVo_I",
+    "lat": 39.943956,
+    "lng": 32.648519,
+    "matched_name": "TURKCELL MTC ELEKTRONİK TEKNİK SERVİS",
+    "matched_address": "30 Ağustos, 1682. Cd. 83/A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Tukenmez Ozel Servis BMW MINI Land Rover | Ankara": {
+    "place_id": "ChIJsbPQeb830xQRprWmmsm3Jgk",
+    "lat": 39.9295943,
+    "lng": 32.715014599999996,
+    "matched_name": "Tükenmez Özel Servis BMW MINI Land Rover | Ankara",
+    "matched_address": "Bahçekapı, 2560. Sk. No:36, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Uzmanlar Otomotiv Ford Cargo Ozel Servis": {
+    "place_id": "ChIJsZpY-2A30xQR9rrqWZxDGvE",
+    "lat": 39.9421026,
+    "lng": 32.7152974,
+    "matched_name": "Uzmanlar Otomotiv Ford Cargo Özel Servis",
+    "matched_address": "Bahçekapı, 81. Sk. No:5/3, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "YUCE SKODA VOLKSWAGEN OZEL SERVIS": {
+    "place_id": "ChIJw_Rmx-s30xQRs8O4oqPS3LM",
+    "lat": 39.9320828,
+    "lng": 32.713836199999996,
+    "matched_name": "YÜCE SKODA VOLKSWAGEN ÖZEL SERVİS",
+    "matched_address": "Şaşmaz Oto sanayii Sitesi 2569. cd, Bahçekapı, 2553. Sk No:2, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Yeni Ozbil Motor": {
+    "place_id": "ChIJkwVV8wFI0xQRzbRN6X6xuSU",
+    "lat": 39.9321638,
+    "lng": 32.7197661,
+    "matched_name": "Yeni Özbil Motor",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Yukselis Oto | BMW Ozel Servis Sasmaz | BMW Audi Mercedes Range Rover Servis": {
+    "place_id": "ChIJvbH1-_430xQRQ1yahGhtIUs",
+    "lat": 39.931677799999996,
+    "lng": 32.7148872,
+    "matched_name": "Yükseliş Oto | BMW Özel Servis Şaşmaz | BMW Audi Mercedes Range Rover Servis",
+    "matched_address": "Bahçekapı, 2560. Sk. no:4, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Auto Japon Hyundai - Kia 1. Sube": {
+    "place_id": "ChIJUdksmiw30xQRABAOArtUiPc",
+    "lat": 39.9416279,
+    "lng": 32.7072915,
+    "matched_name": "Auto Japon Hyundai - Kia 1. Şube",
+    "matched_address": "Bahçekapı Mahallesi 2459 Cadde, Sancak ecza deposu, Bahçekapı, karşısı No: 1 D:I, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Ay Otomotiv": {
+    "place_id": "ChIJWTkqKOQ30xQRfcIsAFvXkpA",
+    "lat": 39.9444118,
+    "lng": 32.7101019,
+    "matched_name": "Ay Otomotiv",
+    "matched_address": "Bahçekapı, 2460. Sk. No:8, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Aygun Otomotiv": {
+    "place_id": "ChIJX-eYswNI0xQRyJeJUzFUKAc",
+    "lat": 39.933288499999996,
+    "lng": 32.7214343,
+    "matched_name": "Aygün Otomotiv",
+    "matched_address": "Şaşmaz / Bahçekapı Mahallesi 1. Cadde 2570. Sokak(Eski 22) No:5, Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Bosch Car Service - Vitesse Otomotiv": {
+    "place_id": "ChIJdYykOk830xQRVEP-OgbOM0A",
+    "lat": 39.9413775,
+    "lng": 32.7086827,
+    "matched_name": "Bosch Car Service - Vitesse Otomotiv",
+    "matched_address": "Bahçekapı, 2472. Cd. Şaşmaz Oto Sanayi Sitesi, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Brothers Detailing/ Oto Yikama": {
+    "place_id": "ChIJCUC1yq8x0xQRMVYdYIt4oe0",
+    "lat": 39.9637954,
+    "lng": 32.6094538,
+    "matched_name": "Brothers Detailing/ Oto Yıkama",
+    "matched_address": "Yeşilova Mahallesi 4015 Cadde 5-D Kayra Loft No:108, Yeşilova, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Carcom Tuning": {
+    "place_id": "ChIJD1HGOv050xQRePKRTQHP1tw",
+    "lat": 39.9525318,
+    "lng": 32.638900299999996,
+    "matched_name": "Carcom Tuning",
+    "matched_address": "Piyade, İstasyon Cad. No:207, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Coskun Altinyakit - Dacia": {
+    "place_id": "ChIJo_PsZ-I30xQRN4zSKERy5Lw",
+    "lat": 39.9405022,
+    "lng": 32.7167856,
+    "matched_name": "Coşkun Altınyakıt - Dacia",
+    "matched_address": "Bahçekapı, 2474. Cd No:21, 06377 Etimesgut/Ankara, Türkiye"
+  },
+  "Engin Oto Tamir Peugeot Citroen": {
+    "place_id": "ChIJl2_14iQ30xQRQv9WkJefSrg",
+    "lat": 39.930121,
+    "lng": 32.7132735,
+    "matched_name": "Engin Oto Tamir Peugeot Citroen",
+    "matched_address": "Bahçekapı, 2557. Sk No:44, 06600 Etimesgut/Ankara, Türkiye"
+  },
+  "HASAN OTO TAMIR VE BAKIM": {
+    "place_id": "ChIJoflUtQNI0xQR3DqchZ5NbG0",
+    "lat": 39.932922999999995,
+    "lng": 32.720971,
+    "matched_name": "HASAN OTO TAMİR VE BAKIM",
+    "matched_address": "Bahçekapı, 2570. Sk. No:11, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Heisenberg Oto Kuafor & Detailing": {
+    "place_id": "ChIJ_2p9DsM50xQR5t7SO2VR2wQ",
+    "lat": 39.9363633,
+    "lng": 32.6361353,
+    "matched_name": "Heisenberg Oto Kuaför & Detailing",
+    "matched_address": "Ahimesut Mahallesi 1904. Cadde İrem Çarşısı D:No: 11/C-48, Ahi Mesut, 06900 Etimesgut/Ankara, Türkiye"
+  },
+  "MC OTOMOTIV": {
+    "place_id": "ChIJD44fxhI30xQRSmIAzVpyysc",
+    "lat": 39.930864899999996,
+    "lng": 32.7154954,
+    "matched_name": "MC OTOMOTİV",
+    "matched_address": "MC OTOMOTIV ETİMRSGUT, Bahçekapı, 2561. Sk. Şaşmaz oto sanayi sitesi 20/A, 06350 Etimesgut/Ankara, Türkiye"
+  },
+  "Mc Tuning - Oto Klima Gazi": {
+    "place_id": "ChIJ6Y2pX_050xQRPmLnqc55C-4",
+    "lat": 39.9478483,
+    "lng": 32.666240699999996,
+    "matched_name": "Mc Tuning - Oto Klima Gazı",
+    "matched_address": "İstasyon, İstasyon Cad. No:5/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Modern Detailing": {
+    "place_id": "ChIJq-QlFV470xQR9ZihnvsB8m4",
+    "lat": 39.9453672,
+    "lng": 32.6020981,
+    "matched_name": "Modern Detailing",
+    "matched_address": "Oğuzlar, 06790 Etimesgut, Oğuzlar, 06930 Sincan/Ankara, Türkiye"
+  },
+  "ONC Cover ( Arac Yikam, Kaplama, Bakim Merkezi)": {
+    "place_id": "ChIJP5PfXwA70xQR6OwIzEfAbbQ",
+    "lat": 39.8928321,
+    "lng": 32.6203277,
+    "matched_name": "ONC Cover ( Araç Yıkam, Kaplama, Bakım Merkezi)",
+    "matched_address": "Bağlıca, Çambayırı Cd. No:118 D:3B, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Procar Oto Servis, Ankara": {
+    "place_id": "ChIJoXtHX_030xQRoTINrNM3FZg",
+    "lat": 39.935603199999996,
+    "lng": 32.7179941,
+    "matched_name": "Procar Oto Servis, Ankara",
+    "matched_address": "Bahçekapı, 2538 Sk. No:23, 06797, 06810 Etimesgut/Ankara, Türkiye"
+  },
+  "SASMAZ FIRAT OTO SERVIS ELEKTRIK - BAKIM ONARIM MOTOR SANZIMAN KLIMA": {
+    "place_id": "ChIJpUCiHmg30xQRYNvaxIqudLI",
+    "lat": 39.9394214,
+    "lng": 32.7102702,
+    "matched_name": "ŞAŞMAZ FIRAT OTO SERVİS ELEKTRİK - BAKIM ONARIM MOTOR ŞANZIMAN KLİMA",
+    "matched_address": "ŞAŞMAZ OTO SANAYİ, Bahçekapı, 2474. Cd, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Simsek BMW": {
+    "place_id": "ChIJk1-1kv430xQRs4yTZ_R2Ecw",
+    "lat": 39.9325197,
+    "lng": 32.7143777,
+    "matched_name": "Şimşek BMW",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "YIGITLER OTOMOTIV": {
+    "place_id": "ChIJlwb7OrA30xQResCKk5LvbHg",
+    "lat": 39.9366791,
+    "lng": 32.709581799999995,
+    "matched_name": "YİĞİTLER OTOMOTİV",
+    "matched_address": "Bahçekapı, 2478. Sk. NO:2 D:H, 06300 Etimesgut/Ankara, Türkiye"
+  },
+  "Alfom alfaromeo ozel servis...": {
+    "place_id": "ChIJUSXAH_830xQRet5GHaRh5qI",
+    "lat": 39.9315834,
+    "lng": 32.713809999999995,
+    "matched_name": "Alfom alfaromeo özel servis...",
+    "matched_address": "Bahçekapı, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Aydinlar Hyundai ozel servis": {
+    "place_id": "ChIJw6ujtuY30xQRTGpxu3TNLF4",
+    "lat": 39.9373563,
+    "lng": 32.715885199999995,
+    "matched_name": "Aydınlar Hyundai özel servis",
+    "matched_address": "2551. Cadde 2520. Sokak, Bahçekapı, Şaşmaz Blv. no:20, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Erler Mersedes Ozel Servis": {
+    "place_id": "ChIJwZsOtvo40xQRMs6_OPDbNzI",
+    "lat": 39.932457,
+    "lng": 32.719986,
+    "matched_name": "Erler Mersedes Özel Servis",
+    "matched_address": "2551.CD, Bahçekapı, 2570. Sk. NO:23, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Eryaman Cilingir Kale Kilit Yetkili Servisi (Nazar Anahtar)": {
+    "place_id": "ChIJ8TADabUw0xQRWRP28FG0Nkc",
+    "lat": 39.9745297,
+    "lng": 32.6219287,
+    "matched_name": "Eryaman Çilingir Kale Kilit Yetkili Servisi (Nazar Anahtar)",
+    "matched_address": "Eryaman Dil Devrimi Cad./282. Sok, Eryaman, Dolphin AVM No:4 D:8, 06920 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut Cep Telefonu Teknik Servis": {
+    "place_id": "ChIJvyRyw1830xQRLN10vKZkrkM",
+    "lat": 39.9485575,
+    "lng": 32.660706,
+    "matched_name": "Etimesgut Cep Telefonu Teknik Servis",
+    "matched_address": "İstasyon, Oyuncak Sk., 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "GUNES BOSCH DIESEL SERVICE": {
+    "place_id": "ChIJLRPlxwNI0xQRptOiZzUMKlY",
+    "lat": 39.9329787,
+    "lng": 32.7228395,
+    "matched_name": "GÜNEŞ BOSCH DİESEL SERVİCE",
+    "matched_address": "Bahçekapı, 2567. Sk. no: 24, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Hilal Mercedes": {
+    "place_id": "ChIJwxuEBf030xQRiaLAZC5c3K0",
+    "lat": 39.936214,
+    "lng": 32.715928,
+    "matched_name": "Hilal Mercedes",
+    "matched_address": "Bahçekapı, 2528. Sk. No:1, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Opel Center Opel Chevrolet Yedek Parca": {
+    "place_id": "ChIJn4ucVf030xQR07erQ-Q795w",
+    "lat": 39.937142699999995,
+    "lng": 32.717926,
+    "matched_name": "Opel Center Opel Chevrolet Yedek Parça",
+    "matched_address": "Bahçekapı, 2540. Cd. No:14, 06010 Etimesgut/Ankara, Türkiye"
+  },
+  "Oper Opel Servisi Chevrolet Servisi Opel Ozel Servisi Ozel Opel servisi Tavsiye Ankara Sasmaz": {
+    "place_id": "ChIJAyW97f430xQRqCw6Q8jqoNc",
+    "lat": 39.932395199999995,
+    "lng": 32.7142252,
+    "matched_name": "Oper Opel Chevrolet Peugeot Citroen Fiat Ford Renault Volkswagen Audi Seat Skoda Servisi Özel Servis Araç Tamir bakım servisi",
+    "matched_address": "Bahçekapı Mahallesi 2473 cadde 2554. Sokak, Bahçekapı, Şaşmaz Oto Sanayi Sitesi No:7, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Tata Servis Ankara": {
+    "place_id": "ChIJ0Ye5W-M30xQRYKhNcqm7Fi0",
+    "lat": 39.939662999999996,
+    "lng": 32.712953,
+    "matched_name": "Tata Servis Ankara",
+    "matched_address": "Bahçekapı, 2474. Cd 15/1, 06250 Etimesgut/Ankara, Türkiye"
+  },
+  "UNSAL MERCEDES SERVISI ANKARA": {
+    "place_id": "ChIJcxIY2eI30xQRmq9EvwEd0uU",
+    "lat": 39.9389584,
+    "lng": 32.7155774,
+    "matched_name": "ÜNSAL MERCEDES SERVİSİ ANKARA",
+    "matched_address": "Bahçekapı, 2512. Sk. Şaşmaz Oto Sanayi Sitesi No:10, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Zirve Stop": {
+    "place_id": "ChIJlcUZBzRK0xQRKXoPu2HfZ2M",
+    "lat": 39.934718,
+    "lng": 32.7123977,
+    "matched_name": "Zirve Stop",
+    "matched_address": "Bahçekapı Mahallesi Sanayii Bulvarı, Bahçekapı, Şaşmaz Blv. No:34/B, 06170 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankara Mobil Lastik Yol Yardim": {
+    "place_id": "ChIJ0w3721pJ0xQRfji2Wyqedbg",
+    "lat": 39.9635183,
+    "lng": 32.664722499999996,
+    "matched_name": "Ankara Mobil Lastik Yol Yardım",
+    "matched_address": "Şeker, 1439. Sk. No:4 / B, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "Ankara lastik yol yardim": {
+    "place_id": "ChIJy2UksUA50xQR71ytOMRKJGI",
+    "lat": 39.9476204,
+    "lng": 32.651278,
+    "matched_name": "Ankara lastik yol yardım",
+    "matched_address": "Kazım Karabekir, 2034. Sk. No5/a, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "Car Wash Oto Yikama, Lastik ve Yol Yardim": {
+    "place_id": "ChIJ9623Bmo30xQRNwRQL84SpRE",
+    "lat": 39.9780807,
+    "lng": 32.6398971,
+    "matched_name": "Car Wash Oto Yıkama, Lastik ve Yol Yardım",
+    "matched_address": "Göksu Mahallesi, Eryaman, Erzurum Kongresi Cd. No:10 D:I, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "EE oto lastik": {
+    "place_id": "ChIJERxZSLM50xQRDdwABpO8rk8",
+    "lat": 39.886379999999996,
+    "lng": 32.6313847,
+    "matched_name": "EE Auto DETAILING",
+    "matched_address": "Bağlıca, Mermeroğlu Cd. No:61, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "EG OTO LASTIK": {
+    "place_id": "ChIJY7J3HgMx0xQRVQSt3uVZTGY",
+    "lat": 39.9693629,
+    "lng": 32.6151574,
+    "matched_name": "EG OTO LASTİK",
+    "matched_address": "Eryaman, Ayaş Ankara Yolu Blv., 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "Gidergelir GARAJ OTO YIKAMA OTO LASTIK": {
+    "place_id": "ChIJ-YhedqI50xQRjG2cpxcw7gY",
+    "lat": 39.9505997,
+    "lng": 32.6331567,
+    "matched_name": "Gidergelir GARAJ OTO YIKAMA OTO LASTİK",
+    "matched_address": "Piyade, Ahi Elvan Cd. No:35, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "HANLAR OTO LASTIK": {
+    "place_id": "ChIJy8A2UMw50xQRF01QPkZO5IY",
+    "lat": 39.942547499999996,
+    "lng": 32.645659699999996,
+    "matched_name": "HANLAR OTO LASTİK",
+    "matched_address": "Süvari, Ahi Mesut Blv No:28/A, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Korkmaz Oto Lastik": {
+    "place_id": "ChIJ--2Ry7450xQRt75moFsNdN4",
+    "lat": 39.8925391,
+    "lng": 32.6745136,
+    "matched_name": "Korkmaz Oto Lastik",
+    "matched_address": "Fatih Sultan, M Oil, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "LASTIK TAXI": {
+    "place_id": "ChIJvw5B62UqViMRQ-l6zYQ6vPE",
+    "lat": 39.9373787,
+    "lng": 32.654257799999996,
+    "matched_name": "LASTİK TAXI",
+    "matched_address": "Alsancak, 2066. Sk. No:19, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Lastik 312 - Oto Lastikci": {
+    "place_id": "ChIJh1WLbEU50xQRq5DGx7yx3d4",
+    "lat": 39.954332,
+    "lng": 32.6332659,
+    "matched_name": "Lastik 312 - Oto Lastikçi",
+    "matched_address": "Elvan, İstasyon Cad. No:241 D:A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "OTO ROTA LASTIK VE YIKAMA": {
+    "place_id": "ChIJMdG6MgA70xQRgwpfU6p6noE",
+    "lat": 39.8849303,
+    "lng": 32.6263546,
+    "matched_name": "OTO ROTA LASTİK VE YIKAMA",
+    "matched_address": "Bağlıca, Mermeroğlu Cd. no: 69, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Xenon Garage Oto Lastik": {
+    "place_id": "ChIJKcH8GgA90xQR1sLLRNd5-cw",
+    "lat": 39.840683,
+    "lng": 32.5400461,
+    "matched_name": "Xenon Garage Oto Lastik",
+    "matched_address": "Atayurt, Evliya Çelebi Cd No:20 D:113, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "YESLAS OTO LASIK - LASTIK MARKET": {
+    "place_id": "ChIJmzkTmoM30xQRxz4_HjNs1Nc",
+    "lat": 39.9335928,
+    "lng": 32.7120162,
+    "matched_name": "YESLAS OTO LASİK - LASTİK MARKET",
+    "matched_address": "Bahçekapı, 2473. Cad. NO:32/1, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "YIGIDO OTO LASTIK 7/24 YOL YARDIM ETIMESGUT ,BATIKENT, ERYAMAN, BAGLICA": {
+    "place_id": "ChIJEwTv2gBJ0xQRT93dF5Pm9Wg",
+    "lat": 39.9580555,
+    "lng": 32.6888392,
+    "matched_name": "YİGİDO OTO LASTİK 7/24 YOL YARDIM ETİMESGUT ,BATIKENT, ERYAMAN, BAĞLICA",
+    "matched_address": "MİLANGAZ İST.İÇİ, ŞB:BAHÇEKAPI MH, Fatih Sultan Mehmet Blv NO:351, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "BRIDGESTONE Dort Teker Otomotiv": {
+    "place_id": "ChIJ5U4mUXQ30xQRqvcmgYhT4C4",
+    "lat": 39.9377304,
+    "lng": 32.7145618,
+    "matched_name": "BRİDGESTONE Dört Teker Otomotiv",
+    "matched_address": "lovato blok, Bahçekapı, 2551. Cd. No:21, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "COBAN KARDESLER lastik ve yikama": {
+    "place_id": "ChIJldCPQQY50xQRDB1ebpNgM5c",
+    "lat": 39.9389211,
+    "lng": 32.6500627,
+    "matched_name": "ÇOBAN KARDEŞLER lastik ve yıkama",
+    "matched_address": "Alsancak, 2068. Sk. 35/b, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Kaplan Oto Lastik Aku Market Baglica Sube": {
+    "place_id": "ChIJT4B1Ccg70xQRbZN2mV-UES4",
+    "lat": 39.892185399999995,
+    "lng": 32.6248127,
+    "matched_name": "Kaplan Oto Lastik Akü Market Bağlica Şube",
+    "matched_address": "Bağlıca, Bağlıca Blv. 98/1 D:06970, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "MUSLAS OTO LASTIK": {
+    "place_id": "ChIJq9ay_KYx0xQRZklLXRVmIlY",
+    "lat": 39.9650897,
+    "lng": 32.6117462,
+    "matched_name": "MUSLAS OTO LASTİK",
+    "matched_address": "Yeşilova, 4016. Cad. no:17/97, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "RS PLUS DETAILING OTO YIKAMA OTO LASTIK": {
+    "place_id": "ChIJ6z4pOHQ70xQRrw3owM9B9wo",
+    "lat": 39.9600085,
+    "lng": 32.6102718,
+    "matched_name": "RS PLUS DETAİLİNG OTO YIKAMA OTO LASTİK",
+    "matched_address": "Ankara, Yeşilova, 06900 Etimesgut/Ankara, Türkiye"
+  },
+  "Saglam Oto Lastik": {
+    "place_id": "ChIJtSuHVx430xQRYNEc4YiLE5Y",
+    "lat": 39.968761799999996,
+    "lng": 32.655031099999995,
+    "matched_name": "Sağlam Oto Lastik",
+    "matched_address": "Şeker, 1417. Cd. No:7/D, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Yapracik Oto Tamir Lastik Servisi Korkmaz Oto": {
+    "place_id": "ChIJtect_h090xQRK4oslxfwwdc",
+    "lat": 39.8430465,
+    "lng": 32.5460078,
+    "matched_name": "Yapracık Oto Tamir Lastik Servisi Korkmaz Oto",
+    "matched_address": "Atayurt, Evliya Çelebi Cd 25/1, 06815 Etimesgut/Ankara, Türkiye"
+  },
+  "AKU LASTIK MARKET AUTOWAX": {
+    "place_id": "ChIJ350IV_g50xQRQ9ZA9zkXJ5U",
+    "lat": 39.9488124,
+    "lng": 32.629996999999996,
+    "matched_name": "AKÜ LASTİK MARKET AUTOWAX",
+    "matched_address": "Elvan, 1544. Cd. No:129, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "BAGLICA GARAJ OTO LASTIK": {
+    "place_id": "ChIJoSef3CU50xQRZc_Q5zDUl2c",
+    "lat": 39.9093263,
+    "lng": 32.6483771,
+    "matched_name": "BAĞLICA GARAJ OTO LASTİK",
+    "matched_address": "Bağlıca, Etimesgut Blv. No:56, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Cosur Lastik Ltd. Sti.": {
+    "place_id": "ChIJB7QRZAJI0xQR_fQEP_dQhgo",
+    "lat": 39.9341023,
+    "lng": 32.7190322,
+    "matched_name": "Coşur Lastik Ltd. Şti.",
+    "matched_address": "Bahçekapı, 2542. Sk., 06737 Etimesgut/Ankara, Türkiye"
+  },
+  "Etimesgut cadde aku ve tamirhane": {
+    "place_id": "ChIJISl-0ao30xQRpTc3CGYKkvo",
+    "lat": 39.949816,
+    "lng": 32.655367,
+    "matched_name": "Etimesgut cadde akü ve tamirhane",
+    "matched_address": "Kazım Karabekir, İstasyon Cad. 85/A, 06970 Etimesgut/Ankara, Türkiye"
+  },
+  "Kayalar Oto Lastik": {
+    "place_id": "ChIJ7ZSHpDgx0xQRSRLAw9PScVY",
+    "lat": 39.964072699999996,
+    "lng": 32.610776699999995,
+    "matched_name": "Kayalar Oto Lastik",
+    "matched_address": "Doğan City, Yeşilova, Şht. Ferhat Koç Cd. No:60, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "Oguzlar Otomatik Sanziman": {
+    "place_id": "ChIJW8eXSR1I0xQRdigOhzXO5W0",
+    "lat": 39.9354696,
+    "lng": 32.7172285,
+    "matched_name": "Oğuzlar Otomatik Şanzıman",
+    "matched_address": "Bahçekapı, 2537. Sk. No:16 D:2551cad, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Yavuz Oto": {
+    "place_id": "ChIJV97wOwg50xQRuRscl6R9iW4",
+    "lat": 39.947468,
+    "lng": 32.6482835,
+    "matched_name": "Yavuz Oto",
+    "matched_address": "Kazım Karabekir, 1682. Cd. 38/A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "ANADOLU ROT BALANS HANKOOK BAYISI": {
+    "place_id": "ChIJsyX6If030xQRePNmOVH4uyE",
+    "lat": 39.936977000000006,
+    "lng": 32.7155947,
+    "matched_name": "ANADOLU ROT BALANS HANKOOK BAYİSİ",
+    "matched_address": "bahce kapı mah. oto sanayi sitesi 2551 cadde, Bahçekapı, 2524. Sk. No:7, 06990 Etimesgut/Ankara, Türkiye"
+  },
+  "Aslan oto Lastik": {
+    "place_id": "ChIJXU0n3vs50xQR4-YP5UN-Wbs",
+    "lat": 39.948886699999996,
+    "lng": 32.633749099999996,
+    "matched_name": "Aslan oto Lastik",
+    "matched_address": "Piyade, 1544. Cd. No:90/B, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "BIYIK SHOWROOM OTO LASTIK YOL YARDIM 7/24": {
+    "place_id": "ChIJYR3OTsA50xQRfyERAFdmi1w",
+    "lat": 39.932378,
+    "lng": 32.652142,
+    "matched_name": "BIYIK SHOWROOM OTO LASTIK YOL YARDIM 7/24",
+    "matched_address": "Alsancak, Alsancak Cd No:20 A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "LAS ANKARA LASTIK VE SERVIS HIZMETLERI": {
+    "place_id": "ChIJ82gWAaI30xQRUWXKm4MddK8",
+    "lat": 39.9735289,
+    "lng": 32.656706299999996,
+    "matched_name": "LAS ANKARA LASTİK VE SERVİS HİZMETLERİ",
+    "matched_address": "Şehit Osman Avcı, Malazgirt 1071. Cd. No:10, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "OGUZHAN OTO LASTIK LASTIK USTAM": {
+    "place_id": "ChIJb-qYKaI30xQRl1IvJ3-byoY",
+    "lat": 39.9493267,
+    "lng": 32.6587744,
+    "matched_name": "OĞUZHAN OTO LASTİK LASTİK USTAM",
+    "matched_address": "Kazım Karabekir, İstasyon Cad. 59 c, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "OZMOR OTO LASTIK & YAG SERVISI": {
+    "place_id": "ChIJEVEqTCMx0xQRg6EBeoR9Iys",
+    "lat": 39.9318737,
+    "lng": 32.6533966,
+    "matched_name": "ÖZMOR OTO LASTİK & YAĞ SERVİSİ",
+    "matched_address": "Alsancak, Mehmet Akif Ersoy Cd. No:5/A, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "Ozer Grup Otomotiv Lastikleri Baglica / Ankara": {
+    "place_id": "ChIJPdLi0Bw50xQR50YYHInqV4M",
+    "lat": 39.895277,
+    "lng": 32.658029,
+    "matched_name": "Özer Grup Otomotiv Lastikleri Bağlıca / Ankara",
+    "matched_address": "Bağlıca Mah 1251.Sok No: 1 E-2 Lassa ve Bridgestone Ana Bayi GSM : 0530 880, Bağlıca, D:20 73, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "SS OTO LASTIK": {
+    "place_id": "ChIJ0ZycU_050xQRMVY_buKkmj0",
+    "lat": 39.9527782,
+    "lng": 32.638498999999996,
+    "matched_name": "SS OTO LASTİK",
+    "matched_address": "Piyade, İstasyon Cad. No:211 D:c, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Tas oto lastik": {
+    "place_id": "ChIJ_RG7kjox0xQRDt1Mhd7AaYw",
+    "lat": 39.9696615,
+    "lng": 32.613339599999996,
+    "matched_name": "Taş oto lastik",
+    "matched_address": "Eryaman, Ayaş Ankara Yolu Blv. 372/D, 06000 Etimesgut/Ankara, Türkiye"
+  },
+  "Bridgestone - Ozer Grup Otomotiv": {
+    "place_id": "ChIJPdLi0Bw50xQR50YYHInqV4M",
+    "lat": 39.895277,
+    "lng": 32.658029,
+    "matched_name": "Özer Grup Otomotiv Lastikleri Bağlıca / Ankara",
+    "matched_address": "Bağlıca Mah 1251.Sok No: 1 E-2 Lassa ve Bridgestone Ana Bayi GSM : 0530 880, Bağlıca, D:20 73, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "DUNLOP-Asim Cetinkaya": {
+    "place_id": "ChIJrRTMELw30xQRQ9uKCq1UNAc",
+    "lat": 39.932621100000006,
+    "lng": 32.7176702,
+    "matched_name": "DUNLOP-Asım Çetinkaya",
+    "matched_address": "OTO SANAYİ SİT. 2565. SOK. NO:2, Bahçekapı, Şaşmaz Blv., 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Furkan Oto Lastik 2": {
+    "place_id": "ChIJIeSVm2870xQR1AixNu6OTnA",
+    "lat": 39.954994899999996,
+    "lng": 32.611968,
+    "matched_name": "Furkan Oto Lastik 2",
+    "matched_address": "Atakent, 1512. Cd. no:67, 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "KOCAK OTO LASTIK": {
+    "place_id": "ChIJJ6BknnI30xQR0auXVhyNbMs",
+    "lat": 39.950074,
+    "lng": 32.653842,
+    "matched_name": "KOÇAK OTO LASTİK",
+    "matched_address": "Kazım Karabekir, İstasyon Cad. 99/A, 06560 Etimesgut/Ankara, Türkiye"
+  },
+  "LastikPark - Serkan Oto Lastik": {
+    "place_id": "ChIJ2yYxqTc30xQRN9szCB7zhj8",
+    "lat": 39.933374099999995,
+    "lng": 32.710802099999995,
+    "matched_name": "LastikPark - Serkan Oto Lastik",
+    "matched_address": "Bahçekapı, 2473. Cad. No:23 D:B, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "LastikPark - Yonlas": {
+    "place_id": "ChIJYQ3HFKM30xQRITGLIG6Z-YA",
+    "lat": 39.940453399999996,
+    "lng": 32.713491399999995,
+    "matched_name": "LastikPark - Yönlas",
+    "matched_address": "Bahçekapı, Sanayi Blv. No:15, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "Oto Lastik Gul Abla | 7/24 Yol Yardimi | Yazlik - Kislik Lastik Degisimi | Lastik Oteli": {
+    "place_id": "ChIJEfiGSpow0xQRsPW9LTQ_X8A",
+    "lat": 39.968092,
+    "lng": 32.658600799999995,
+    "matched_name": "Oto Lastik Gül Abla | 7/24 Yol Yardımı | Yazlık - Kışlık Lastik Değişimi | Lastik Oteli",
+    "matched_address": "Eryaman, eryaman, Şeker, 1419. Cd. 2/b, 06930 Etimesgut/Ankara, Türkiye"
+  },
+  "PETLAS-Aydoganlar": {
+    "place_id": "ChIJueUrvgJI0xQRcnZBmgxruGg",
+    "lat": 39.935786,
+    "lng": 32.7193198,
+    "matched_name": "PETLAS-Aydoğanlar",
+    "matched_address": "OTO SANAYİ SİT. 2539. SOK. NO:39, Bahçekapı, Şaşmaz Blv., 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "Simetri Rot Balans Sasmaz": {
+    "place_id": "ChIJY2m_GdlJ0xQRkiQYc9WqGf0",
+    "lat": 39.932648,
+    "lng": 32.719283,
+    "matched_name": "Simetri Rot Balans Sasmaz",
+    "matched_address": "2551. Cadde 2570.Sokak, Bahçekapı, Şaşmaz Blv. No:30, 06105 Etimesgut/Ankara, Türkiye"
+  },
+  "ALBATROS 61 OTO YIKAMA & KUAFOR & LASTIK": {
+    "place_id": "ChIJ2eI--P050xQReAIZX7WyhHY",
+    "lat": 39.894270399999996,
+    "lng": 32.645051099999996,
+    "matched_name": "ALBATROS 61 OTO YIKAMA & KUAFÖR & LASTİK",
+    "matched_address": "Bağlıca, Hilal Cd. No 33/A, 06790 Etimesgut/Ankara, Türkiye"
+  },
+  "BK GARAJ OTO LASTIK AKU ANTIFIRIZ": {
+    "place_id": "ChIJy-p2bT060xQRUSHAe9J4FlA",
+    "lat": 39.9413501,
+    "lng": 32.614502699999996,
+    "matched_name": "BK GARAJ OTO LASTİK AKÜ ANTİFİRİZ",
+    "matched_address": "Ayyıldız, 1623. Sk., 06796 Etimesgut/Ankara, Türkiye"
+  },
+  "CONTINENTAL CAGLAR OTO LASTIK": {
+    "place_id": "ChIJvaWhYeQ30xQRfZlUMyoGIxM",
+    "lat": 39.9407901,
+    "lng": 32.7119241,
+    "matched_name": "CONTİNENTAL ÇAĞLAR OTO LASTİK",
+    "matched_address": "Bahçekapı, 2467. Sk. No:12, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Continental-Aslanlar Lastik-Eryaman Ankara-Continental-Eryaman Yol Yardim": {
+    "place_id": "ChIJb3REUds30xQRTVkAUOSa8IE",
+    "lat": 39.9734519,
+    "lng": 32.6568487,
+    "matched_name": "Continental-Aslanlar Lastik-Eryaman Ankara-Continental-Eryaman Yol Yardım",
+    "matched_address": "Şehit Osman Avcı, Malazgirt 1071. Cd. No:10, 06820 Etimesgut/Ankara, Türkiye"
+  },
+  "DEMIRER OTO LASTIK": {
+    "place_id": "ChIJkQg9lPw50xQREr4Ztc1uSfA",
+    "lat": 39.9429217,
+    "lng": 32.6502333,
+    "matched_name": "DEMİRER OTO LASTİK",
+    "matched_address": "30 Ağustos, 2071. Sk. 12/A, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "HAN OTO AKSESUAR LASTIK": {
+    "place_id": "ChIJ1xzvc-850xQRjczMMlOFOG8",
+    "lat": 39.9357665,
+    "lng": 32.660239499999996,
+    "matched_name": "HAN OTO AKSESUAR LASTİK",
+    "matched_address": "İstasyon, Huzur Dudayev Sk. No:34 D:B, 06794 Etimesgut/Ankara, Türkiye"
+  },
+  "HONLAS LASTIK AS": {
+    "place_id": "ChIJ3-hE99s30xQRM_kPFxmURHs",
+    "lat": 39.9314446,
+    "lng": 32.7133132,
+    "matched_name": "HONLAS LASTİK AŞ",
+    "matched_address": "Bahçekapı, 2557. Sk Şaşmaz Oto Sanayi Sitesi NO:9, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "Kayra Oto Lastik Satis Servis Yol Yardim": {
+    "place_id": "ChIJF2A8Lsgw0xQRWulcbNtw5E0",
+    "lat": 39.9782763,
+    "lng": 32.618804499999996,
+    "matched_name": "Kayra Oto Lastik Satış Servis Yol Yardım",
+    "matched_address": "Devlet Mah, Akcenter Avm, Eryaman, 262. Caddesi No:6, 06824 Etimesgut/Ankara, Türkiye"
+  },
+  "Mobil Lastikci & Aku Takviye Yol Yardim": {
+    "place_id": "ChIJlU_rXqk30xQRnCOA8fkLxRA",
+    "lat": 39.9677888,
+    "lng": 32.6239032,
+    "matched_name": "Mobil Lastikçi & Akü Takviye Yol Yardım",
+    "matched_address": "Yeşilova, 06006 Etimesgut/Ankara, Türkiye"
+  },
+  "Performa Jant": {
+    "place_id": "ChIJWcBpC-E30xQRH85aam-1X9A",
+    "lat": 39.933786999999995,
+    "lng": 32.7148635,
+    "matched_name": "Performa Jant",
+    "matched_address": "Bahçekapı, 2548. Sk. No: 4, 6990 Etimesgut/Ankara, Türkiye"
+  },
+  "Tuncel Jant Lastik": {
+    "place_id": "ChIJL3cx-_430xQRCsZwTjiLtfY",
+    "lat": 39.9318722,
+    "lng": 32.7146274,
+    "matched_name": "Tunçel Jant Lastik",
+    "matched_address": "Bahçekapı, 2559. Sk. No:1, 06797 Etimesgut/Ankara, Türkiye"
+  },
+  "YILDIZ KARDESLER JANT LASTIK": {
+    "place_id": "ChIJi-xsRcA50xQR6geTNiB3U5k",
+    "lat": 39.9092966,
+    "lng": 32.6483554,
+    "matched_name": "YILDIZ KARDEŞLER JANT LASTİK",
+    "matched_address": "Bağlıca, Etimesgut Blv. no:56, 06930 Etimesgut/Ankara, Türkiye"
+  }
+}

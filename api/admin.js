@@ -29,11 +29,17 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Yanlış şifre' });
   }
 
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) {
-    return res.status(500).json({ error: 'Server config hatası: SUPABASE_URL veya SUPABASE_SECRET_KEY tanımlı değil' });
+  // Vercel'de VITE_SUPABASE_URL veya SUPABASE_URL — ikisini de kabul et
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const supabaseSecret = process.env.SUPABASE_SECRET_KEY;
+
+  if (!supabaseUrl || !supabaseSecret) {
+    return res.status(500).json({
+      error: `Server config hatası: ${!supabaseUrl ? 'SUPABASE_URL/VITE_SUPABASE_URL' : ''}${!supabaseUrl && !supabaseSecret ? ' ve ' : ''}${!supabaseSecret ? 'SUPABASE_SECRET_KEY' : ''} tanımlı değil`
+    });
   }
 
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY, {
+  const supabase = createClient(supabaseUrl, supabaseSecret, {
     auth: { persistSession: false },
   });
 
