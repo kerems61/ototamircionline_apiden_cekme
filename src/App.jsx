@@ -29,10 +29,11 @@ const supabase = createClient(
    ────────────────────────────────────────────────────────────── */
 
 const FONT_INJECT = `
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Geist:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Geist:wght@300;400;500;600;700;800&display=swap');
 :root{
   --bg: #FAFAF6;
   --bg-warm: #F4F1EA;
+  --bg-card: #FFFFFF;
   --ink: #14110F;
   --ink-2: #5C5650;
   --ink-3: #8C857C;
@@ -40,13 +41,21 @@ const FONT_INJECT = `
   --line-2: #EFEAE0;
   --card: #FFFFFF;
   --accent: #C2410C;
+  --accent-2: #EA580C;
   --accent-soft: #FEF1E6;
   --green: #166534;
   --green-soft: #ECFDF5;
+  --gold: #D97706;
+  --pro: #DC2626;
+  --pro-soft: #FEE2E2;
   --shadow-sm: 0 1px 2px rgba(20,17,15,.04), 0 1px 3px rgba(20,17,15,.03);
-  --shadow-md: 0 1px 2px rgba(20,17,15,.04), 0 8px 24px rgba(20,17,15,.06);
-  --shadow-lg: 0 1px 2px rgba(20,17,15,.04), 0 24px 48px -12px rgba(20,17,15,.12);
+  --shadow-md: 0 2px 4px rgba(20,17,15,.04), 0 12px 28px rgba(20,17,15,.07);
+  --shadow-lg: 0 1px 2px rgba(20,17,15,.04), 0 28px 56px -16px rgba(20,17,15,.16);
+  --shadow-xl: 0 1px 2px rgba(20,17,15,.05), 0 40px 80px -20px rgba(20,17,15,.22);
+  --shadow-pro: 0 0 0 1px rgba(220,38,38,.18), 0 12px 32px -8px rgba(220,38,38,.28);
 }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); }
 .serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -61,6 +70,12 @@ const FONT_INJECT = `
   0% { background-position: -400px 0; }
   100% { background-position: 400px 0; }
 }
+@keyframes proGlow {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(220,38,38,.25), 0 12px 32px -8px rgba(220,38,38,.32); }
+  50%      { box-shadow: 0 0 0 2px rgba(220,38,38,.45), 0 18px 40px -8px rgba(220,38,38,.48); }
+}
+@keyframes float { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .fadeUp { animation: fadeUp .7s cubic-bezier(.2,.8,.2,1) both; }
 .fadeIn { animation: fadeIn .5s ease both; }
 .slideUp { animation: slideUp .45s cubic-bezier(.2,.8,.2,1) both; }
@@ -68,6 +83,7 @@ const FONT_INJECT = `
   content:''; position:absolute; inset:-4px; border-radius:9999px;
   animation: pulseRing 1.8s ease-out infinite;
 }
+.proGlow { animation: proGlow 2.4s ease-in-out infinite; }
 .skeleton {
   background: linear-gradient(90deg, #EEE9DD 0%, #F6F2E8 50%, #EEE9DD 100%);
   background-size: 800px 100%;
@@ -77,8 +93,30 @@ const FONT_INJECT = `
 .scrollbar-none { scrollbar-width: none; }
 .grain {
   background-image:
-    radial-gradient(1200px 600px at 110% -20%, rgba(194,65,12,.06), transparent 60%),
-    radial-gradient(900px 500px at -10% 110%, rgba(22,101,52,.04), transparent 60%);
+    radial-gradient(1400px 700px at 110% -20%, rgba(194,65,12,.07), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(22,101,52,.04), transparent 60%),
+    radial-gradient(600px 400px at 50% 50%, rgba(217,119,6,.025), transparent 70%);
+}
+.glass {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.card-hover {
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s cubic-bezier(.2,.8,.2,1), border-color .25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--line-2);
+}
+.tap-highlight { -webkit-tap-highlight-color: transparent; }
+button, a { -webkit-tap-highlight-color: transparent; }
+input, textarea, select { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
+input:focus, textarea:focus { box-shadow: 0 0 0 3px rgba(194,65,12,0.12); }
+.dot-pattern {
+  background-image: radial-gradient(rgba(20,17,15,0.07) 1px, transparent 1px);
+  background-size: 18px 18px;
 }
 `;
 
@@ -99,16 +137,25 @@ const INSTAGRAM_USER = 'ototamircimonline';
 
 function getDisplayWord(name) {
   if (!name) return '??';
-  // İlk anlamlı kelimeyi al (sayı/sembol olmayan)
-  const words = name.trim().split(/[\s\-,&.]+/).filter(w => w.length >= 2 && /[A-Za-zÀ-ÿĞğÜüŞşİıÖöÇç]/.test(w));
-  if (words.length === 0) return name.slice(0, 6).toUpperCase();
+  // Anlamlı kelimeleri ayrıştır (en az 2 harf + harf içeren)
+  const words = name.trim()
+    .split(/[\s\-,&.|/]+/)
+    .filter(w => w.length >= 2 && /[A-Za-zÀ-ÿĞğÜüŞşİıÖöÇç]/.test(w));
+  if (words.length === 0) return name.slice(0, 12).toUpperCase();
+
   const first = words[0];
-  // İlk kelime kısaysa (≤3 char) ve 2. kelime varsa, ikisini birleştir
-  if (first.length <= 3 && words.length > 1) {
-    const combined = first + ' ' + words[1];
-    return combined.slice(0, 10).toUpperCase();
+
+  // Tek kelime ya da ilk kelime uzunsa → ilk kelime
+  if (words.length === 1 || first.length >= 11) {
+    return first.slice(0, 13).toUpperCase();
   }
-  return first.slice(0, 9).toUpperCase();
+
+  // İlk 2 kelime birleştirilebilirse (toplam ≤ 16 char) → ikisini göster
+  const combined = `${first} ${words[1]}`;
+  if (combined.length <= 16) return combined.toUpperCase();
+
+  // Aksi takdirde sadece ilk kelime
+  return first.slice(0, 13).toUpperCase();
 }
 
 function googleMapsSearchUrl(mechanic) {
@@ -338,15 +385,13 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
   return (
     <article
       onClick={() => onOpen(m)}
-      className="fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 transition-all duration-500 hover:-translate-y-1"
+      className={`fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 card-hover tap-highlight ${m.featured ? 'proGlow' : ''}`}
       style={{
         background: 'var(--card)',
-        border: '1px solid var(--line)',
-        boxShadow: 'var(--shadow-sm)',
+        border: m.featured ? '1.5px solid rgba(220,38,38,0.35)' : '1px solid var(--line)',
+        boxShadow: m.featured ? 'var(--shadow-pro)' : 'var(--shadow-sm)',
         animationDelay: `${delay}ms`,
       }}
-      onMouseEnter={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-lg)'}
-      onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-sm)'}
     >
       <MechanicPhoto
         tones={m.photoTone}
@@ -359,26 +404,37 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
 
       <div className="pt-4 px-1">
         <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h3 className="serif text-[19px] font-semibold leading-tight truncate" style={{ color: 'var(--ink)' }}>
+          <div className="min-w-0 flex-1">
+            <h3 className="serif text-[18px] sm:text-[19px] font-semibold leading-tight truncate" style={{ color: 'var(--ink)' }}>
               {m.name}
             </h3>
-            <p className="sans text-[12.5px] mt-0.5" style={{ color: 'var(--ink-3)' }}>
-              {m.categoryLabel}{m.neighborhood ? ` · ${m.neighborhood}` : ''}
+            <p className="sans text-[12px] mt-1 flex items-center gap-1.5" style={{ color: 'var(--ink-3)' }}>
+              <span className="font-medium" style={{ color: m.featured ? 'var(--pro)' : 'var(--accent)' }}>
+                {m.categoryLabel}
+              </span>
+              {m.neighborhood && (
+                <>
+                  <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />
+                  <span>{m.neighborhood}</span>
+                </>
+              )}
             </p>
           </div>
           <StarRow rating={m.rating} reviews={m.reviews} dense />
         </div>
 
-        <div className="mt-3 flex items-center gap-3 sans text-[12px] flex-wrap" style={{ color: 'var(--ink-2)' }}>
+        <div className="mt-3 flex items-center gap-2.5 sans text-[12px] flex-wrap" style={{ color: 'var(--ink-2)' }}>
           {m.openingHours && (
-            <span className="flex items-center gap-1"><Clock size={12} /> {m.openingHours}</span>
+            <span className="flex items-center gap-1.5 px-2 py-1 rounded-lg" style={{ background:'var(--bg-warm)' }}>
+              <Clock size={11} strokeWidth={2.2} /> {m.openingHours}
+            </span>
           )}
           {m.phone && (
-            <>
-              {m.openingHours && <span className="w-[3px] h-[3px] rounded-full" style={{ background: 'var(--ink-3)' }} />}
-              <span className="flex items-center gap-1"><Phone size={12} /> {m.phone}</span>
-            </>
+            <a href={`tel:${m.phone.replace(/\s+/g,'')}`} onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-[var(--accent-soft)] transition-colors"
+              style={{ background:'var(--bg-warm)' }}>
+              <Phone size={11} strokeWidth={2.2} /> {m.phone}
+            </a>
           )}
         </div>
 
@@ -402,9 +458,13 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
           </div>
         )}
 
-        <button className="sans mt-4 w-full flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-[13px] font-medium transition-all"
-          style={{ background: 'var(--ink)', color: 'white' }}>
-          Detayları Gör <ChevronRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+        <button className="sans mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-[13.5px] font-semibold transition-all hover:gap-2.5"
+          style={{
+            background: m.featured ? 'linear-gradient(135deg, var(--pro), #B91C1C)' : 'var(--ink)',
+            color: 'white',
+            boxShadow: m.featured ? '0 8px 16px -4px rgba(220,38,38,0.35)' : 'none',
+          }}>
+          Detayları Gör <ChevronRight size={15} className="transition-transform group-hover:translate-x-1" />
         </button>
       </div>
     </article>
@@ -1063,27 +1123,39 @@ export default function App() {
     <div className="min-h-screen sans grain" style={{ background:'var(--bg)' }}>
       <style>{FONT_INJECT}</style>
 
-      <header className="sticky top-0 z-20 backdrop-blur-xl"
-        style={{ background:'rgba(250,250,246,0.82)', borderBottom:'1px solid var(--line)' }}>
+      <header className="sticky top-0 z-20 glass"
+        style={{ borderBottom:'1px solid rgba(232,227,216,0.6)' }}>
         <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
-          <button onClick={() => goToView('home')} className="cursor-pointer">
+          <button onClick={() => goToView('home')} className="cursor-pointer transition-transform hover:scale-[1.02]">
             <Logo />
           </button>
-          <div className="hidden lg:flex items-center gap-7 sans text-[13.5px]" style={{ color:'var(--ink-2)' }}>
-            <button onClick={() => goToView('home')}
-              className={`hover:text-[var(--ink)] transition ${view === 'home' ? 'text-[var(--ink)] font-semibold' : ''}`}>
-              Keşfet
-            </button>
-            <button onClick={() => goToView('map')}
-              className={`hover:text-[var(--ink)] transition ${view === 'map' ? 'text-[var(--ink)] font-semibold' : ''}`}>
-              Harita
-            </button>
+          <nav className="hidden lg:flex items-center gap-1 sans text-[13.5px]">
+            {[
+              { id: 'home', label: 'Keşfet' },
+              { id: 'map',  label: 'Harita' },
+            ].map(item => (
+              <button key={item.id} onClick={() => goToView(item.id)}
+                className="px-4 py-2 rounded-full transition-all"
+                style={{
+                  background: view === item.id ? 'var(--ink)' : 'transparent',
+                  color: view === item.id ? 'white' : 'var(--ink-2)',
+                  fontWeight: view === item.id ? 600 : 500,
+                }}>
+                {item.label}
+              </button>
+            ))}
             <a href={`mailto:${CONTACT_EMAIL}?subject=Usta kayıt başvurusu`}
-              className="hover:text-[var(--ink)] transition">Usta misin?</a>
-          </div>
+              className="px-4 py-2 hover:text-[var(--ink)] transition" style={{ color:'var(--ink-2)' }}>
+              Usta misin?
+            </a>
+          </nav>
           <button onClick={() => goToView('admin')}
-            className="sans text-[13px] font-medium px-4 py-2 rounded-full"
-            style={{ background:'var(--ink)', color:'white' }}>
+            className="sans text-[12.5px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-105"
+            style={{
+              background: view === 'admin' ? 'var(--accent)' : 'var(--ink)',
+              color: 'white',
+              boxShadow: 'var(--shadow-sm)',
+            }}>
             {view === 'admin' ? '✓ Yönetici' : 'Giriş Yap'}
           </button>
         </div>
@@ -1093,57 +1165,92 @@ export default function App() {
       {view === 'admin' && <AdminView onBack={() => goToView('home')} />}
 
       {view === 'home' && (
-      <main className="max-w-6xl mx-auto px-5 pt-8 pb-32 lg:pb-12">
-        <section className="fadeUp">
-          <div className="flex items-center gap-2 sans text-[11px] uppercase tracking-[0.18em] mb-4"
-            style={{ color:'var(--ink-3)' }}>
+      <main className="max-w-6xl mx-auto px-5 pt-10 sm:pt-14 pb-32 lg:pb-12">
+        <section className="fadeUp relative">
+          <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex"
+            style={{ color:'var(--accent)', background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
             <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
               style={{ background:'var(--accent)' }} />
-            Etimesgut · Sadece 4.5+ puanlı ustalar
+            <span className="font-semibold">Etimesgut · 417 Doğrulanmış Usta</span>
           </div>
-          <h1 className="serif text-[40px] sm:text-[56px] leading-[0.98] font-semibold tracking-tight max-w-3xl"
+          <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[0.95] font-semibold tracking-tight max-w-4xl"
             style={{ color:'var(--ink)' }}>
             Güvenilir oto ustası,
-            <span className="block italic" style={{ color:'var(--accent)' }}>şeffaf fiyatla.</span>
+            <span className="block italic mt-1" style={{
+              backgroundImage: 'linear-gradient(120deg, var(--accent) 0%, var(--gold) 50%, var(--accent-2) 100%)',
+              WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+            }}>şeffaf fiyatla.</span>
           </h1>
-          <p className="sans text-[15px] sm:text-[16px] mt-4 max-w-xl" style={{ color:'var(--ink-2)' }}>
-            Etimesgut'un en iyi puanlı oto ustaları tek listede. Topluluktan gelen şeffaf fiyatlarla
-            ücret pazarlığı yapmadan bul.
+          <p className="sans text-[16px] sm:text-[18px] mt-6 max-w-2xl leading-relaxed" style={{ color:'var(--ink-2)' }}>
+            Etimesgut sanayisinin en iyi puanlı oto ustalarını tek bakışta gör.
+            Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.
           </p>
 
-          <form onSubmit={submitSearch} className="mt-7 flex items-center gap-2 rounded-full p-1.5 max-w-2xl"
+          <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 max-w-2xl"
             style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-md)' }}>
-            <div className="pl-4 flex items-center"><Search size={17} color="var(--ink-3)" /></div>
+            <div className="pl-4 flex items-center"><Search size={19} color="var(--ink-3)" strokeWidth={2.2} /></div>
             <input
               value={query}
               onChange={(e)=>setQuery(e.target.value)}
-              placeholder="Bölge veya hizmet ara…"
-              className="flex-1 bg-transparent outline-none sans text-[14px] py-2.5"
+              placeholder="Mahalle, marka veya hizmet ara…"
+              className="flex-1 bg-transparent outline-none sans text-[15px] py-3"
               style={{ color:'var(--ink)' }}
             />
-            <button type="submit" className="sans text-[13px] font-semibold px-5 py-2.5 rounded-full"
+            <button type="submit" className="sans text-[13.5px] font-semibold px-6 py-3 rounded-xl transition-transform hover:scale-105"
               style={{ background:'var(--ink)', color:'white' }}>
               Ara
             </button>
           </form>
+
+          {/* Trust strip */}
+          <div className="mt-8 grid grid-cols-3 gap-3 max-w-2xl fadeUp" style={{ animationDelay:'200ms' }}>
+            {[
+              { k: '417', v: 'Doğrulanmış usta', icon: BadgeCheck },
+              { k: '≥4.5', v: 'Puan filtresi', icon: Star },
+              { k: '7', v: 'Sade kategori', icon: Sparkles },
+            ].map((s, i) => {
+              const Ic = s.icon;
+              return (
+                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                  style={{ background:'var(--card)', border:'1px solid var(--line-2)' }}>
+                  <div className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
+                    style={{ background:'var(--accent-soft)' }}>
+                    <Ic size={16} color="var(--accent)" strokeWidth={2.4} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="serif text-[20px] font-semibold leading-none" style={{ color:'var(--ink)' }}>{s.k}</div>
+                    <div className="sans text-[11px] mt-1 truncate" style={{ color:'var(--ink-3)' }}>{s.v}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </section>
 
-        <section className="mt-9 fadeUp" style={{ animationDelay:'120ms' }}>
+        <section className="mt-12 fadeUp" style={{ animationDelay:'140ms' }}>
+          <div className="sans text-[10.5px] uppercase tracking-[0.16em] font-semibold mb-3" style={{ color:'var(--ink-3)' }}>
+            Kategori
+          </div>
           <CategoryPills active={activeCat} onChange={setActiveCat} />
         </section>
 
         {neighborhoods.length > 0 && (
-          <section className="mt-3 fadeUp" style={{ animationDelay:'150ms' }}>
+          <section className="mt-5 fadeUp" style={{ animationDelay:'170ms' }}>
+            <div className="sans text-[10.5px] uppercase tracking-[0.16em] font-semibold mb-3" style={{ color:'var(--ink-3)' }}>
+              Mahalle
+            </div>
             <NeighborhoodPills active={activeNeighborhood} options={neighborhoods} onChange={setActiveNeighborhood} />
           </section>
         )}
 
-        <div className="mt-7 flex items-baseline justify-between fadeUp" style={{ animationDelay:'180ms' }}>
-          <h2 className="serif text-[22px] font-semibold" style={{ color:'var(--ink)' }}>
+        <div className="mt-9 flex items-baseline justify-between fadeUp" style={{ animationDelay:'200ms' }}>
+          <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
             {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
           </h2>
-          <span className="sans text-[12.5px] font-medium" style={{ color:'var(--ink-3)' }}>
-            Sırala: Fiyatlı önce, sonra puan
+          <span className="sans text-[12px] font-medium px-3 py-1.5 rounded-full hidden sm:inline-flex items-center gap-1.5"
+            style={{ color:'var(--ink-3)', background:'var(--bg-warm)' }}>
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background:'var(--pro)' }} />
+            PRO önce, sonra fiyat, sonra puan
           </span>
         </div>
 
