@@ -1320,6 +1320,92 @@ function Field({ label, children, full }) {
   );
 }
 
+function Pagination({ current, total, totalItems, pageSize, onChange }) {
+  // Görünür sayfa numaralarını hesapla: 1 ... 4 5 [6] 7 8 ... 14
+  const getVisiblePages = () => {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    const pages = [];
+    if (current <= 4) {
+      pages.push(1, 2, 3, 4, 5, '...', total);
+    } else if (current >= total - 3) {
+      pages.push(1, '...', total - 4, total - 3, total - 2, total - 1, total);
+    } else {
+      pages.push(1, '...', current - 1, current, current + 1, '...', total);
+    }
+    return pages;
+  };
+
+  const startItem = (current - 1) * pageSize + 1;
+  const endItem = Math.min(current * pageSize, totalItems);
+
+  return (
+    <div className="mt-10 flex flex-col items-center gap-4 fadeUp">
+      <div className="sans text-[12.5px]" style={{ color:'var(--ink-3)' }}>
+        <span className="font-semibold" style={{ color:'var(--ink-2)' }}>{startItem}-{endItem}</span> / {totalItems} usta
+      </div>
+
+      <nav className="flex items-center gap-1.5 flex-wrap justify-center" aria-label="Sayfalama">
+        {/* Önceki */}
+        <button
+          onClick={() => current > 1 && onChange(current - 1)}
+          disabled={current === 1}
+          className="sans w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+          style={{
+            background: 'var(--card)',
+            border: '1px solid var(--line)',
+            color: current === 1 ? 'var(--ink-3)' : 'var(--ink)',
+            opacity: current === 1 ? 0.4 : 1,
+            cursor: current === 1 ? 'not-allowed' : 'pointer',
+          }}
+          aria-label="Önceki sayfa">
+          <ChevronRight size={16} style={{ transform: 'rotate(180deg)' }} />
+        </button>
+
+        {/* Sayfa numaraları */}
+        {getVisiblePages().map((p, i) => (
+          p === '...' ? (
+            <span key={`dots-${i}`} className="sans w-10 h-10 flex items-center justify-center text-[13px]"
+              style={{ color:'var(--ink-3)' }}>···</span>
+          ) : (
+            <button
+              key={p}
+              onClick={() => onChange(p)}
+              className="sans min-w-[40px] h-10 px-3 rounded-xl transition-all hover:scale-105"
+              style={{
+                background: p === current ? 'var(--ink)' : 'var(--card)',
+                color: p === current ? 'white' : 'var(--ink)',
+                border: `1px solid ${p === current ? 'var(--ink)' : 'var(--line)'}`,
+                fontWeight: p === current ? 700 : 500,
+                fontSize: '13.5px',
+                boxShadow: p === current ? 'var(--shadow-md)' : 'none',
+              }}
+              aria-label={`Sayfa ${p}`}
+              aria-current={p === current ? 'page' : undefined}>
+              {p}
+            </button>
+          )
+        ))}
+
+        {/* Sonraki */}
+        <button
+          onClick={() => current < total && onChange(current + 1)}
+          disabled={current === total}
+          className="sans w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+          style={{
+            background: 'var(--card)',
+            border: '1px solid var(--line)',
+            color: current === total ? 'var(--ink-3)' : 'var(--ink)',
+            opacity: current === total ? 0.4 : 1,
+            cursor: current === total ? 'not-allowed' : 'pointer',
+          }}
+          aria-label="Sonraki sayfa">
+          <ChevronRight size={16} />
+        </button>
+      </nav>
+    </div>
+  );
+}
+
 function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
@@ -1385,7 +1471,7 @@ export default function App() {
   const [mechanics, setMechanics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchAvailableNeighborhoods()
@@ -1429,9 +1515,9 @@ export default function App() {
     return () => { cancelled = true; };
   }, [activeCat, activeNeighborhood, submittedQuery]);
 
-  // Filtre değiştiğinde sayfalamayı sıfırla
+  // Filtre değiştiğinde sayfayı sıfırla
   useEffect(() => {
-    setDisplayCount(PAGE_SIZE);
+    setCurrentPage(1);
   }, [activeCat, activeNeighborhood, submittedQuery]);
 
   const handleWriteReview = (mechanic) => {
@@ -1491,7 +1577,7 @@ export default function App() {
 
       {view === 'home' && (
       <main className="max-w-6xl mx-auto px-5 pt-10 sm:pt-14 pb-32 lg:pb-12">
-        <section className="fadeUp relative">
+        <section className="fadeUp relative flex flex-col items-center text-center">
           <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex"
             style={{ color:'var(--accent)', background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
             <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
@@ -1511,14 +1597,14 @@ export default function App() {
             Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.
           </p>
 
-          <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 max-w-2xl"
+          <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 w-full max-w-2xl"
             style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-md)' }}>
             <div className="pl-4 flex items-center"><Search size={19} color="var(--ink-3)" strokeWidth={2.2} /></div>
             <input
               value={query}
               onChange={(e)=>setQuery(e.target.value)}
               placeholder="Mahalle, marka veya hizmet ara…"
-              className="flex-1 bg-transparent outline-none sans text-[15px] py-3"
+              className="flex-1 bg-transparent outline-none sans text-[15px] py-3 text-left"
               style={{ color:'var(--ink)' }}
             />
             <button type="submit" className="sans text-[13.5px] font-semibold px-6 py-3 rounded-xl transition-transform hover:scale-105"
@@ -1528,7 +1614,7 @@ export default function App() {
           </form>
 
           {/* Trust strip */}
-          <div className="mt-8 grid grid-cols-3 gap-3 max-w-2xl fadeUp" style={{ animationDelay:'200ms' }}>
+          <div className="mt-8 grid grid-cols-3 gap-3 w-full max-w-2xl fadeUp" style={{ animationDelay:'200ms' }}>
             {[
               { k: totalMechanics ?? '...', v: 'Doğrulanmış usta', icon: BadgeCheck },
               { k: '≥4.5', v: 'Puan filtresi', icon: Star },
@@ -1536,7 +1622,7 @@ export default function App() {
             ].map((s, i) => {
               const Ic = s.icon;
               return (
-                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl text-left"
                   style={{ background:'var(--card)', border:'1px solid var(--line-2)' }}>
                   <div className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
                     style={{ background:'var(--accent-soft)' }}>
@@ -1583,38 +1669,23 @@ export default function App() {
         <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} delay={i * 60} />)
-            : mechanics.slice(0, displayCount).map((m, i) => (
-                <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={Math.min(i, 12) * 60} />
+            : mechanics.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE).map((m, i) => (
+                <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={Math.min(i, 12) * 50} />
               ))
           }
         </section>
 
-        {!loading && mechanics.length > displayCount && (
-          <div className="mt-8 flex flex-col items-center gap-3 fadeUp">
-            <div className="sans text-[13px]" style={{ color:'var(--ink-3)' }}>
-              {displayCount} / {mechanics.length} usta gösteriliyor
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setDisplayCount(c => Math.min(c + PAGE_SIZE, mechanics.length))}
-                className="sans text-[13.5px] font-semibold px-6 py-3 rounded-full transition-all hover:scale-[1.02]"
-                style={{ background:'var(--ink)', color:'white', boxShadow:'var(--shadow-md)' }}>
-                Daha Fazla Göster (+{Math.min(PAGE_SIZE, mechanics.length - displayCount)})
-              </button>
-              <button
-                onClick={() => setDisplayCount(mechanics.length)}
-                className="sans text-[13px] font-medium px-5 py-3 rounded-full"
-                style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
-                Tümünü Göster
-              </button>
-            </div>
-          </div>
-        )}
-
-        {!loading && mechanics.length > 0 && displayCount >= mechanics.length && mechanics.length > PAGE_SIZE && (
-          <div className="mt-8 text-center sans text-[13px]" style={{ color:'var(--ink-3)' }}>
-            ✓ Tüm {mechanics.length} usta gösterildi
-          </div>
+        {!loading && mechanics.length > PAGE_SIZE && (
+          <Pagination
+            current={currentPage}
+            total={Math.ceil(mechanics.length / PAGE_SIZE)}
+            totalItems={mechanics.length}
+            pageSize={PAGE_SIZE}
+            onChange={(p) => {
+              setCurrentPage(p);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
         )}
 
         {!loading && mechanics.length === 0 && !error && (
