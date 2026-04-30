@@ -1435,6 +1435,108 @@ function Pagination({ current, total, totalItems, pageSize, onChange, onPageSize
   );
 }
 
+function SuggestionCallout() {
+  const [open, setOpen] = useState(false);
+  const waMsg = encodeURIComponent(
+    "Merhaba!\n\n[ ] Yaptırdığım işlemi ve fiyatını bildirmek istiyorum:\n  · Usta:\n  · İşlem:\n  · Fiyat: ___ ₺\n\n[ ] Listenize eklenmesini istediğim usta var:\n  · Usta adı:\n  · Adres:\n  · Telefon:"
+  );
+  const mailSubject = encodeURIComponent("Fiyat veya usta önerisi · OtoTamircimOnline");
+  const mailBody = encodeURIComponent(
+    "Merhaba,\n\n[ ] Yaptırdığım işlemi ve fiyatını bildirmek istiyorum:\n  · Usta:\n  · İşlem:\n  · Fiyat: ___ ₺\n\n[ ] Listenize eklenmesini istediğim usta var:\n  · Usta adı:\n  · Adres:\n  · Telefon:"
+  );
+
+  return (
+    <>
+      {/* Sol kenarda yan banner — masaüstünde dikey, mobilde alt-sol pill */}
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Fiyat veya usta öner"
+        className="fixed z-40 transition-all hover:scale-105 group
+                   left-4 bottom-24 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:left-0
+                   flex items-center gap-2 px-4 py-3 rounded-full lg:rounded-r-2xl lg:rounded-l-none lg:px-3 lg:py-5"
+        style={{
+          background: 'linear-gradient(135deg, var(--ink) 0%, #2A211A 100%)',
+          color: 'white',
+          boxShadow: 'var(--shadow-lg)',
+        }}
+      >
+        <Sparkles size={16} color="#FBBF77" />
+        <span className="sans text-[12.5px] font-semibold lg:hidden">Fiyat / Usta Öner</span>
+        <span className="hidden lg:flex flex-col items-center gap-2">
+          <span className="sans text-[10.5px] font-bold uppercase tracking-[0.2em] lg:[writing-mode:vertical-rl]">
+            Fiyat / Usta Öner
+          </span>
+        </span>
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center fadeIn p-4"
+          style={{ background: 'rgba(20,17,15,0.55)' }}
+          onClick={() => setOpen(false)}>
+          <div onClick={(e) => e.stopPropagation()}
+            className="slideUp w-full sm:max-w-md rounded-3xl p-6 sm:p-7"
+            style={{
+              background: 'var(--card)',
+              boxShadow: 'var(--shadow-xl)',
+              border: '1px solid var(--line-2)',
+            }}>
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
+                  style={{ background:'linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%)' }}>
+                  <Sparkles size={20} color="white" strokeWidth={2.4} />
+                </div>
+                <div>
+                  <div className="serif text-[20px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
+                    Topluluğa katkı yap
+                  </div>
+                  <div className="sans text-[11.5px] mt-0.5" style={{ color:'var(--ink-3)' }}>
+                    Birlikte daha şeffaf
+                  </div>
+                </div>
+              </div>
+              <button onClick={() => setOpen(false)}
+                className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
+                style={{ background:'var(--bg-warm)', color:'var(--ink)' }}>
+                <X size={16} />
+              </button>
+            </div>
+
+            <p className="sans text-[13.5px] mt-4 leading-relaxed" style={{ color:'var(--ink-2)' }}>
+              <b style={{ color:'var(--ink)' }}>Yaptırdığınız işlemleri ve fiyatlarını bize bildirin</b> —
+              Şeffaf Fiyat listesine ekleyelim, başka sürücülere yol göstersin.
+            </p>
+            <p className="sans text-[13.5px] mt-3 leading-relaxed" style={{ color:'var(--ink-2)' }}>
+              <b style={{ color:'var(--ink)' }}>İstediğiniz ustaları da</b> listemize ekleyebiliriz.
+              Adı ve adresini gönderin, biz halledelim.
+            </p>
+
+            <div className="mt-5 space-y-2">
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`}
+                target="_blank" rel="noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl sans text-[13.5px] font-semibold transition-transform hover:scale-[1.02]"
+                style={{ background: '#25D366', color: 'white', boxShadow: '0 6px 16px -4px rgba(37,211,102,0.4)' }}>
+                <MessageCircle size={17} fill="white" color="#25D366" /> WhatsApp ile Bildir
+              </a>
+              <a
+                href={`mailto:${CONTACT_EMAIL}?subject=${mailSubject}&body=${mailBody}`}
+                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl sans text-[13.5px] font-semibold transition-transform hover:scale-[1.02]"
+                style={{ background: 'var(--ink)', color: 'white' }}>
+                <Mail size={17} /> E-posta ile Bildir
+              </a>
+            </div>
+
+            <div className="mt-4 pt-4 text-[11.5px] sans text-center" style={{ color:'var(--ink-3)', borderTop:'1px dashed var(--line)' }}>
+              Bilgileriniz sadece doğrulama için kullanılır · Spam göndermeyiz
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
@@ -1832,6 +1934,7 @@ export default function App() {
         if (tab === 'map') goToView('map');
       }} />
       <FloatingActions />
+      {view === 'home' && <SuggestionCallout />}
     </div>
   );
 }
