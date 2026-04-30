@@ -164,30 +164,31 @@ def is_auto_business(name, google_category):
 
 def categorize(name, google_category, original_sector):
     """Akıllı kategori tahmini — sıra önemli, en spesifikten en genele.
-    7 kategoriden birini döndür: ekspertiz, lastik, yikama, kaporta, elektrik, servis, mekanik
+    7 kategoriden birini döndür: ekspertiz, yikama, kaporta, lastik, elektrik, servis, mekanik
     """
     norm_name = normalize(name)
     norm_cat = normalize(google_category or "")
 
-    # 1) Ekspertiz / muayene (en spesifik — diğer kategorilerden önce kontrol et)
+    # 1) Ekspertiz / muayene (en spesifik)
     if "ekspertiz" in norm_name or "muayene" in norm_name \
        or "muayene" in norm_cat or "ekspertiz" in norm_cat:
         return "ekspertiz"
 
-    # 2) Lastik / jant
-    if any(k in norm_name for k in ["lastik", "jant", "rot balans"]) \
-       or "lastik" in norm_cat or "rot balans" in norm_cat:
-        return "lastik"
-
-    # 3) Yıkama / detailing
-    if any(k in norm_name for k in ["yikama", "detailing", "pasta cila", "kuafor"]) \
+    # 2) Yıkama / detailing — LASTIKTEN ÖNCE çünkü yıkama+lastik kombo işletmeler
+    #    asıl olarak yıkama hizmeti veriyor (örn: "Gidergelir GARAJ OTO YIKAMA OTO LASTIK")
+    if any(k in norm_name for k in ["yikama", "detailing", "pasta cila", "kuafor", "pasta"]) \
        or any(k in norm_cat for k in ["yikama", "temizlik"]):
         return "yikama"
 
-    # 4) Kaporta / boya / hasar
+    # 3) Kaporta / boya / hasar
     if any(k in norm_name for k in ["kaporta", "boyasiz", "gocuk", "hasar onarim", "ppf", "cam filmi", "kaplama"]) \
        or any(k in norm_cat for k in ["kaporta", "boyama", "kaplama"]):
         return "kaporta"
+
+    # 4) Lastik / jant
+    if any(k in norm_name for k in ["lastik", "jant", "rot balans"]) \
+       or "lastik" in norm_cat or "rot balans" in norm_cat:
+        return "lastik"
 
     # 5) Elektrik / klima / ABS / beyin
     if any(k in norm_name for k in ["oto elektrik", "elektrik", "klima", "abs", "beyin", "airbag", "chip", "tuning", "vagcom"]) \
@@ -206,28 +207,90 @@ def categorize(name, google_category, original_sector):
     # Default → mekanik (motor, tamir, bakım, genel)
     return "mekanik"
 
-# Etimesgut'taki bilinen mahalleler
-NEIGHBORHOODS = [
-    "Bahçekapı", "Bahcekapi", "Bağlıca", "Baglica", "Eryaman", "Erler",
-    "Eldek", "Elvankent", "Yapracık", "Yapracik", "Yeşilova", "Yesilova",
-    "Sasmaz", "Şaşmaz", "Süvari", "Suvari", "Oğuzlar", "Oguzlar",
-    "Ayyıldız", "Ayyildiz", "Ahimesut", "Ahi Mesut", "Topçu", "Topcu",
-    "Devlet", "Atayurt", "Etiler", "Fatih", "Göksu", "Goksu",
-    "Güzelkent", "Guzelkent", "Şeker", "Seker", "Türkkonut", "Turkkonut",
-    "Erzincan", "Yarımca", "Yarimca", "Piyade", "Bağlıkkaya", "Baglikkaya",
-    "Yeni Yayla", "Altay", "Andiçen", "Alsancak", "Bağıvar", "Çakırlar",
-]
+# Etimesgut mahalleleri — kanonik isim → tüm yazım varyantları
+# Adresten hangi varyant bulunursa bulunsun, kanonik ismi döndür (tek mahalle = tek pil)
+NEIGHBORHOODS_CANONICAL = {
+    "Bahçekapı":  ["Bahçekapı", "Bahcekapi", "Bahce Kapi", "Bahcekapı"],
+    "Bağlıca":    ["Bağlıca", "Baglica"],
+    "Eryaman":    ["Eryaman"],
+    "Erler":      ["Erler"],
+    "Elvankent":  ["Elvankent", "Elvan"],
+    "Yapracık":   ["Yapracık", "Yapracik"],
+    "Yeşilova":   ["Yeşilova", "Yesilova", "Yesil ova", "Yeşil Ova"],
+    "Şaşmaz":     ["Şaşmaz", "Sasmaz"],
+    "Süvari":     ["Süvari", "Suvari"],
+    "Oğuzlar":    ["Oğuzlar", "Oguzlar"],
+    "Ayyıldız":   ["Ayyıldız", "Ayyildiz"],
+    "Ahimesut":   ["Ahimesut", "Ahi Mesut", "Ahimesut Mahallesi"],
+    "Topçu":      ["Topçu", "Topcu"],
+    "Devlet":     ["Devlet"],
+    "Atayurt":    ["Atayurt"],
+    "Fatih":      ["Fatih"],
+    "Göksu":      ["Göksu", "Goksu"],
+    "Şeker":      ["Şeker", "Seker", "Sehit Osman Avci"],  # Şehit Osman Avcı genellikle Şeker'e yakın
+    "Piyade":     ["Piyade"],
+    "Alsancak":   ["Alsancak"],
+    "Atakent":    ["Atakent"],
+    "İstasyon":   ["İstasyon", "Istasyon", "Kazim Karabekir"],
+    "30 Ağustos": ["30 Agustos", "30 Ağustos"],
+    "Türkkonut":  ["Türkkonut", "Turkkonut"],
+}
 
 def extract_neighborhood(address):
     if not address:
         return None
     norm_addr = normalize(address)
-    best = None
-    for nb in NEIGHBORHOODS:
-        if normalize(nb) in norm_addr:
-            if best is None or len(nb) > len(best):
-                best = nb
-    return best
+    best_canonical = None
+    best_len = 0
+    for canonical, variants in NEIGHBORHOODS_CANONICAL.items():
+        for v in variants:
+            nv = normalize(v)
+            if nv in norm_addr and len(nv) > best_len:
+                best_canonical = canonical
+                best_len = len(nv)
+    return best_canonical
+
+# Etimesgut mahalle merkez koordinatları (yaklaşık — Google Maps'ten alındı)
+# Geocoding pahalı/yavaş olduğu için mahalle merkezine + isim hash'iyle deterministik offset koyuyoruz
+NEIGHBORHOOD_CENTROIDS = {
+    "Bahçekapı":  (39.9483, 32.7140),  # Şaşmaz oto sanayi yoğun
+    "Şaşmaz":     (39.9430, 32.7050),
+    "Bağlıca":    (39.9100, 32.6950),
+    "Eryaman":    (39.9683, 32.6310),
+    "Erler":      (39.9290, 32.7280),
+    "Yeşilova":   (39.9580, 32.6800),
+    "Süvari":     (39.9450, 32.6710),
+    "Ahimesut":   (39.9520, 32.6940),
+    "Oğuzlar":    (39.9520, 32.6790),
+    "Ayyıldız":   (39.9560, 32.6830),
+    "Topçu":      (39.9510, 32.6900),
+    "Yapracık":   (39.9480, 32.6390),
+    "Atayurt":    (39.9420, 32.6420),
+    "Şeker":      (39.9670, 32.6280),
+    "Alsancak":   (39.9620, 32.6750),
+    "Piyade":     (39.9560, 32.6770),
+    "Fatih":      (39.9430, 32.6580),
+    "İstasyon":   (39.9580, 32.6780),
+    "Göksu":      (39.9540, 32.6240),
+    "Devlet":     (39.9650, 32.6320),
+    "Elvankent":  (39.9610, 32.6590),
+    "Atakent":    (39.9560, 32.6810),
+    "30 Ağustos": (39.9590, 32.6650),
+    "Türkkonut":  (39.9740, 32.6160),
+}
+ETIMESGUT_CENTER = (39.9558, 32.6790)
+
+import hashlib
+def get_lat_lng(neighborhood, name):
+    """Mahalle merkezi + isim hash'inden deterministik küçük offset (~250m)."""
+    if neighborhood and neighborhood in NEIGHBORHOOD_CENTROIDS:
+        base_lat, base_lng = NEIGHBORHOOD_CENTROIDS[neighborhood]
+    else:
+        base_lat, base_lng = ETIMESGUT_CENTER
+    h = int(hashlib.md5((name or "").encode("utf-8")).hexdigest()[:8], 16)
+    dlat = ((h % 1000) - 500) / 500 * 0.0025  # ~±280m
+    dlng = (((h >> 10) % 1000) - 500) / 500 * 0.0035
+    return round(base_lat + dlat, 7), round(base_lng + dlng, 7)
 
 def sql_str(s):
     if s is None or s == "":
@@ -266,6 +329,7 @@ def main():
         sector_counts[sector_id] = sector_counts.get(sector_id, 0) + 1
 
         nb = extract_neighborhood(adres)
+        lat, lng = get_lat_lng(nb, name)
 
         rows.append({
             "name": name.strip(),
@@ -277,6 +341,8 @@ def main():
             "address": (adres or "").strip() or None,
             "neighborhood": nb,
             "opening_hours": (calisma or "").strip() or None,
+            "lat": lat,
+            "lng": lng,
         })
 
     print(f"\n→ {len(rows)} usta seçildi (puan ≥ {MIN_RATING}, sadece oto-ile ilgili)")
@@ -295,17 +361,20 @@ def main():
         f.write("alter table mechanics add column if not exists featured boolean default false;\n")
         f.write("alter table mechanics add column if not exists google_maps_url text;\n")
         f.write("alter table mechanics add column if not exists notes text;\n")
+        f.write("alter table mechanics add column if not exists lat numeric(10,7);\n")
+        f.write("alter table mechanics add column if not exists lng numeric(10,7);\n")
         f.write("create index if not exists mechanics_featured_idx on mechanics (featured) where featured = true;\n\n")
         f.write("-- 2) Eski veriyi temizle\n")
         f.write("delete from mechanics;\n\n")
-        f.write("-- 3) Yeni 442 ustayı yükle\n")
-        f.write("insert into mechanics (name, sector, google_category, rating, review_count, phone, address, neighborhood, opening_hours) values\n")
+        f.write(f"-- 3) Yeni {len(rows)} ustayı yükle\n")
+        f.write("insert into mechanics (name, sector, google_category, rating, review_count, phone, address, neighborhood, opening_hours, lat, lng) values\n")
         lines = []
         for r in rows:
             lines.append(
                 f"  ({sql_str(r['name'])}, {sql_str(r['sector'])}, {sql_str(r['google_category'])}, "
                 f"{sql_num(r['rating'])}, {sql_num(r['review_count'])}, {sql_str(r['phone'])}, "
-                f"{sql_str(r['address'])}, {sql_str(r['neighborhood'])}, {sql_str(r['opening_hours'])})"
+                f"{sql_str(r['address'])}, {sql_str(r['neighborhood'])}, {sql_str(r['opening_hours'])}, "
+                f"{sql_num(r['lat'])}, {sql_num(r['lng'])})"
             )
         f.write(",\n".join(lines))
         f.write(";\n")

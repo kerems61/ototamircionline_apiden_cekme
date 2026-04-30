@@ -676,64 +676,195 @@ function BottomNav({ active, onChange }) {
   );
 }
 
-function MapView({ onBack }) {
+function MapView({ onBack, onSelectMechanic }) {
+  const mapRef = React.useRef(null);
+  const mapInstanceRef = React.useRef(null);
+  const clusterGroupRef = React.useRef(null);
+  const [allMechanics, setAllMechanics] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [leafletReady, setLeafletReady] = useState(false);
+
+  // Leaflet'in yüklenmesini bekle
+  useEffect(() => {
+    if (window.L && window.L.markerClusterGroup) {
+      setLeafletReady(true);
+      return;
+    }
+    const check = setInterval(() => {
+      if (window.L && window.L.markerClusterGroup) {
+        setLeafletReady(true);
+        clearInterval(check);
+      }
+    }, 100);
+    return () => clearInterval(check);
+  }, []);
+
+  // Ustaları çek
+  useEffect(() => {
+    setLoading(true);
+    supabase.from('mechanics')
+      .select('id, name, sector, neighborhood, phone, rating, review_count, address, opening_hours, lat, lng, featured, google_maps_url')
+      .not('lat', 'is', null)
+      .limit(1000)
+      .then(({ data, error }) => {
+        if (error) console.error(error);
+        setAllMechanics(data || []);
+        setLoading(false);
+      });
+  }, []);
+
+  // Haritayı başlat
+  useEffect(() => {
+    if (!leafletReady || !mapRef.current || mapInstanceRef.current) return;
+    const L = window.L;
+    const map = L.map(mapRef.current, {
+      zoomControl: true,
+      scrollWheelZoom: true,
+    }).setView([39.9540, 32.6790], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
+    mapInstanceRef.current = map;
+  }, [leafletReady]);
+
+  // Marker'ları güncelle (filtre değiştiğinde)
+  useEffect(() => {
+    if (!leafletReady || !mapInstanceRef.current) return;
+    const L = window.L;
+    const map = mapInstanceRef.current;
+
+    // Eski cluster grubunu temizle
+    if (clusterGroupRef.current) {
+      map.removeLayer(clusterGroupRef.current);
+    }
+
+    const filtered = allMechanics.filter(m => filter === 'all' || m.sector === filter);
+    const cluster = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      spiderfyOnMaxZoom: true,
+      maxClusterRadius: 50,
+    });
+
+    filtered.forEach(m => {
+      if (!m.lat || !m.lng) return;
+      const cat = CATEGORY_BY_ID[m.sector] ?? CATEGORY_BY_ID.all;
+      const isFeatured = m.featured;
+      const color = isFeatured ? '#DC2626' : (cat.tones?.[1] || '#1F1B16');
+      const ringColor = isFeatured ? '#FCA5A5' : 'rgba(255,255,255,0.9)';
+
+      const html = `
+        <div style="
+          width:30px;height:30px;border-radius:50%;
+          background:${color};
+          border:2.5px solid ${ringColor};
+          box-shadow: 0 2px 8px rgba(0,0,0,0.25)${isFeatured ? ', 0 0 0 4px rgba(220,38,38,0.18)' : ''};
+          display:flex;align-items:center;justify-content:center;
+          color:white;font-weight:700;font-size:13px;
+          font-family:'Geist',system-ui,sans-serif;
+        ">${isFeatured ? '★' : '✦'}</div>
+      `;
+      const icon = L.divIcon({
+        html, className: 'omech-pin',
+        iconSize: [30, 30], iconAnchor: [15, 15],
+      });
+
+      const marker = L.marker([m.lat, m.lng], { icon });
+      const popupHtml = `
+        <div style="font-family:'Geist',system-ui,sans-serif;min-width:200px;">
+          ${isFeatured ? '<div style="display:inline-block;background:#DC2626;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px;letter-spacing:0.05em;">★ PRO</div>' : ''}
+          <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:#14110F;line-height:1.2;">${(m.name || '').replace(/[<>]/g,'')}</div>
+          <div style="font-size:12px;color:#5C5650;margin-top:3px;">${cat.label} · ${m.neighborhood || 'Etimesgut'}</div>
+          <div style="font-size:13px;color:#14110F;margin-top:6px;">★ ${(m.rating || 0).toFixed(1)} <span style="color:#8C857C;">(${m.review_count || 0})</span></div>
+          <button id="omech-detail-${m.id}" style="margin-top:10px;width:100%;padding:8px 12px;background:#14110F;color:white;border:none;border-radius:10px;font-weight:600;font-size:12px;cursor:pointer;">Detayları Gör →</button>
+        </div>
+      `;
+      marker.bindPopup(popupHtml);
+      marker.on('popupopen', () => {
+        const btn = document.getElementById(`omech-detail-${m.id}`);
+        if (btn) btn.onclick = () => onSelectMechanic && onSelectMechanic(m);
+      });
+      cluster.addLayer(marker);
+    });
+
+    map.addLayer(cluster);
+    clusterGroupRef.current = cluster;
+  }, [leafletReady, allMechanics, filter, onSelectMechanic]);
+
+  const counts = React.useMemo(() => {
+    const out = { all: allMechanics.length };
+    for (const m of allMechanics) out[m.sector] = (out[m.sector] || 0) + 1;
+    return out;
+  }, [allMechanics]);
+
   return (
     <main className="max-w-6xl mx-auto px-5 pt-6 pb-32 lg:pb-12">
       <div className="flex items-center justify-between mb-5 fadeUp">
         <div>
-          <h2 className="serif text-[28px] sm:text-[34px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
+          <h2 className="serif text-[28px] sm:text-[36px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
             Etimesgut Haritası
           </h2>
-          <p className="sans text-[13px] mt-1" style={{ color:'var(--ink-3)' }}>
-            Sanayi bölgelerine ve ustalara hızlıca git. Yol tarifi için karta tıkla.
+          <p className="sans text-[13.5px] mt-1.5" style={{ color:'var(--ink-3)' }}>
+            {loading ? 'Yükleniyor…' : `${allMechanics.length} usta haritada · pin'lere tıkla, detaya git`}
           </p>
         </div>
         <button onClick={onBack}
-          className="sans text-[13px] font-medium px-4 py-2 rounded-full"
+          className="sans text-[13px] font-medium px-4 py-2 rounded-full transition-all hover:scale-105"
           style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
           ← Listeye dön
         </button>
       </div>
 
-      <div className="rounded-3xl overflow-hidden fadeUp" style={{ border:'1px solid var(--line)', boxShadow:'var(--shadow-md)', animationDelay:'80ms' }}>
-        <iframe
-          title="Etimesgut Haritası"
-          src="https://www.google.com/maps?q=Etimesgut+Sasmaz+Oto+Sanayi+Sitesi+Ankara&output=embed"
-          width="100%" height="500"
-          style={{ border: 0 }}
-          loading="lazy"
-          allowFullScreen
-        />
+      {/* Kategori filtresi */}
+      <div className="mb-4 fadeUp" style={{ animationDelay:'80ms' }}>
+        <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5 lg:mx-0 lg:px-0">
+          <div className="flex gap-2 min-w-max lg:min-w-0 lg:flex-wrap">
+            {CATEGORIES.map(({ id, label, icon: Icon }) => {
+              const isActive = filter === id;
+              const count = counts[id] || 0;
+              return (
+                <button key={id} onClick={() => setFilter(id)}
+                  className="sans flex items-center gap-2 px-3.5 py-2 rounded-full text-[12.5px] font-medium transition-all whitespace-nowrap"
+                  style={{
+                    background: isActive ? 'var(--ink)' : 'var(--card)',
+                    color: isActive ? 'white' : 'var(--ink)',
+                    border: `1px solid ${isActive ? 'var(--ink)' : 'var(--line)'}`,
+                  }}>
+                  <Icon size={14} strokeWidth={2.2} />
+                  {label}
+                  {count > 0 && (
+                    <span className="text-[10.5px] px-1.5 py-0.5 rounded-full"
+                      style={{ background: isActive ? 'rgba(255,255,255,0.2)' : 'var(--bg-warm)', color: isActive ? 'white' : 'var(--ink-3)' }}>
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-3 fadeUp" style={{ animationDelay:'150ms' }}>
-        {[
-          { name: 'Şaşmaz Oto Sanayi Sitesi', q: 'Sasmaz Oto Sanayi Sitesi Etimesgut Ankara', desc: 'Etimesgut\'un en büyük oto sanayisi' },
-          { name: 'Bahçekapı', q: 'Bahcekapi Etimesgut Ankara', desc: 'Yoğun usta merkezi' },
-          { name: 'Bağlıca Sanayi', q: 'Baglica Etimesgut Ankara', desc: 'Lastik ve ekspertiz yoğun' },
-          { name: 'Eryaman', q: 'Eryaman Etimesgut Ankara', desc: 'Yıkama ve kaporta' },
-          { name: 'Süvari / Ahi Mesut', q: 'Suvari Ahi Mesut Etimesgut Ankara', desc: 'Karışık servisler' },
-          { name: 'Piyade / İstasyon', q: 'Piyade Istasyon Etimesgut Ankara', desc: 'Yol yardım merkezi' },
-        ].map((spot) => (
-          <a key={spot.name}
-             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.q)}`}
-             target="_blank" rel="noreferrer"
-             className="block rounded-2xl p-4 hover:-translate-y-0.5 transition-all"
-             style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-sm)' }}>
-            <div className="flex items-start gap-3">
-              <div className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background:'var(--accent-soft)' }}>
-                <MapPin size={18} color="var(--accent)" />
-              </div>
-              <div className="min-w-0">
-                <div className="serif text-[16px] font-semibold" style={{ color:'var(--ink)' }}>{spot.name}</div>
-                <div className="sans text-[12px] mt-0.5" style={{ color:'var(--ink-3)' }}>{spot.desc}</div>
-                <div className="sans text-[11px] mt-2 flex items-center gap-1" style={{ color:'var(--accent)' }}>
-                  Google Maps'te aç <ExternalLink size={11} />
-                </div>
-              </div>
-            </div>
-          </a>
-        ))}
+      {/* Harita */}
+      <div className="rounded-3xl overflow-hidden fadeUp"
+        style={{ border:'1px solid var(--line)', boxShadow:'var(--shadow-md)', animationDelay:'120ms' }}>
+        <div ref={mapRef} style={{ width: '100%', height: '600px', background: 'var(--bg-warm)' }} />
+        {!leafletReady && (
+          <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents:'none' }}>
+            <div className="sans text-[13px]" style={{ color:'var(--ink-3)' }}>Harita yükleniyor…</div>
+          </div>
+        )}
+      </div>
+
+      {/* Bilgi notu */}
+      <div className="mt-4 p-4 rounded-2xl flex items-start gap-3 fadeUp"
+        style={{ background:'var(--bg-warm)', border:'1px solid var(--line-2)', animationDelay:'150ms' }}>
+        <Sparkles size={16} color="var(--accent)" className="shrink-0 mt-0.5" />
+        <div className="sans text-[12.5px] leading-relaxed" style={{ color:'var(--ink-2)' }}>
+          <b style={{ color:'var(--ink)' }}>Pin konumları yaklaşık.</b> Her usta mahalle merkezinin yakınına yerleştirildi.
+          Net konum için pin'e tıkla → "Detayları Gör" → "Yol Tarifi" Google Maps'te kesin adresi açar.
+        </div>
       </div>
     </main>
   );
@@ -1161,7 +1292,7 @@ export default function App() {
         </div>
       </header>
 
-      {view === 'map' && <MapView onBack={() => goToView('home')} />}
+      {view === 'map' && <MapView onBack={() => goToView('home')} onSelectMechanic={(rawRow) => setSelected(mapRow(rawRow))} />}
       {view === 'admin' && <AdminView onBack={() => goToView('home')} />}
 
       {view === 'home' && (

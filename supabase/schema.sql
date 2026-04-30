@@ -26,6 +26,8 @@ create table mechanics (
   featured        boolean default false,             -- yönetici tarafından PRO işaretli (üstte gözükür)
   google_maps_url text,                              -- yönetici tarafından özelleştirilen Google Maps URL'si (yoksa otomatik arama)
   notes           text,                              -- yönetici notları (özel açıklama)
+  lat             numeric(10,7),                     -- enlem (geocoding sonucu, harita için)
+  lng             numeric(10,7),                     -- boylam
   created_at      timestamptz default now(),
   updated_at      timestamptz default now()
 );
