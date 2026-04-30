@@ -158,6 +158,18 @@ function getDisplayWord(name) {
   return first.slice(0, 13).toUpperCase();
 }
 
+function haversineKm(a, b) {
+  if (!a || !b || a.lat == null || b.lat == null || a.lng == null || b.lng == null) return null;
+  const toRad = (d) => (d * Math.PI) / 180;
+  const R = 6371;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const lat1 = toRad(a.lat);
+  const lat2 = toRad(b.lat);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
 function googleMapsSearchUrl(mechanic) {
   // 1) Admin tarafından özel URL set edildiyse onu kullan
   if (mechanic.googleMapsUrl) return mechanic.googleMapsUrl;
@@ -333,7 +345,7 @@ function NeighborhoodPills({ active, options, onChange }) {
   );
 }
 
-function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel }) {
+function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel, distanceKm }) {
   const word = getDisplayWord(name);
   // featured ise kırmızımsı vurgulu gradient kullan
   const grad = featured
@@ -376,6 +388,14 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
         <div className="absolute bottom-3 left-3 sans text-[10.5px] font-medium px-2.5 py-1 rounded-full backdrop-blur-md"
           style={{ background:'rgba(255,255,255,0.18)', color:'rgba(255,255,255,0.95)', border:'1px solid rgba(255,255,255,0.2)' }}>
           {categoryLabel}
+        </div>
+      )}
+
+      {distanceKm != null && (
+        <div className="absolute bottom-3 right-3 sans text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-md"
+          style={{ background:'rgba(255,255,255,0.95)', color:'var(--ink)', boxShadow:'0 2px 8px rgba(0,0,0,0.15)' }}>
+          <Navigation size={11} strokeWidth={2.6} color="var(--accent)" />
+          {distanceKm < 1 ? `${Math.round(distanceKm * 1000)} m` : `${distanceKm.toFixed(1)} km`}
         </div>
       )}
 
@@ -424,6 +444,7 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
         name={m.name}
         categoryIcon={CATEGORY_BY_ID[m.categoryId]?.icon}
         categoryLabel={m.categoryLabel}
+        distanceKm={m.distanceKm}
       />
 
       <div className="pt-4 px-1">
@@ -1604,6 +1625,40 @@ export default function App() {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [userLocation, setUserLocation] = useState(null);
+  const [sortMode, setSortMode] = useState('default'); // 'default' | 'distance'
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState('');
+
+  const toggleDistanceSort = () => {
+    setLocError('');
+    if (sortMode === 'distance') {
+      setSortMode('default');
+      return;
+    }
+    if (userLocation) {
+      // Konum zaten var, tekrar istemeye gerek yok
+      setSortMode('distance');
+      return;
+    }
+    if (!navigator.geolocation) {
+      setLocError('Tarayıcınız konum desteklemiyor');
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setSortMode('distance');
+        setLocating(false);
+      },
+      (err) => {
+        setLocating(false);
+        setLocError(err.code === 1 ? 'Konum izni reddedildi' : 'Konum alınamadı');
+      },
+      { timeout: 10000, maximumAge: 60000 }
+    );
+  };
 
   useEffect(() => {
     fetchAvailableNeighborhoods()
@@ -1621,18 +1676,29 @@ export default function App() {
     fetchMechanics({ category: activeCat, neighborhood: activeNeighborhood, query: submittedQuery })
       .then((list) => {
         if (cancelled) return;
-        const sorted = [...list].sort((a, b) => {
-          // 1) Featured (PRO) ustalar en üstte
+        // Eğer kullanıcı konumu varsa, her ustaya mesafeyi ekle
+        const withDistance = userLocation
+          ? list.map(m => ({ ...m, distanceKm: haversineKm(userLocation, { lat: m.lat, lng: m.lng }) }))
+          : list;
+        const sorted = [...withDistance].sort((a, b) => {
+          // 1) Featured (PRO) her zaman en üstte
           const af = a.featured ? 1 : 0, bf = b.featured ? 1 : 0;
           if (bf !== af) return bf - af;
-          // 2) Sonra fiyatı olanlar
+          // 2) Mesafe modu: yakın olanlar üstte
+          if (sortMode === 'distance' && userLocation) {
+            const da = a.distanceKm, db = b.distanceKm;
+            if (da != null && db != null) return da - db;
+            if (da != null) return -1;
+            if (db != null) return 1;
+          }
+          // 3) Varsayılan: fiyatı olanlar
           const ap = a.transparentPrices.length > 0 ? 1 : 0;
           const bp = b.transparentPrices.length > 0 ? 1 : 0;
           if (bp !== ap) return bp - ap;
-          // 3) Sonra puana göre
+          // 4) Puana göre
           const ar = a.rating ?? 0, br = b.rating ?? 0;
           if (br !== ar) return br - ar;
-          // 4) En sonda yorum sayısı
+          // 5) Yorum sayısı
           return (b.reviews ?? 0) - (a.reviews ?? 0);
         });
         setMechanics(sorted);
@@ -1645,7 +1711,7 @@ export default function App() {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [activeCat, activeNeighborhood, submittedQuery]);
+  }, [activeCat, activeNeighborhood, submittedQuery, userLocation, sortMode]);
 
   // Filtre veya sayfa boyutu değiştiğinde sayfayı sıfırla
   useEffect(() => {
@@ -1786,11 +1852,33 @@ export default function App() {
           </section>
         )}
 
-        <div className="mt-9 fadeUp" style={{ animationDelay:'200ms' }}>
+        <div className="mt-9 flex items-center justify-between gap-3 flex-wrap fadeUp" style={{ animationDelay:'200ms' }}>
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
             {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
           </h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleDistanceSort}
+              disabled={locating}
+              className="sans flex items-center gap-2 text-[12.5px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-[1.03]"
+              style={{
+                background: sortMode === 'distance' ? 'var(--accent)' : 'var(--card)',
+                color: sortMode === 'distance' ? 'white' : 'var(--ink)',
+                border: `1px solid ${sortMode === 'distance' ? 'var(--accent)' : 'var(--line)'}`,
+                opacity: locating ? 0.6 : 1,
+                boxShadow: sortMode === 'distance' ? '0 4px 12px -2px rgba(194,65,12,0.3)' : 'none',
+              }}>
+              <Navigation size={13} strokeWidth={2.4} />
+              {locating ? 'Konum alınıyor…' : sortMode === 'distance' ? 'Yakına göre · Aktif' : 'Yakına göre sırala'}
+            </button>
+          </div>
         </div>
+        {locError && (
+          <div className="mt-2 sans text-[12.5px] px-3 py-2 rounded-xl"
+            style={{ background:'#FEF2F2', color:'#991B1B', border:'1px solid #FECACA' }}>
+            {locError}
+          </div>
+        )}
 
         {error && (
           <div className="mt-5 rounded-2xl p-4 sans text-[13px]" style={{ background:'#FEF2F2', border:'1px solid #FECACA', color:'#991B1B' }}>
