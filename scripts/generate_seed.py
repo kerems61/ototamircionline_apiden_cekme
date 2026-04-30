@@ -60,37 +60,52 @@ NON_AUTO_CATEGORIES = {
 
 # 2) İsimde geçerse otomobil-DIŞI sayılan kelimeler (oto-keyword yoksa elenir)
 NON_AUTO_NAME_HINTS = [
-    "telefon", "iphone", "samsung", "xiaomi", "vodafone", "turkcell",
-    "tv tamir", "televizyon", "beyaz esya", "cep shop",
-    "kombi servisi", "klima servisi" if False else None,  # not "klima" alone
-    "pimapen", "winsa pvc", "sineklik",
+    "telefon", "iphone", "samsung", "xiaomi", "vodafone", "turkcell", "huawei",
+    "tv tamir", "televizyon", "beyaz esya", "cep shop", "cep telefonu",
+    "kombi", "ariston", "vestel", "arcelik", "bosch servis",  # ev aletleri markaları
+    "pimapen", "winsa pvc", "sineklik", "pencere",
     "anahtar", "cilingir",
-    "avize", "elektronik",
+    "avize", "aydinlatma",
+    "ev esya", "ev esyasi", "elektronik esya",
+    "panasonic", "lg", "sony", "philips",
+    "bilgisayar tamir", "laptop", "elektronik tamir",
+    "isitma", "kombi servisi",
 ]
-NON_AUTO_NAME_HINTS = [n for n in NON_AUTO_NAME_HINTS if n]
 
-# 3) İsimde geçerse otomobil-IÇI olduğu kesinleşen kelimeler
-AUTO_NAME_HINTS = [
+# 3) İsimde geçerse otomobil-IÇI olduğu kesinleşen kelimeler (GÜÇLÜ — non-auto kategoriyi override eder)
+STRONG_AUTO_KEYWORDS = [
     "oto ", "oto.", "oto/", "otomotiv", "otomobil", "araç", "araba", "arac",
-    "motor", "motorsiklet", "motosiklet",
-    "lastik", "jant", "rot balans", "balans",
-    "kaporta", "boya", "göçük", "gocuk", "hasar",
+    "lastik", "jant", "rot balans",
+    "kaporta", "gocuk", "göçük", "boyasiz",
     "egzoz", "şanzıman", "sanziman",
     "yağ değişim", "yag degisim", "madeni yag",
     "yedek parça", "yedek parca", "yedekparca",
     "ekspertiz", "muayene",
-    "yıkama", "yikama", "detailing", "cila", "ppf", "kaplama", "cam filmi",
-    "frenci", "fren", "balata", "akü", "aku", "sarj istasyonu", "elektrikli arac",
-    "abs", "beyin", "airbag", "klima gazi", "tuning", "chip", "ozel servis",
-    "garage", "garaj", "service", "servis",
-    "mercedes", "bmw", "audi", "volkswagen", "vw ", "skoda", "seat", "porsche",
-    "ford", "renault", "reno ", "peugeot", "citroen", "opel", "fiat", "honda",
-    "toyota", "nissan", "hyundai", "kia", "volvo", "isuzu", "subaru",
-    "land rover", "range rover", "mini cooper", "dacia", "alfa romeo", "alfom",
-    "cekici", "cekme", "yol yardim",
-    "lpg", "dizel", "enjektor",
-    "rot ", " rot", "balans",
+    "detailing", "ppf", "cam filmi",
+    "frenci", "balata", "abs", "beyin", "airbag", "klima gazi",
+    "tuning", "chip", "petek temizlik",
+    "akü", " aku ", "aku ", " aku",
+    "cekici", "yol yardim",
+    "lpg", "enjektor",
+    "vagcom", "obd",
 ]
+
+# 4) Marka isimleri (ek auto-ipucu, ama tek başına yeterli değil — başka oto-bağlam gerek)
+BRAND_NAMES = [
+    "mercedes", "bmw", "audi", "volkswagen", "skoda", "seat", "porsche",
+    "ford", "renault", "peugeot", "citroen", "opel", "fiat", "honda",
+    "toyota", "nissan", "hyundai", "kia", "volvo", "isuzu", "subaru",
+    "land rover", "range rover", "mini cooper", "dacia", "alfa romeo",
+    "tata", "iveco", "cupra", "porsche",
+]
+
+# 5) Yumuşak otomotiv ipuçları (belirsiz kategorilerde işe yarar)
+SOFT_AUTO_HINTS = [
+    "motor", "motorsiklet", "motosiklet",
+    "yıkama", "yikama", "cila", "pasta cila",
+    "service", "servis", "garage", "garaj",
+    "mekanik", "tamir", "bakim", "bakım",
+] + BRAND_NAMES
 
 # Otomotiv ile ilgisi olan google_category'ler (whitelist — bunlar her zaman geçer)
 AUTO_CATEGORIES = {
@@ -124,73 +139,71 @@ def is_auto_business(name, google_category):
     norm_name = normalize(name)
     norm_cat = google_category or ""
 
-    # 1. Net non-auto kategoriler → her zaman ele
+    has_strong_auto = any(h in norm_name for h in STRONG_AUTO_KEYWORDS)
+    has_soft_auto = any(h in norm_name for h in SOFT_AUTO_HINTS)
+    has_non_auto = any(h in norm_name for h in NON_AUTO_NAME_HINTS)
+
+    # 1. Net non-auto kategoriler → sadece GÜÇLÜ oto sinyali varsa tut
     if norm_cat in NON_AUTO_CATEGORIES:
-        # ama ismi açıkça oto ise (örn: "Oto Kilit"), tut
-        if any(h in norm_name for h in AUTO_NAME_HINTS):
-            return True
+        return has_strong_auto  # "servis" veya "garage" yetmez, "oto" / "araç" / "ekspertiz" gerek
+
+    # 2. İsimde net non-auto ipucu varsa, güçlü oto sinyali yoksa ele
+    if has_non_auto and not has_strong_auto:
         return False
 
-    # 2. İsimde non-auto ipucu varsa ele (oto ipucu yoksa)
-    has_auto_hint = any(h in norm_name for h in AUTO_NAME_HINTS)
-    has_non_auto_hint = any(h in norm_name for h in NON_AUTO_NAME_HINTS)
-    if has_non_auto_hint and not has_auto_hint:
-        return False
-
-    # 3. Net auto kategoriler → tut
+    # 3. Net auto kategoriler → tut (zaten otomotiv kategorisi)
     if norm_cat in AUTO_CATEGORIES:
         return True
 
-    # 4. Belirsiz kategoriler → sadece ismi oto-ile alakalıysa tut
+    # 4. Belirsiz kategoriler → güçlü VEYA yumuşak oto sinyali varsa tut
     if norm_cat in AMBIGUOUS_CATEGORIES:
-        return has_auto_hint
+        return has_strong_auto or has_soft_auto
 
-    # 5. Bilinmeyen kategori — name'de oto ipucu varsa tut
-    return has_auto_hint
+    # 5. Bilinmeyen kategori → güçlü oto sinyali varsa tut
+    return has_strong_auto
 
 def categorize(name, google_category, original_sector):
-    """Akıllı kategori tahmini. 7 yeni kategoriden birini döndür."""
+    """Akıllı kategori tahmini — sıra önemli, en spesifikten en genele.
+    7 kategoriden birini döndür: ekspertiz, lastik, yikama, kaporta, elektrik, servis, mekanik
+    """
     norm_name = normalize(name)
     norm_cat = normalize(google_category or "")
 
-    # Marka isimleri → servis (özel servis)
-    BRAND_NAMES = ["mercedes", "bmw", "audi", "volkswagen", "vw ", "skoda", "seat",
-                   "porsche", "ford", "renault", "reno", "peugeot", "citroen",
-                   "opel", "fiat", "honda", "toyota", "nissan", "hyundai", "kia",
-                   "volvo", "isuzu", "subaru", "land rover", "range rover",
-                   "mini cooper", "dacia", "alfa", "alfom", "tata"]
-    if any(b in norm_name for b in BRAND_NAMES) and ("servis" in norm_name or "ozel" in norm_name):
-        return "servis"
-
-    # Ekspertiz / muayene
-    if "ekspertiz" in norm_name or "muayene" in norm_cat or "ekspertiz" in norm_cat:
+    # 1) Ekspertiz / muayene (en spesifik — diğer kategorilerden önce kontrol et)
+    if "ekspertiz" in norm_name or "muayene" in norm_name \
+       or "muayene" in norm_cat or "ekspertiz" in norm_cat:
         return "ekspertiz"
 
-    # Yıkama / detailing
-    if any(k in norm_name for k in ["yikama", "yıkama", "detailing", "cila", "pasta", "kuafor"]) \
-       or "yikama" in norm_cat or "temizlik" in norm_cat:
-        return "yikama"
-
-    # Lastik / jant
-    if any(k in norm_name for k in ["lastik", "jant", "rot balans", "balans"]) \
+    # 2) Lastik / jant
+    if any(k in norm_name for k in ["lastik", "jant", "rot balans"]) \
        or "lastik" in norm_cat or "rot balans" in norm_cat:
         return "lastik"
 
-    # Kaporta / boya
-    if any(k in norm_name for k in ["kaporta", "boya", "gocuk", "göçük", "hasar onarim", "ppf", "cam filmi", "kaplama"]) \
-       or "kaporta" in norm_cat or "boyama" in norm_cat or "kaplama" in norm_cat:
+    # 3) Yıkama / detailing
+    if any(k in norm_name for k in ["yikama", "detailing", "pasta cila", "kuafor"]) \
+       or any(k in norm_cat for k in ["yikama", "temizlik"]):
+        return "yikama"
+
+    # 4) Kaporta / boya / hasar
+    if any(k in norm_name for k in ["kaporta", "boyasiz", "gocuk", "hasar onarim", "ppf", "cam filmi", "kaplama"]) \
+       or any(k in norm_cat for k in ["kaporta", "boyama", "kaplama"]):
         return "kaporta"
 
-    # Elektrik / klima
-    if any(k in norm_name for k in ["elektrik", "klima", "abs", "beyin", "airbag", "chip", "tuning"]) \
+    # 5) Elektrik / klima / ABS / beyin
+    if any(k in norm_name for k in ["oto elektrik", "elektrik", "klima", "abs", "beyin", "airbag", "chip", "tuning", "vagcom"]) \
        or "elektrik" in norm_cat or "elektrikci" in norm_cat:
         return "elektrik"
 
-    # Marka servisi (isim + diğer ipucular yoksa)
-    if any(b in norm_name for b in BRAND_NAMES):
+    # 6) Marka özel servis (Mercedes/BMW/Audi vs. + "servis" veya "özel" anahtarı)
+    has_brand = any(b in norm_name for b in BRAND_NAMES)
+    if has_brand and any(k in norm_name for k in ["servis", "ozel", "service", "garage", "garaj"]):
         return "servis"
 
-    # Default → mekanik (motor, tamir, bakım)
+    # 7) Sadece marka adı var ama "servis" demiyor — yine de marka servisi say
+    if has_brand:
+        return "servis"
+
+    # Default → mekanik (motor, tamir, bakım, genel)
     return "mekanik"
 
 # Etimesgut'taki bilinen mahalleler
@@ -277,9 +290,13 @@ def main():
     with OUTPUT_PATH.open("w", encoding="utf-8") as f:
         f.write("-- Etimesgut Oto Rehberi seed verisi\n")
         f.write(f"-- {len(rows)} usta (puan ≥ {MIN_RATING}, oto-dışı işletmeler elendi)\n")
-        f.write("-- Çalıştırmadan önce schema.sql çalışmış olmalı.\n\n")
-        f.write("-- Önce mevcut verileri temizle (yeniden seed için)\n")
+        f.write("-- Bu dosyayı Supabase SQL Editor'a yapıştırıp Run bas — hepsini halleder.\n\n")
+        f.write("-- 1) Schema migration — featured kolonu yoksa ekle (idempotent)\n")
+        f.write("alter table mechanics add column if not exists featured boolean default false;\n")
+        f.write("create index if not exists mechanics_featured_idx on mechanics (featured) where featured = true;\n\n")
+        f.write("-- 2) Eski veriyi temizle\n")
         f.write("delete from mechanics;\n\n")
+        f.write("-- 3) Yeni 442 ustayı yükle\n")
         f.write("insert into mechanics (name, sector, google_category, rating, review_count, phone, address, neighborhood, opening_hours) values\n")
         lines = []
         for r in rows:

@@ -14,7 +14,7 @@ create table mechanics (
   id              uuid primary key default gen_random_uuid(),
   place_id        text unique,                       -- ileride Google Place ID eklenecek (şimdilik null)
   name            text not null,
-  sector          text not null,                     -- bakim, servis, lastik, elektrik (filtreleme için)
+  sector          text not null,                     -- mekanik, servis, kaporta, lastik, elektrik, ekspertiz, yikama
   google_category text,                              -- Google'ın ham kategorisi (örn: "Oto Tamirhanesi")
   rating          numeric(2,1),
   review_count    integer,
@@ -23,6 +23,7 @@ create table mechanics (
   district        text default 'Etimesgut',
   neighborhood    text,                              -- mahalle (adresten parse edildi)
   opening_hours   text,                              -- "09:00-20:00" gibi düz metin
+  featured        boolean default false,             -- yönetici tarafından PRO işaretli (üstte gözükür)
   created_at      timestamptz default now(),
   updated_at      timestamptz default now()
 );
@@ -30,6 +31,7 @@ create table mechanics (
 create index mechanics_sector_idx on mechanics (sector);
 create index mechanics_rating_idx on mechanics (rating desc nulls last);
 create index mechanics_neighborhood_idx on mechanics (neighborhood);
+create index mechanics_featured_idx on mechanics (featured) where featured = true;
 
 -- Hesap açan / işletmesini sahiplenen ustalar
 create table mechanic_owners (

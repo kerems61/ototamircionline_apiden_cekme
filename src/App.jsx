@@ -97,12 +97,28 @@ const WHATSAPP_NUMBER = '905459029241';
 const CONTACT_EMAIL = 'ototamircim134@gmail.com';
 const INSTAGRAM_USER = 'ototamircimonline';
 
-function getInitials(name) {
+function getDisplayWord(name) {
   if (!name) return '??';
-  const words = name.trim().split(/\s+/).filter(w => /[A-Za-zÀ-ÿĞğÜüŞşİıÖöÇç]/.test(w));
-  if (words.length === 0) return name.slice(0, 2).toUpperCase();
-  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
-  return (words[0][0] + words[1][0]).toUpperCase();
+  // İlk anlamlı kelimeyi al (sayı/sembol olmayan)
+  const words = name.trim().split(/[\s\-,&.]+/).filter(w => w.length >= 2 && /[A-Za-zÀ-ÿĞğÜüŞşİıÖöÇç]/.test(w));
+  if (words.length === 0) return name.slice(0, 6).toUpperCase();
+  const first = words[0];
+  // İlk kelime kısaysa (≤3 char) ve 2. kelime varsa, ikisini birleştir
+  if (first.length <= 3 && words.length > 1) {
+    const combined = first + ' ' + words[1];
+    return combined.slice(0, 10).toUpperCase();
+  }
+  return first.slice(0, 9).toUpperCase();
+}
+
+function googleMapsSearchUrl(mechanic) {
+  // Mahalle + Etimesgut Ankara → Google Maps doğru yere götürür
+  const parts = [
+    mechanic.name,
+    mechanic.neighborhood,
+    'Etimesgut Ankara',
+  ].filter(Boolean);
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(parts.join(' '))}`;
 }
 
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
@@ -130,6 +146,7 @@ function mapRow(row) {
     transparentPrices: prices,
     avgLaborTL: null,
     verifiedShop: prices.length > 0,
+    featured: row.featured === true,
   };
 }
 
@@ -239,14 +256,24 @@ function NeighborhoodPills({ active, options, onChange }) {
   );
 }
 
-function MechanicPhoto({ tones, verified, name, categoryIcon: CatIcon, categoryLabel }) {
-  const initials = getInitials(name);
+function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel }) {
+  const word = getDisplayWord(name);
+  // featured ise kırmızımsı vurgulu gradient kullan
+  const grad = featured
+    ? `radial-gradient(120% 80% at 20% 10%, #DC2626 0%, #7F1D1D 70%)`
+    : `radial-gradient(120% 80% at 20% 10%, ${tones[1]} 0%, ${tones[0]} 70%)`;
+
+  // Kelime uzunluğuna göre yazı boyutu ayarla
+  const fontSize = word.length <= 4
+    ? 'clamp(44px, 7vw, 60px)'
+    : word.length <= 7
+      ? 'clamp(28px, 5vw, 40px)'
+      : 'clamp(20px, 3.5vw, 28px)';
+
   return (
     <div
       className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden flex items-center justify-center"
-      style={{
-        background: `radial-gradient(120% 80% at 20% 10%, ${tones[1]} 0%, ${tones[0]} 70%)`,
-      }}
+      style={{ background: grad }}
     >
       <div className="absolute inset-0 opacity-40"
         style={{ background:
@@ -258,13 +285,14 @@ function MechanicPhoto({ tones, verified, name, categoryIcon: CatIcon, categoryL
         </div>
       )}
 
-      <div className="serif font-semibold relative" style={{
+      <div className="serif font-semibold relative px-4 text-center" style={{
         color: 'rgba(255,255,255,0.95)',
-        fontSize: 'clamp(48px, 8vw, 64px)',
-        letterSpacing: '-0.04em',
+        fontSize,
+        letterSpacing: '-0.03em',
         textShadow: '0 2px 12px rgba(0,0,0,0.3)',
+        lineHeight: 1.05,
       }}>
-        {initials}
+        {word}
       </div>
 
       {categoryLabel && (
@@ -275,7 +303,13 @@ function MechanicPhoto({ tones, verified, name, categoryIcon: CatIcon, categoryL
       )}
 
       <div className="absolute top-3 left-3 flex gap-1.5">
-        {verified && (
+        {featured && (
+          <span className="sans text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider"
+            style={{ background:'#DC2626', color:'white', boxShadow:'0 2px 8px rgba(220,38,38,0.4)' }}>
+            ★ PRO
+          </span>
+        )}
+        {verified && !featured && (
           <span className="sans text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1"
             style={{ background:'rgba(255,255,255,0.92)', color:'var(--accent)' }}>
             <BadgeCheck size={12} strokeWidth={2.4} /> Doğrulanmış
@@ -311,6 +345,7 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
       <MechanicPhoto
         tones={m.photoTone}
         verified={m.verifiedShop}
+        featured={m.featured}
         name={m.name}
         categoryIcon={CATEGORY_BY_ID[m.categoryId]?.icon}
         categoryLabel={m.categoryLabel}
@@ -491,7 +526,7 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
               <Phone size={15} /> {mechanic.phone ?? 'Telefon yok'}
             </a>
             <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mechanic.name + ' ' + (mechanic.address ?? ''))}`}
+              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent([mechanic.name, mechanic.neighborhood, 'Etimesgut Ankara'].filter(Boolean).join(' '))}`}
               target="_blank" rel="noreferrer"
               className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
               style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
@@ -500,7 +535,7 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
           </div>
 
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mechanic.name + ' ' + (mechanic.address ?? ''))}`}
+            href={googleMapsSearchUrl(mechanic)}
             target="_blank" rel="noreferrer"
             className="sans flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13px] font-semibold"
             style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
@@ -635,11 +670,17 @@ export default function App() {
       .then((list) => {
         if (cancelled) return;
         const sorted = [...list].sort((a, b) => {
+          // 1) Featured (PRO) ustalar en üstte
+          const af = a.featured ? 1 : 0, bf = b.featured ? 1 : 0;
+          if (bf !== af) return bf - af;
+          // 2) Sonra fiyatı olanlar
           const ap = a.transparentPrices.length > 0 ? 1 : 0;
           const bp = b.transparentPrices.length > 0 ? 1 : 0;
           if (bp !== ap) return bp - ap;
+          // 3) Sonra puana göre
           const ar = a.rating ?? 0, br = b.rating ?? 0;
           if (br !== ar) return br - ar;
+          // 4) En sonda yorum sayısı
           return (b.reviews ?? 0) - (a.reviews ?? 0);
         });
         setMechanics(sorted);
@@ -655,10 +696,9 @@ export default function App() {
   }, [activeCat, activeNeighborhood, submittedQuery]);
 
   const handleWriteReview = (mechanic) => {
-    // place_id olmadığı için, isim+adres ile Google Maps araması açıyoruz;
+    // place_id olmadığı için Google Maps aramasına yönlendir;
     // kullanıcı oradan "Yorum yaz" diyebilir.
-    const q = encodeURIComponent(`${mechanic.name} ${mechanic.address ?? ''}`);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${q}`, '_blank', 'noopener,noreferrer');
+    window.open(googleMapsSearchUrl(mechanic), '_blank', 'noopener,noreferrer');
   };
 
   const submitSearch = (e) => {
