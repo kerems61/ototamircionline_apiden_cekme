@@ -1321,7 +1321,7 @@ function Field({ label, children, full }) {
   );
 }
 
-function Pagination({ current, total, totalItems, pageSize, onChange }) {
+function Pagination({ current, total, totalItems, pageSize, onChange, onPageSizeChange }) {
   // Görünür sayfa numaralarını hesapla: 1 ... 4 5 [6] 7 8 ... 14
   const getVisiblePages = () => {
     if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
@@ -1340,69 +1340,97 @@ function Pagination({ current, total, totalItems, pageSize, onChange }) {
   const endItem = Math.min(current * pageSize, totalItems);
 
   return (
-    <div className="mt-10 flex flex-col items-center gap-4 fadeUp">
-      <div className="sans text-[12.5px]" style={{ color:'var(--ink-3)' }}>
-        <span className="font-semibold" style={{ color:'var(--ink-2)' }}>{startItem}-{endItem}</span> / {totalItems} usta
+    <div className="mt-12 fadeUp">
+      <div className="rounded-3xl p-6 sm:p-8"
+        style={{
+          background: 'linear-gradient(180deg, var(--bg-warm) 0%, var(--card) 100%)',
+          border: '1px solid var(--line-2)',
+          boxShadow: 'var(--shadow-sm)',
+        }}>
+        {/* Üst: durum + sayfa boyutu seçici */}
+        <div className="flex items-center justify-between gap-4 flex-wrap mb-5">
+          <div className="sans text-[13px]" style={{ color:'var(--ink-2)' }}>
+            <span className="serif text-[18px] font-semibold" style={{ color:'var(--accent)' }}>{startItem}-{endItem}</span>
+            <span className="mx-1.5" style={{ color:'var(--ink-3)' }}>/</span>
+            <span className="font-semibold" style={{ color:'var(--ink)' }}>{totalItems}</span>
+            <span className="ml-1.5" style={{ color:'var(--ink-3)' }}>usta</span>
+            <span className="mx-2" style={{ color:'var(--line)' }}>·</span>
+            <span style={{ color:'var(--ink-3)' }}>Sayfa <b style={{ color:'var(--ink-2)' }}>{current}/{total}</b></span>
+          </div>
+
+          {onPageSizeChange && (
+            <label className="flex items-center gap-2 sans text-[12.5px]" style={{ color:'var(--ink-3)' }}>
+              <span>Sayfa başı:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => onPageSizeChange(parseInt(e.target.value))}
+                className="sans text-[13px] font-semibold pl-3 pr-2 py-1.5 rounded-full cursor-pointer outline-none"
+                style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+                {[15, 30, 60, 100].map(n => <option key={n} value={n}>{n} usta</option>)}
+              </select>
+            </label>
+          )}
+        </div>
+
+        {/* Alt: sayfa numaraları */}
+        <nav className="flex items-center gap-1.5 flex-wrap justify-center" aria-label="Sayfalama">
+          <button
+            onClick={() => current > 1 && onChange(current - 1)}
+            disabled={current === 1}
+            className="sans w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+            style={{
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              color: current === 1 ? 'var(--ink-3)' : 'var(--ink)',
+              opacity: current === 1 ? 0.35 : 1,
+              cursor: current === 1 ? 'not-allowed' : 'pointer',
+            }}
+            aria-label="Önceki sayfa">
+            <ChevronRight size={16} style={{ transform: 'rotate(180deg)' }} />
+          </button>
+
+          {getVisiblePages().map((p, i) => (
+            p === '...' ? (
+              <span key={`dots-${i}`} className="sans w-10 h-10 flex items-center justify-center text-[13px]"
+                style={{ color:'var(--ink-3)' }}>···</span>
+            ) : (
+              <button
+                key={p}
+                onClick={() => onChange(p)}
+                className="sans min-w-[40px] h-10 px-3 rounded-xl transition-all hover:scale-105"
+                style={{
+                  background: p === current
+                    ? 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)'
+                    : 'var(--card)',
+                  color: p === current ? 'white' : 'var(--ink)',
+                  border: `1px solid ${p === current ? 'var(--accent)' : 'var(--line)'}`,
+                  fontWeight: p === current ? 700 : 500,
+                  fontSize: '13.5px',
+                  boxShadow: p === current ? '0 6px 16px -4px rgba(194,65,12,0.4)' : 'none',
+                }}
+                aria-label={`Sayfa ${p}`}
+                aria-current={p === current ? 'page' : undefined}>
+                {p}
+              </button>
+            )
+          ))}
+
+          <button
+            onClick={() => current < total && onChange(current + 1)}
+            disabled={current === total}
+            className="sans w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+            style={{
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              color: current === total ? 'var(--ink-3)' : 'var(--ink)',
+              opacity: current === total ? 0.35 : 1,
+              cursor: current === total ? 'not-allowed' : 'pointer',
+            }}
+            aria-label="Sonraki sayfa">
+            <ChevronRight size={16} />
+          </button>
+        </nav>
       </div>
-
-      <nav className="flex items-center gap-1.5 flex-wrap justify-center" aria-label="Sayfalama">
-        {/* Önceki */}
-        <button
-          onClick={() => current > 1 && onChange(current - 1)}
-          disabled={current === 1}
-          className="sans w-10 h-10 rounded-xl flex items-center justify-center transition-all"
-          style={{
-            background: 'var(--card)',
-            border: '1px solid var(--line)',
-            color: current === 1 ? 'var(--ink-3)' : 'var(--ink)',
-            opacity: current === 1 ? 0.4 : 1,
-            cursor: current === 1 ? 'not-allowed' : 'pointer',
-          }}
-          aria-label="Önceki sayfa">
-          <ChevronRight size={16} style={{ transform: 'rotate(180deg)' }} />
-        </button>
-
-        {/* Sayfa numaraları */}
-        {getVisiblePages().map((p, i) => (
-          p === '...' ? (
-            <span key={`dots-${i}`} className="sans w-10 h-10 flex items-center justify-center text-[13px]"
-              style={{ color:'var(--ink-3)' }}>···</span>
-          ) : (
-            <button
-              key={p}
-              onClick={() => onChange(p)}
-              className="sans min-w-[40px] h-10 px-3 rounded-xl transition-all hover:scale-105"
-              style={{
-                background: p === current ? 'var(--ink)' : 'var(--card)',
-                color: p === current ? 'white' : 'var(--ink)',
-                border: `1px solid ${p === current ? 'var(--ink)' : 'var(--line)'}`,
-                fontWeight: p === current ? 700 : 500,
-                fontSize: '13.5px',
-                boxShadow: p === current ? 'var(--shadow-md)' : 'none',
-              }}
-              aria-label={`Sayfa ${p}`}
-              aria-current={p === current ? 'page' : undefined}>
-              {p}
-            </button>
-          )
-        ))}
-
-        {/* Sonraki */}
-        <button
-          onClick={() => current < total && onChange(current + 1)}
-          disabled={current === total}
-          className="sans w-10 h-10 rounded-xl flex items-center justify-center transition-all"
-          style={{
-            background: 'var(--card)',
-            border: '1px solid var(--line)',
-            color: current === total ? 'var(--ink-3)' : 'var(--ink)',
-            opacity: current === total ? 0.4 : 1,
-            cursor: current === total ? 'not-allowed' : 'pointer',
-          }}
-          aria-label="Sonraki sayfa">
-          <ChevronRight size={16} />
-        </button>
-      </nav>
     </div>
   );
 }
@@ -1656,20 +1684,10 @@ export default function App() {
           </section>
         )}
 
-        <div className="mt-9 flex items-center justify-between gap-3 flex-wrap fadeUp" style={{ animationDelay:'200ms' }}>
+        <div className="mt-9 fadeUp" style={{ animationDelay:'200ms' }}>
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
             {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
           </h2>
-          <label className="flex items-center gap-2 sans text-[12.5px]" style={{ color:'var(--ink-3)' }}>
-            <span>Sayfa başı:</span>
-            <select
-              value={pageSize}
-              onChange={(e) => setPageSize(parseInt(e.target.value))}
-              className="sans text-[13px] font-semibold px-3 py-1.5 rounded-full cursor-pointer outline-none"
-              style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
-              {PAGE_SIZE_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </label>
         </div>
 
         {error && (
@@ -1687,16 +1705,17 @@ export default function App() {
           }
         </section>
 
-        {!loading && mechanics.length > pageSize && (
+        {!loading && mechanics.length > 0 && (
           <Pagination
             current={currentPage}
-            total={Math.ceil(mechanics.length / pageSize)}
+            total={Math.max(1, Math.ceil(mechanics.length / pageSize))}
             totalItems={mechanics.length}
             pageSize={pageSize}
             onChange={(p) => {
               setCurrentPage(p);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
+            onPageSizeChange={setPageSize}
           />
         )}
 
@@ -1748,40 +1767,59 @@ export default function App() {
           </div>
         </section>
 
-        <footer className="mt-12 pt-8 sans text-[13px]"
-          style={{ borderTop:'1px solid var(--line)', color:'var(--ink-3)' }}>
-          <div className="grid sm:grid-cols-3 gap-6 mb-6">
-            <div>
-              <div className="serif text-[16px] font-semibold mb-2" style={{ color:'var(--ink)' }}>OtoTamircimOnline</div>
-              <p className="text-[12.5px] leading-relaxed">
-                Etimesgut'un en iyi puanlı oto ustaları, şeffaf fiyatlarla.
-              </p>
+        <footer className="mt-16 sans text-[13px]" style={{ color:'var(--ink-3)' }}>
+          <div className="rounded-3xl p-8 sm:p-10"
+            style={{
+              background: 'linear-gradient(135deg, var(--bg-warm) 0%, var(--card) 60%, var(--accent-soft) 100%)',
+              border: '1px solid var(--line-2)',
+            }}>
+            <div className="grid sm:grid-cols-3 gap-8 mb-8">
+              <div>
+                <Logo size={20} />
+                <p className="text-[12.5px] leading-relaxed mt-3 max-w-xs">
+                  Etimesgut sanayisinin en iyi puanlı oto ustalarını, şeffaf fiyatlarla tek listede topluyoruz.
+                </p>
+              </div>
+              <div>
+                <div className="sans text-[10.5px] uppercase tracking-[0.18em] font-semibold mb-3" style={{ color:'var(--accent)' }}>İletişim</div>
+                <a href={`mailto:${CONTACT_EMAIL}`}
+                  className="flex items-center gap-2 mb-2 transition-colors hover:text-[var(--ink)]">
+                  <span className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'var(--card)', border:'1px solid var(--line-2)' }}>
+                    <Mail size={13} color="var(--accent)" />
+                  </span>
+                  {CONTACT_EMAIL}
+                </a>
+                <a href={`https://instagram.com/${INSTAGRAM_USER}`} target="_blank" rel="noreferrer"
+                  className="flex items-center gap-2 mb-2 transition-colors hover:text-[var(--ink)]">
+                  <span className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'var(--card)', border:'1px solid var(--line-2)' }}>
+                    <Instagram size={13} color="var(--accent)" />
+                  </span>
+                  @{INSTAGRAM_USER}
+                </a>
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer"
+                  className="flex items-center gap-2 transition-colors hover:text-[var(--ink)]">
+                  <span className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'var(--card)', border:'1px solid var(--line-2)' }}>
+                    <MessageCircle size={13} color="#25D366" />
+                  </span>
+                  WhatsApp
+                </a>
+              </div>
+              <div>
+                <div className="sans text-[10.5px] uppercase tracking-[0.18em] font-semibold mb-3" style={{ color:'var(--accent)' }}>Bağlantılar</div>
+                <a href="#" className="block mb-2 transition-colors hover:text-[var(--ink)]">Hakkımızda</a>
+                <a href={`mailto:${CONTACT_EMAIL}?subject=Usta kayıt başvurusu`} className="block mb-2 transition-colors hover:text-[var(--ink)]">Usta misin? Kayıt ol</a>
+                <a href="#" className="block mb-2 transition-colors hover:text-[var(--ink)]">Gizlilik · Şartlar</a>
+                <a href="#admin" className="block transition-colors hover:text-[var(--ink)]">Yönetici girişi</a>
+              </div>
             </div>
-            <div>
-              <div className="sans text-[10.5px] uppercase tracking-[0.14em] mb-2" style={{ color:'var(--ink-2)' }}>İletişim</div>
-              <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-2 mb-1.5 hover:text-[var(--ink)]">
-                <Mail size={13} /> {CONTACT_EMAIL}
-              </a>
-              <a href={`https://instagram.com/${INSTAGRAM_USER}`} target="_blank" rel="noreferrer"
-                 className="flex items-center gap-2 mb-1.5 hover:text-[var(--ink)]">
-                <Instagram size={13} /> @{INSTAGRAM_USER}
-              </a>
-              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer"
-                 className="flex items-center gap-2 hover:text-[var(--ink)]">
-                <MessageCircle size={13} /> WhatsApp
-              </a>
+            <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px]"
+              style={{ borderTop:'1px dashed var(--line)' }}>
+              <div>© 2026 ototamircimonline · Ankara</div>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full pulseRing relative" style={{ background:'var(--accent)' }} />
+                <span>Etimesgut · <b style={{ color:'var(--ink-2)' }}>{totalMechanics ?? '...'}</b> doğrulanmış usta</span>
+              </div>
             </div>
-            <div>
-              <div className="sans text-[10.5px] uppercase tracking-[0.14em] mb-2" style={{ color:'var(--ink-2)' }}>Bağlantılar</div>
-              <a href="#" className="block mb-1.5 hover:text-[var(--ink)]">Hakkımızda</a>
-              <a href="#" className="block mb-1.5 hover:text-[var(--ink)]">Usta misin? Kayıt ol</a>
-              <a href="#" className="block hover:text-[var(--ink)]">Gizlilik · Şartlar</a>
-            </div>
-          </div>
-          <div className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[12px]"
-            style={{ borderTop:'1px solid var(--line)' }}>
-            <div>© 2026 ototamircimonline · Ankara</div>
-            <div>Etimesgut · {totalMechanics ?? '...'} doğrulanmış usta</div>
           </div>
         </footer>
       </main>
