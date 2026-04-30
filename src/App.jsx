@@ -361,7 +361,7 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
 
   return (
     <div
-      className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden flex items-center justify-center"
+      className="relative w-full h-32 sm:h-44 rounded-2xl overflow-hidden flex items-center justify-center"
       style={{ background: grad }}
     >
       <div className="absolute inset-0 opacity-40"
@@ -369,8 +369,8 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
           'repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 14px)' }} />
 
       {CatIcon && (
-        <div className="absolute -right-4 -bottom-4 opacity-15">
-          <CatIcon size={140} color="white" strokeWidth={1.5} />
+        <div className="absolute -right-3 -bottom-3 sm:-right-4 sm:-bottom-4 opacity-15">
+          <CatIcon size={110} color="white" strokeWidth={1.5} />
         </div>
       )}
 
