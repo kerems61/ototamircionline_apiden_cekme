@@ -903,6 +903,7 @@ function AdminView({ onBack }) {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [creating, setCreating] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
 
   const callApi = async (action, data = {}) => {
@@ -967,6 +968,19 @@ function AdminView({ onBack }) {
     }
   };
 
+  const onCreate = async (fields) => {
+    setSaveMsg('Oluşturuluyor...');
+    try {
+      await callApi('create_mechanic', { fields });
+      setSaveMsg('✓ Yeni usta eklendi');
+      setTimeout(() => setSaveMsg(''), 2500);
+      setCreating(false);
+      loadList(search);
+    } catch (err) {
+      setSaveMsg('✗ ' + err.message);
+    }
+  };
+
   if (!authed) {
     return (
       <main className="max-w-md mx-auto px-5 pt-20 pb-32 lg:pb-12">
@@ -1019,6 +1033,11 @@ function AdminView({ onBack }) {
         </div>
         <div className="flex gap-2 items-center">
           {saveMsg && <span className="sans text-[12px]" style={{ color:'var(--ink-2)' }}>{saveMsg}</span>}
+          <button onClick={() => { setCreating(true); setEditing(null); }}
+            className="sans text-[13px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-105"
+            style={{ background:'var(--accent)', color:'white' }}>
+            + Yeni Usta
+          </button>
           <button onClick={onBack}
             className="sans text-[13px] font-medium px-4 py-2 rounded-full"
             style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
@@ -1026,6 +1045,18 @@ function AdminView({ onBack }) {
           </button>
         </div>
       </div>
+
+      {creating && (
+        <div className="rounded-2xl p-5 mb-5 fadeUp"
+          style={{ background:'var(--accent-soft)', border:'1.5px solid var(--accent)' }}>
+          <div className="flex items-center justify-between mb-3">
+            <div className="serif text-[18px] font-semibold" style={{ color:'var(--ink)' }}>Yeni Usta Ekle</div>
+            <button onClick={() => setCreating(false)}
+              className="sans text-[12px]" style={{ color:'var(--ink-3)' }}>✕ İptal</button>
+          </div>
+          <AdminCreateForm onCreate={onCreate} onCancel={() => setCreating(false)} />
+        </div>
+      )}
 
       <form onSubmit={(e) => { e.preventDefault(); loadList(search); }}
         className="flex items-center gap-2 rounded-full p-1.5 mb-6"
@@ -1072,7 +1103,7 @@ function AdminView({ onBack }) {
             </div>
 
             {editing === m.id && (
-              <AdminEditForm mechanic={m} onSave={onSave} onDelete={onDelete} />
+              <AdminEditForm mechanic={m} onSave={onSave} onDelete={onDelete} callApi={callApi} />
             )}
           </div>
         ))}
@@ -1087,7 +1118,46 @@ function AdminView({ onBack }) {
   );
 }
 
-function AdminEditForm({ mechanic, onSave, onDelete }) {
+function AdminCreateForm({ onCreate, onCancel }) {
+  const [f, setF] = useState({
+    name: '', sector: 'mekanik', neighborhood: '', phone: '',
+    address: '', rating: 5.0, review_count: 0, opening_hours: '',
+  });
+  const update = (k, v) => setF(prev => ({ ...prev, [k]: v }));
+  const canSubmit = f.name.trim().length >= 2;
+
+  return (
+    <div className="grid sm:grid-cols-2 gap-3">
+      <Field label="Dükkan Adı *"><input value={f.name} onChange={(e) => update('name', e.target.value)} className="admin-input" placeholder="Örn: Soylu Otomotiv" /></Field>
+      <Field label="Sektör *">
+        <select value={f.sector} onChange={(e) => update('sector', e.target.value)} className="admin-input">
+          {['mekanik','servis','kaporta','lastik','elektrik','ekspertiz','yikama'].map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </Field>
+      <Field label="Mahalle"><input value={f.neighborhood} onChange={(e) => update('neighborhood', e.target.value)} className="admin-input" placeholder="Bahçekapı" /></Field>
+      <Field label="Telefon"><input value={f.phone} onChange={(e) => update('phone', e.target.value)} className="admin-input" placeholder="0532 123 45 67" /></Field>
+      <Field label="Puan"><input type="number" step="0.1" min="0" max="5" value={f.rating} onChange={(e) => update('rating', parseFloat(e.target.value) || 0)} className="admin-input" /></Field>
+      <Field label="Yorum Sayısı"><input type="number" min="0" value={f.review_count} onChange={(e) => update('review_count', parseInt(e.target.value) || 0)} className="admin-input" /></Field>
+      <Field label="Adres" full>
+        <input value={f.address} onChange={(e) => update('address', e.target.value)} className="admin-input" placeholder="Tam adres" />
+      </Field>
+      <Field label="Çalışma Saatleri"><input value={f.opening_hours} onChange={(e) => update('opening_hours', e.target.value)} className="admin-input" placeholder="08:00-19:00" /></Field>
+      <div className="sm:col-span-2 flex items-center justify-end gap-2 mt-2">
+        <button onClick={onCancel}
+          className="sans text-[13px] font-medium px-4 py-2 rounded-xl"
+          style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>İptal</button>
+        <button disabled={!canSubmit} onClick={() => canSubmit && onCreate(f)}
+          className="sans text-[13px] font-semibold px-5 py-2 rounded-xl transition-all"
+          style={{ background:'var(--ink)', color:'white', opacity: canSubmit ? 1 : 0.5 }}>
+          Ustayı Oluştur
+        </button>
+      </div>
+      <style>{`.admin-input { width:100%; padding:0.55rem 0.75rem; border-radius:0.6rem; background:white; border:1px solid var(--line); font-family:'Geist',sans-serif; font-size:13px; color:var(--ink); outline:none; }`}</style>
+    </div>
+  );
+}
+
+function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
   const [f, setF] = useState({
     name: mechanic.name ?? '',
     sector: mechanic.sector ?? 'mekanik',
@@ -1138,7 +1208,105 @@ function AdminEditForm({ mechanic, onSave, onDelete }) {
             style={{ background:'var(--ink)', color:'white' }}>Kaydet</button>
         </div>
       </div>
+
+      {callApi && <PriceManager mechanicId={mechanic.id} callApi={callApi} />}
+
       <style>{`.admin-input { width:100%; padding:0.55rem 0.75rem; border-radius:0.6rem; background:var(--bg-warm); border:1px solid var(--line); font-family:'Geist',sans-serif; font-size:13px; color:var(--ink); outline:none; }`}</style>
+    </div>
+  );
+}
+
+function PriceManager({ mechanicId, callApi }) {
+  const [prices, setPrices] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newService, setNewService] = useState('');
+  const [newPrice, setNewPrice] = useState('');
+  const [error, setError] = useState('');
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const { prices } = await callApi('list_prices', { mechanic_id: mechanicId });
+      setPrices(prices || []);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(); }, [mechanicId]);
+
+  const addPrice = async () => {
+    setError('');
+    if (!newService.trim() || !newPrice) return;
+    try {
+      await callApi('add_price', { mechanic_id: mechanicId, service: newService, price_tl: newPrice });
+      setNewService(''); setNewPrice('');
+      load();
+    } catch (e) { setError(e.message); }
+  };
+
+  const deletePrice = async (id) => {
+    if (!confirm('Bu fiyat silinsin mi?')) return;
+    try {
+      await callApi('delete_price', { id });
+      load();
+    } catch (e) { setError(e.message); }
+  };
+
+  return (
+    <div className="sm:col-span-2 mt-4 pt-4" style={{ borderTop:'1px solid var(--line-2)' }}>
+      <div className="flex items-center gap-2 mb-3">
+        <Shield size={14} color="var(--accent)" strokeWidth={2.4} />
+        <span className="sans text-[12px] font-semibold uppercase tracking-[0.14em]" style={{ color:'var(--accent)' }}>
+          Şeffaf Fiyat Listesi
+        </span>
+        <span className="sans text-[11px]" style={{ color:'var(--ink-3)' }}>
+          ({prices.length} işçilik)
+        </span>
+      </div>
+
+      {/* Mevcut fiyatlar */}
+      {!loading && prices.length > 0 && (
+        <div className="space-y-1.5 mb-3">
+          {prices.map(p => (
+            <div key={p.id} className="flex items-center gap-2 px-3 py-2 rounded-xl"
+              style={{ background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
+              <span className="flex-1 sans text-[13px] font-medium" style={{ color:'var(--ink)' }}>{p.service}</span>
+              <span className="sans text-[13px] font-semibold whitespace-nowrap" style={{ color:'var(--accent)' }}>
+                {p.price_tl.toLocaleString('tr-TR')} ₺
+              </span>
+              <button onClick={() => deletePrice(p.id)}
+                className="sans text-[11px] px-2 py-1 rounded-lg"
+                style={{ background:'transparent', color:'#B91C1C', border:'1px solid #FECACA' }}>Sil</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!loading && prices.length === 0 && (
+        <div className="sans text-[12.5px] mb-3 px-3 py-2.5 rounded-xl"
+          style={{ background:'var(--bg-warm)', color:'var(--ink-3)' }}>
+          Henüz işçilik eklenmedi. Aşağıdan ekle.
+        </div>
+      )}
+
+      {/* Yeni fiyat ekleme */}
+      <div className="flex gap-2">
+        <input value={newService} onChange={(e) => setNewService(e.target.value)}
+          placeholder="İşçilik (örn: Yağ değişimi)"
+          className="admin-input flex-1" />
+        <input type="number" min="0" value={newPrice} onChange={(e) => setNewPrice(e.target.value)}
+          placeholder="Fiyat ₺" className="admin-input" style={{ width: '120px' }} />
+        <button onClick={addPrice} disabled={!newService.trim() || !newPrice}
+          className="sans text-[13px] font-semibold px-4 py-2 rounded-xl whitespace-nowrap"
+          style={{ background:'var(--accent)', color:'white', opacity: (!newService.trim() || !newPrice) ? 0.5 : 1 }}>
+          + Ekle
+        </button>
+      </div>
+
+      {error && <div className="sans text-[12px] mt-2" style={{ color:'#B91C1C' }}>{error}</div>}
     </div>
   );
 }
@@ -1404,11 +1572,6 @@ export default function App() {
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
             {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
           </h2>
-          <span className="sans text-[12px] font-medium px-3 py-1.5 rounded-full hidden sm:inline-flex items-center gap-1.5"
-            style={{ color:'var(--ink-3)', background:'var(--bg-warm)' }}>
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background:'var(--pro)' }} />
-            PRO önce, sonra fiyat, sonra puan
-          </span>
         </div>
 
         {error && (

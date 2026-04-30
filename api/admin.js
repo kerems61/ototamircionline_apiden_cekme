@@ -87,6 +87,63 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true });
       }
 
+      case 'create_mechanic': {
+        const { fields } = payload;
+        if (!fields?.name || !fields?.sector) {
+          return res.status(400).json({ error: 'name ve sector zorunlu' });
+        }
+        const allowed = ['name', 'sector', 'neighborhood', 'phone', 'address',
+                         'opening_hours', 'rating', 'review_count', 'google_category',
+                         'featured', 'google_maps_url', 'notes', 'lat', 'lng'];
+        const insert = { district: 'Etimesgut' };
+        for (const k of allowed) if (fields[k] !== undefined) insert[k] = fields[k];
+        const { data, error } = await supabase.from('mechanics').insert(insert).select().single();
+        if (error) throw error;
+        return res.status(200).json({ ok: true, mechanic: data });
+      }
+
+      case 'list_prices': {
+        const { mechanic_id } = payload;
+        if (!mechanic_id) return res.status(400).json({ error: 'mechanic_id gerekli' });
+        const { data, error } = await supabase.from('mechanic_prices')
+          .select('id, service, price_tl, updated_at')
+          .eq('mechanic_id', mechanic_id)
+          .order('updated_at', { ascending: false });
+        if (error) throw error;
+        return res.status(200).json({ ok: true, prices: data });
+      }
+
+      case 'add_price': {
+        const { mechanic_id, service, price_tl } = payload;
+        if (!mechanic_id || !service || price_tl == null) {
+          return res.status(400).json({ error: 'mechanic_id, service ve price_tl zorunlu' });
+        }
+        const { error } = await supabase.from('mechanic_prices').insert({
+          mechanic_id, service: String(service).trim(), price_tl: Math.max(0, parseInt(price_tl) || 0),
+        });
+        if (error) throw error;
+        return res.status(200).json({ ok: true });
+      }
+
+      case 'update_price': {
+        const { id, service, price_tl } = payload;
+        if (!id) return res.status(400).json({ error: 'id gerekli' });
+        const update = { updated_at: new Date().toISOString() };
+        if (service !== undefined) update.service = String(service).trim();
+        if (price_tl !== undefined) update.price_tl = Math.max(0, parseInt(price_tl) || 0);
+        const { error } = await supabase.from('mechanic_prices').update(update).eq('id', id);
+        if (error) throw error;
+        return res.status(200).json({ ok: true });
+      }
+
+      case 'delete_price': {
+        const { id } = payload;
+        if (!id) return res.status(400).json({ error: 'id gerekli' });
+        const { error } = await supabase.from('mechanic_prices').delete().eq('id', id);
+        if (error) throw error;
+        return res.status(200).json({ ok: true });
+      }
+
       default:
         return res.status(400).json({ error: `Bilinmeyen action: ${action}` });
     }
