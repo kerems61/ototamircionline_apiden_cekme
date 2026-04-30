@@ -93,7 +93,7 @@ const CATEGORIES = [
   { id: 'yikama',    label: 'Yıkama & Detailing',icon: Droplet,    tones: ['#0F3F4F', '#1E5A6F'] },
 ];
 
-const WHATSAPP_NUMBER = '905398650074'; // değiştirebilirsin
+const WHATSAPP_NUMBER = '905459029241';
 const CONTACT_EMAIL = 'ototamircim134@gmail.com';
 const INSTAGRAM_USER = 'ototamircimonline';
 
