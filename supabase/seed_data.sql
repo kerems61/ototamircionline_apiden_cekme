@@ -1,5 +1,5 @@
 -- Etimesgut Oto Rehberi seed verisi
--- 417 usta (puan ≥ 4.5, oto-dışı işletmeler elendi)
+-- 416 usta (puan ≥ 4.5, oto-dışı işletmeler elendi)
 -- Bu dosyayı Supabase SQL Editor'a yapıştırıp Run bas — hepsini halleder.
 
 -- 1) Schema migration — yeni kolonları yoksa ekle (idempotent)
@@ -13,7 +13,7 @@ create index if not exists mechanics_featured_idx on mechanics (featured) where 
 -- 2) Eski veriyi temizle
 delete from mechanics;
 
--- 3) Yeni 417 ustayı yükle (417 tanesi gerçek Google place_id ile)
+-- 3) Yeni 416 ustayı yükle (416 tanesi gerçek Google place_id ile)
 insert into mechanics (name, place_id, sector, google_category, rating, review_count, phone, address, neighborhood, opening_hours, lat, lng) values
   ('AKT LUXURY AUTO AIRBAG', 'ChIJnQjjSvxL0xQRHZt0Psttb2g', 'elektrik', 'Oto Tamirhanesi', 5.0, 48, '0531 832 46 44', 'Ankara Sasmaz, Erler, 2554 Sokak No:4, 06145 Etimesgut/Ankara', 'Şaşmaz', '09:00-20:00', 39.9323791, 32.7146808),
   ('Computest Etimesgut Oto Ekspertiz', 'ChIJvQuUD48x0xQRf1vooPGp4Ug', 'ekspertiz', 'Araba Hizmeti', 5.0, 60, '0507 154 23 01', 'ANKAVEGA Konutlari, Yesilova, 4016. Cad. No:96, 06796 Etimesgut/Ankara', 'Yeşilova', '08:30-19:00', 39.9650789, 32.6120394),
@@ -411,7 +411,6 @@ insert into mechanics (name, place_id, sector, google_category, rating, review_c
   ('Ozer Grup Otomotiv Lastikleri Baglica / Ankara', 'ChIJPdLi0Bw50xQR50YYHInqV4M', 'lastik', 'Oto Lastik Magazasi', 4.7, 456, '(0312) 969 40 99', 'Baglica Mah 1251.Sok No: 1 E-2 Lassa ve Bridgestone Ana Bayi GSM : 0530 880, D:20 73, 06790 Etimesgut/Ankara', 'Bağlıca', '08:00-19:30', 39.895277, 32.658029),
   ('SS OTO LASTIK', 'ChIJ0ZycU_050xQRMVY_buKkmj0', 'lastik', 'Oto Lastik Dukkani', 4.7, 147, '0542 376 18 75', 'Piyade, Istasyon Cad. No:211 D:c, 06790 Etimesgut/Ankara', 'İstasyon', '08:00-20:00', 39.9527782, 32.638498999999996),
   ('Tas oto lastik', 'ChIJ_RG7kjox0xQRDt1Mhd7AaYw', 'lastik', 'Oto Lastik Dukkani', 4.7, 151, '0544 912 97 53', 'Eryaman, Ayas Ankara Yolu Blv. 372/D, 06000 Etimesgut/Ankara', 'Eryaman', '08:30-23:30', 39.9696615, 32.613339599999996),
-  ('Bridgestone - Ozer Grup Otomotiv', 'ChIJPdLi0Bw50xQR50YYHInqV4M', 'lastik', 'Oto Lastik Magazasi', 4.6, 9, '(0312) 969 40 99', 'Baglica, 1251. Sk No:1, 06790 Etimesgut/Ankara', 'Bağlıca', '08:00-18:30', 39.895277, 32.658029),
   ('DUNLOP-Asim Cetinkaya', 'ChIJrRTMELw30xQRQ9uKCq1UNAc', 'lastik', 'Oto Lastik Magazasi', 4.6, 73, '(0312) 278 11 56', 'OTO SANAYI SIT. 2565. SOK. NO:2, Sasmaz Blv., 06797 Etimesgut/Ankara', 'Şaşmaz', '08:00-19:00', 39.932621100000006, 32.7176702),
   ('Furkan Oto Lastik 2', 'ChIJIeSVm2870xQR1AixNu6OTnA', 'lastik', 'Oto Lastik Magazasi', 4.6, 79, '0532 623 91 16', 'Atakent, 1512. Cd. no:67, 06796 Etimesgut/Ankara', 'Atakent', '08:30-20:00', 39.954994899999996, 32.611968),
   ('KOCAK OTO LASTIK', 'ChIJJ6BknnI30xQR0auXVhyNbMs', 'lastik', 'Oto Lastik Dukkani', 4.6, 55, '0544 473 50 47', 'Kazim Karabekir, Istasyon Cad. 99/A, 06560 Etimesgut/Ankara', 'İstasyon', '09:00-22:30', 39.950074, 32.653842),
@@ -431,4 +430,5 @@ insert into mechanics (name, place_id, sector, google_category, rating, review_c
   ('Mobil Lastikci & Aku Takviye Yol Yardim', 'ChIJlU_rXqk30xQRnCOA8fkLxRA', 'lastik', 'Lastik Tamircisi', 4.5, 17, '0541 349 98 04', 'Yesilova, 06006 Etimesgut/Ankara', 'Yeşilova', '24 saat acik', 39.9677888, 32.6239032),
   ('Performa Jant', 'ChIJWcBpC-E30xQRH85aam-1X9A', 'lastik', 'Oto Lastik Dukkani', 4.5, 149, '(0312) 285 19 91', 'Bahcekapi, 2548. Sk. No: 4, 6990 Etimesgut/Ankara', 'Bahçekapı', '08:00-19:00', 39.933786999999995, 32.7148635),
   ('Tuncel Jant Lastik', 'ChIJL3cx-_430xQRCsZwTjiLtfY', 'lastik', 'Oto Lastik Magazasi', 4.5, 125, '(0312) 278 13 75', 'Bahcekapi, 2559. Sk. No:1, 06797 Etimesgut/Ankara', 'Bahçekapı', '07:30-19:30', 39.9318722, 32.7146274),
-  ('YILDIZ KARDESLER JANT LASTIK', 'ChIJi-xsRcA50xQR6geTNiB3U5k', 'lastik', 'Oto Lastik Dukkani', 4.5, 77, '0530 405 66 26', 'Baglica, Etimesgut Blv. no:56, 06930 Etimesgut/Ankara', 'Bağlıca', '09:00-20:00', 39.9092966, 32.6483554);
+  ('YILDIZ KARDESLER JANT LASTIK', 'ChIJi-xsRcA50xQR6geTNiB3U5k', 'lastik', 'Oto Lastik Dukkani', 4.5, 77, '0530 405 66 26', 'Baglica, Etimesgut Blv. no:56, 06930 Etimesgut/Ankara', 'Bağlıca', '09:00-20:00', 39.9092966, 32.6483554)
+on conflict (place_id) do nothing;

@@ -361,10 +361,34 @@ def main():
             "lng": lng,
         })
 
-    print(f"\n→ {len(rows)} usta seçildi (puan ≥ {MIN_RATING}, sadece oto-ile ilgili)")
-    print(f"  · Düşük puan elendi: {skipped_low_rating}")
-    print(f"  · Oto-dışı elendi:   {skipped_non_auto}")
-    print(f"\n  Yeni kategori dağılımı:")
+    # Dedupe: aynı place_id'ye sahip kayıtları birleştir (en çok yorumu olanı tut)
+    seen_pids = {}
+    deduped = []
+    duplicate_count = 0
+    for r in rows:
+        pid = r.get("place_id")
+        if pid:
+            if pid in seen_pids:
+                duplicate_count += 1
+                idx = seen_pids[pid]
+                existing = deduped[idx]
+                if (r.get("review_count") or 0) > (existing.get("review_count") or 0):
+                    deduped[idx] = r  # daha çok yorumu olan kalsın
+                continue
+            seen_pids[pid] = len(deduped)
+        deduped.append(r)
+    rows = deduped
+
+    # Sektör sayılarını yeniden hesapla (dedupe sonrası)
+    sector_counts = {}
+    for r in rows:
+        sector_counts[r["sector"]] = sector_counts.get(r["sector"], 0) + 1
+
+    print(f"\n→ {len(rows)} usta seçildi (puan ≥ {MIN_RATING}, sadece oto-ile ilgili, dedupe sonrası)")
+    print(f"  · Düşük puan elendi:        {skipped_low_rating}")
+    print(f"  · Oto-dışı elendi:          {skipped_non_auto}")
+    print(f"  · Aynı place_id ile birleşti: {duplicate_count}")
+    print(f"\n  Kategori dağılımı:")
     for s, c in sorted(sector_counts.items(), key=lambda x: -x[1]):
         print(f"    {s:12s} {c:4d}")
 
@@ -395,7 +419,7 @@ def main():
                 f"{sql_num(r['lat'])}, {sql_num(r['lng'])})"
             )
         f.write(",\n".join(lines))
-        f.write(";\n")
+        f.write("\non conflict (place_id) do nothing;\n")
 
     print(f"\n✓ {OUTPUT_PATH} yazıldı")
 
