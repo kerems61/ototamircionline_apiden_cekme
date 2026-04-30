@@ -190,7 +190,8 @@ function googleDirectionsUrl(mechanic) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(parts.join(' '))}`;
 }
 
-const PAGE_SIZE = 30;
+const DEFAULT_PAGE_SIZE = 15;
+const PAGE_SIZE_OPTIONS = [15, 30, 60, 100];
 
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
@@ -1472,6 +1473,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   useEffect(() => {
     fetchAvailableNeighborhoods()
@@ -1515,10 +1517,10 @@ export default function App() {
     return () => { cancelled = true; };
   }, [activeCat, activeNeighborhood, submittedQuery]);
 
-  // Filtre değiştiğinde sayfayı sıfırla
+  // Filtre veya sayfa boyutu değiştiğinde sayfayı sıfırla
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeCat, activeNeighborhood, submittedQuery]);
+  }, [activeCat, activeNeighborhood, submittedQuery, pageSize]);
 
   const handleWriteReview = (mechanic) => {
     // place_id varsa direkt Google "yorum yaz" formuna git
@@ -1654,10 +1656,20 @@ export default function App() {
           </section>
         )}
 
-        <div className="mt-9 flex items-baseline justify-between fadeUp" style={{ animationDelay:'200ms' }}>
+        <div className="mt-9 flex items-center justify-between gap-3 flex-wrap fadeUp" style={{ animationDelay:'200ms' }}>
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
             {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
           </h2>
+          <label className="flex items-center gap-2 sans text-[12.5px]" style={{ color:'var(--ink-3)' }}>
+            <span>Sayfa başı:</span>
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(parseInt(e.target.value))}
+              className="sans text-[13px] font-semibold px-3 py-1.5 rounded-full cursor-pointer outline-none"
+              style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+              {PAGE_SIZE_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+          </label>
         </div>
 
         {error && (
@@ -1669,18 +1681,18 @@ export default function App() {
         <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} delay={i * 60} />)
-            : mechanics.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE).map((m, i) => (
+            : mechanics.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((m, i) => (
                 <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={Math.min(i, 12) * 50} />
               ))
           }
         </section>
 
-        {!loading && mechanics.length > PAGE_SIZE && (
+        {!loading && mechanics.length > pageSize && (
           <Pagination
             current={currentPage}
-            total={Math.ceil(mechanics.length / PAGE_SIZE)}
+            total={Math.ceil(mechanics.length / pageSize)}
             totalItems={mechanics.length}
-            pageSize={PAGE_SIZE}
+            pageSize={pageSize}
             onChange={(p) => {
               setCurrentPage(p);
               window.scrollTo({ top: 0, behavior: 'smooth' });
