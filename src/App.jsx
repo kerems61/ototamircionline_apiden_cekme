@@ -361,7 +361,7 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
 
   return (
     <div
-      className="relative w-full h-32 sm:h-44 rounded-2xl overflow-hidden flex items-center justify-center"
+      className="relative w-full h-28 sm:h-40 rounded-2xl overflow-hidden flex items-center justify-center"
       style={{ background: grad }}
     >
       <div className="absolute inset-0 opacity-40"
@@ -487,22 +487,22 @@ function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
         </div>
 
         {hasPrices && (
-          <div className="mt-4 space-y-1.5">
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <Shield size={12} color="var(--accent)" strokeWidth={2.4} />
-              <span className="sans text-[10.5px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--accent)' }}>
-                Şeffaf İşçilik
+          <div className="mt-3">
+            <div className="sans flex items-center justify-between gap-2 px-3 py-2 rounded-xl"
+              style={{ background: 'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.12)' }}>
+              <div className="min-w-0 flex items-center gap-1.5">
+                <Shield size={11} color="var(--accent)" strokeWidth={2.6} className="shrink-0" />
+                <span className="text-[11.5px] font-medium truncate" style={{ color: 'var(--ink)' }}>{m.transparentPrices[0].service}</span>
+              </div>
+              <span className="text-[12px] font-bold whitespace-nowrap" style={{ color: 'var(--accent)' }}>
+                {m.transparentPrices[0].priceTL.toLocaleString('tr-TR')} ₺
               </span>
             </div>
-            {m.transparentPrices.slice(0, 2).map((p, i) => (
-              <div key={i} className="sans flex items-center justify-between gap-3 px-3 py-2 rounded-xl"
-                style={{ background: 'var(--accent-soft)' }}>
-                <span className="text-[12px] font-medium truncate" style={{ color: 'var(--ink)' }}>{p.service}</span>
-                <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: 'var(--accent)' }}>
-                  {p.priceTL.toLocaleString('tr-TR')} ₺
-                </span>
+            {m.transparentPrices.length > 1 && (
+              <div className="sans text-[11px] mt-1 text-center" style={{ color:'var(--ink-3)' }}>
+                +{m.transparentPrices.length - 1} işçilik daha
               </div>
-            ))}
+            )}
           </div>
         )}
 
