@@ -345,7 +345,7 @@ function NeighborhoodPills({ active, options, onChange }) {
   );
 }
 
-function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel, distanceKm }) {
+function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel, distanceKm, isFavorite, onToggleFavorite }) {
   const word = getDisplayWord(name);
   // featured ise kırmızımsı vurgulu gradient kullan
   const grad = featured
@@ -415,16 +415,17 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
       </div>
 
       <button
-        onClick={(e) => { e.stopPropagation(); }}
-        className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-transform hover:scale-110"
-        style={{ background:'rgba(255,255,255,0.9)' }}>
-        <Heart size={16} color="var(--ink)" />
+        onClick={(e) => { e.stopPropagation(); onToggleFavorite && onToggleFavorite(); }}
+        aria-label={isFavorite ? 'Kayıtlıdan çıkar' : 'Kayıtlılara ekle'}
+        className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-all hover:scale-110"
+        style={{ background: isFavorite ? '#DC2626' : 'rgba(255,255,255,0.9)' }}>
+        <Heart size={16} color={isFavorite ? 'white' : 'var(--ink)'} fill={isFavorite ? 'white' : 'none'} strokeWidth={2.2} />
       </button>
     </div>
   );
 }
 
-function MechanicCard({ m, onOpen, delay = 0 }) {
+function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
   const hasPrices = m.transparentPrices.length > 0;
   return (
     <article
@@ -445,6 +446,8 @@ function MechanicCard({ m, onOpen, delay = 0 }) {
         categoryIcon={CATEGORY_BY_ID[m.categoryId]?.icon}
         categoryLabel={m.categoryLabel}
         distanceKm={m.distanceKm}
+        isFavorite={isFavorite}
+        onToggleFavorite={onToggleFavorite}
       />
 
       <div className="pt-4 px-1">
@@ -686,12 +689,12 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
   );
 }
 
-function BottomNav({ active, onChange }) {
+function BottomNav({ active, onChange, savedCount = 0 }) {
   const items = [
-    { id:'home',   label:'Keşfet',   icon: Home    },
-    { id:'map',    label:'Harita',   icon: MapPin  },
-    { id:'saved',  label:'Kayıtlı',  icon: Heart   },
-    { id:'me',     label:'Profil',   icon: User    },
+    { id:'home',   label:'Keşfet',   icon: Home          },
+    { id:'map',    label:'Harita',   icon: MapPin        },
+    { id:'saved',  label:'Kayıtlı',  icon: Heart, badge: savedCount > 0 ? savedCount : null },
+    { id:'bildir', label:'Bildir',   icon: Send          },
   ];
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 lg:hidden"
@@ -699,7 +702,7 @@ function BottomNav({ active, onChange }) {
       <div className="mx-3 mb-3 rounded-3xl px-2 py-2 backdrop-blur-xl"
         style={{ background:'rgba(255,255,255,0.92)', border:'1px solid var(--line)', boxShadow:'var(--shadow-lg)' }}>
         <div className="grid grid-cols-4">
-          {items.map(({id,label,icon:Icon})=>{
+          {items.map(({id,label,icon:Icon,badge})=>{
             const isActive = active===id;
             return (
               <button key={id} onClick={()=>onChange(id)}
@@ -710,6 +713,12 @@ function BottomNav({ active, onChange }) {
                     <span className="absolute -inset-2 rounded-full" style={{ background:'var(--accent-soft)' }} />
                   )}
                   <Icon size={20} strokeWidth={isActive ? 2.4 : 2} className="relative" />
+                  {badge != null && (
+                    <span className="absolute -top-1.5 -right-2 min-w-[16px] h-[16px] rounded-full flex items-center justify-center text-[9.5px] font-bold px-1"
+                      style={{ background:'#DC2626', color:'white' }}>
+                      {badge > 99 ? '99+' : badge}
+                    </span>
+                  )}
                 </div>
                 <span className="text-[10.5px] font-medium tracking-tight">{label}</span>
               </button>
@@ -1456,8 +1465,13 @@ function Pagination({ current, total, totalItems, pageSize, onChange, onPageSize
   );
 }
 
-function SuggestionCallout() {
-  const [open, setOpen] = useState(false);
+function SuggestionCallout({ open: externalOpen, onOpenChange }) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = (v) => {
+    setInternalOpen(v);
+    onOpenChange && onOpenChange(v);
+  };
   const waMsg = encodeURIComponent(
     "Merhaba!\n\n[ ] Yaptırdığım işlemi ve fiyatını bildirmek istiyorum:\n  · Usta:\n  · İşlem:\n  · Fiyat: ___ ₺\n\n[ ] Listenize eklenmesini istediğim usta var:\n  · Usta adı:\n  · Adres:\n  · Telefon:"
   );
@@ -1629,6 +1643,22 @@ export default function App() {
   const [sortMode, setSortMode] = useState('default'); // 'default' | 'distance'
   const [locating, setLocating] = useState(false);
   const [locError, setLocError] = useState('');
+  const [favorites, setFavorites] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('omech-favs') || '[]')); }
+    catch { return new Set(); }
+  });
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  const [suggestionOpen, setSuggestionOpen] = useState(false);
+
+  const toggleFavorite = (id) => {
+    setFavorites(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      try { localStorage.setItem('omech-favs', JSON.stringify([...next])); } catch {}
+      return next;
+    });
+  };
 
   const toggleDistanceSort = () => {
     setLocError('');
@@ -1856,7 +1886,19 @@ export default function App() {
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
             {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
           </h2>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => setShowOnlyFavorites(v => !v)}
+              className="sans flex items-center gap-2 text-[12.5px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-[1.03]"
+              style={{
+                background: showOnlyFavorites ? '#DC2626' : 'var(--card)',
+                color: showOnlyFavorites ? 'white' : 'var(--ink)',
+                border: `1px solid ${showOnlyFavorites ? '#DC2626' : 'var(--line)'}`,
+                boxShadow: showOnlyFavorites ? '0 4px 12px -2px rgba(220,38,38,0.3)' : 'none',
+              }}>
+              <Heart size={13} strokeWidth={2.4} fill={showOnlyFavorites ? 'white' : 'none'} />
+              Kayıtlılar{favorites.size > 0 && ` (${favorites.size})`}
+            </button>
             <button
               onClick={toggleDistanceSort}
               disabled={locating}
@@ -1886,28 +1928,55 @@ export default function App() {
           </div>
         )}
 
-        <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {loading
-            ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} delay={i * 60} />)
-            : mechanics.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((m, i) => (
-                <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={Math.min(i, 12) * 50} />
-              ))
-          }
-        </section>
+        {(() => {
+          const visible = showOnlyFavorites
+            ? mechanics.filter(m => favorites.has(m.id))
+            : mechanics;
+          return (
+            <>
+              <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {loading
+                  ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} delay={i * 60} />)
+                  : visible.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((m, i) => (
+                      <MechanicCard key={m.id} m={m} onOpen={setSelected} delay={Math.min(i, 12) * 50}
+                        isFavorite={favorites.has(m.id)}
+                        onToggleFavorite={() => toggleFavorite(m.id)} />
+                    ))
+                }
+              </section>
 
-        {!loading && mechanics.length > 0 && (
-          <Pagination
-            current={currentPage}
-            total={Math.max(1, Math.ceil(mechanics.length / pageSize))}
-            totalItems={mechanics.length}
-            pageSize={pageSize}
-            onChange={(p) => {
-              setCurrentPage(p);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onPageSizeChange={setPageSize}
-          />
-        )}
+              {!loading && showOnlyFavorites && visible.length === 0 && (
+                <div className="mt-10 rounded-3xl p-10 text-center"
+                  style={{ background:'var(--card)', border:'1px dashed var(--line)' }}>
+                  <Heart size={32} color="var(--accent)" className="mx-auto mb-3" />
+                  <div className="serif text-[20px] font-semibold" style={{ color:'var(--ink)' }}>Henüz kayıtlı usta yok</div>
+                  <p className="sans text-[13px] mt-2" style={{ color:'var(--ink-3)' }}>
+                    Bir usta kartının sağ üstündeki kalp ikonuna tıklayarak kaydet, sonra burada gör.
+                  </p>
+                  <button onClick={() => setShowOnlyFavorites(false)}
+                    className="sans mt-4 text-[13px] font-semibold px-5 py-2.5 rounded-full"
+                    style={{ background:'var(--ink)', color:'white' }}>
+                    Tüm ustalara dön
+                  </button>
+                </div>
+              )}
+
+              {!loading && visible.length > 0 && (
+                <Pagination
+                  current={currentPage}
+                  total={Math.max(1, Math.ceil(visible.length / pageSize))}
+                  totalItems={visible.length}
+                  pageSize={pageSize}
+                  onChange={(p) => {
+                    setCurrentPage(p);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onPageSizeChange={setPageSize}
+                />
+              )}
+            </>
+          );
+        })()}
 
         {!loading && mechanics.length === 0 && !error && (
           <div className="mt-10 rounded-3xl p-10 text-center"
@@ -2016,13 +2085,15 @@ export default function App() {
       )}
 
       <DetailSheet mechanic={selected} onClose={()=>setSelected(null)} onWriteReview={handleWriteReview} />
-      <BottomNav active={navTab} onChange={(tab) => {
+      <BottomNav active={navTab} savedCount={favorites.size} onChange={(tab) => {
         setNavTab(tab);
-        if (tab === 'home') goToView('home');
+        if (tab === 'home') { goToView('home'); setShowOnlyFavorites(false); }
         if (tab === 'map') goToView('map');
+        if (tab === 'saved') { goToView('home'); setShowOnlyFavorites(true); }
+        if (tab === 'bildir') { setSuggestionOpen(true); }
       }} />
       <FloatingActions />
-      {view === 'home' && <SuggestionCallout />}
+      {view === 'home' && <SuggestionCallout open={suggestionOpen} onOpenChange={setSuggestionOpen} />}
     </div>
   );
 }
