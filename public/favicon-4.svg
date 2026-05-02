@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- 4: Onaylı Usta — krem zemin + amber anahtar + yeşil onay rozeti (sıcak + güven) -->
+  <!-- 4: Onaylı Usta + Otomobil — krem zemin, arkada otomobil silueti, amber anahtar, yeşil ✓ -->
   <defs>
     <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFE6D0"/>
@@ -7,10 +7,25 @@
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="14" fill="url(#g4)" stroke="#C2410C" stroke-width="2"/>
+
+  <!-- Otomobil silueti (arka plan watermark) -->
+  <g opacity="0.30" fill="#7A2E0A">
+    <path d="M 4 38 Q 4 34 8 33 L 17 30 Q 21 22 30 21 L 38 21 L 46 26 L 55 30 Q 59 31 59 38 L 59 46 Q 59 49 56 49 L 8 49 Q 4 49 4 46 Z"/>
+  </g>
+  <!-- Tekerlekler (siluetin üstünde, daha belirgin) -->
+  <g opacity="0.55">
+    <circle cx="18" cy="49" r="5.5" fill="#1A1410"/>
+    <circle cx="18" cy="49" r="2" fill="#FFE6D0"/>
+    <circle cx="46" cy="49" r="5.5" fill="#1A1410"/>
+    <circle cx="46" cy="49" r="2" fill="#FFE6D0"/>
+  </g>
+
+  <!-- İngiliz anahtarı (ön plan) -->
   <g transform="translate(11 11) scale(1.55)" fill="none" stroke="#C2410C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
   </g>
-  <!-- Yeşil onay rozeti, sağ alt köşede -->
+
+  <!-- Yeşil onay rozeti -->
   <circle cx="48" cy="48" r="11.5" fill="#10B981" stroke="#FFFFFF" stroke-width="2.2"/>
   <path d="M 43 48 L 47 52 L 53 44.5" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>
