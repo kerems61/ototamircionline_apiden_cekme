@@ -1,27 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- 4: Onaylı Usta + Otomobil — krem zemin, görünür koyu otomobil, üstte beyaz İngiliz anahtarı, sağ üstte yeşil ✓ -->
+  <!-- 4: Onaylı Usta + Otomobil — krem zemin, gradient bordo otomobil, beyaz anahtar, yeşil ✓ -->
   <defs>
-    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFE6D0"/>
       <stop offset="100%" stop-color="#FFC2A0"/>
     </linearGradient>
+    <linearGradient id="carBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A33717"/>
+      <stop offset="55%" stop-color="#7A2810"/>
+      <stop offset="100%" stop-color="#4A1808"/>
+    </linearGradient>
+    <linearGradient id="window" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE6D0"/>
+      <stop offset="100%" stop-color="#FFCFA8"/>
+    </linearGradient>
+    <radialGradient id="rim" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#E8DCC4"/>
+      <stop offset="100%" stop-color="#A6997E"/>
+    </radialGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g4)" stroke="#C2410C" stroke-width="2"/>
 
-  <!-- Otomobil silueti (tam görünür koyu kahverengi) -->
-  <g fill="#1F1A14">
-    <path d="M 4 40 Q 4 36 8 35 L 17 32 Q 21 24 30 23 L 38 23 L 46 28 L 55 32 Q 59 33 59 40 L 59 47 Q 59 50 56 50 L 8 50 Q 4 50 4 47 Z"/>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" stroke="#C2410C" stroke-width="2"/>
+
+  <!-- Otomobil — klasik sedan profili, gradient gövde -->
+  <g>
+    <!-- Gövde alt kısım (uzun, daha "araba" formu) -->
+    <path d="M 5 42 Q 5 38 9 37 L 14 36 L 19 33 Q 22 26 29 25 L 37 25 Q 43 25 47 29 L 52 33 L 57 34 Q 60 35 60 39 L 60 47 Q 60 50 57 50 L 8 50 Q 5 50 5 47 Z" fill="url(#carBody)"/>
+    <!-- Gövde üst ışık vurgusu (chrome line) -->
+    <path d="M 9 38 L 56 38" stroke="#FFCFA8" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/>
+    <!-- Kabin/cam (iki cam belirgin) -->
+    <path d="M 23 32 Q 26 26 31 25 L 36 25 Q 40 25 44 28 L 44 32 Z" fill="url(#window)" opacity="0.92"/>
+    <!-- Cam orta direği (B-pillar) -->
+    <line x1="33.5" y1="25" x2="33.5" y2="32" stroke="#4A1808" stroke-width="1.1"/>
+    <!-- Kapı çizgisi -->
+    <line x1="33.5" y1="38" x2="33.5" y2="48" stroke="#4A1808" stroke-width="0.8" opacity="0.5"/>
+    <!-- Far (sağ - aracın önü solda) -->
+    <ellipse cx="9.5" cy="40" rx="2" ry="1.4" fill="#FFE6D0" opacity="0.95"/>
+    <!-- Stop lambası (sol - aracın arkası sağda) -->
+    <rect x="56" y="39" width="3" height="2" rx="0.6" fill="#DC2626" opacity="0.9"/>
   </g>
-  <!-- Cam vurgusu (kabin için yumuşak şeftali) -->
-  <path d="M 22 32 Q 25 25 31 24 L 37 24 L 43 29 L 22 29 Z" fill="#FFC2A0" opacity="0.65"/>
-  <!-- Tekerlekler -->
-  <circle cx="19" cy="50" r="5.5" fill="#1A1410" stroke="#FFE6D0" stroke-width="1"/>
-  <circle cx="19" cy="50" r="2" fill="#FFE6D0"/>
-  <circle cx="45" cy="50" r="5.5" fill="#1A1410" stroke="#FFE6D0" stroke-width="1"/>
-  <circle cx="45" cy="50" r="2" fill="#FFE6D0"/>
 
-  <!-- İngiliz anahtarı (beyaz, otomobilin üstüne biner — kontrast) -->
-  <g transform="translate(18 16) scale(1.1)" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Tekerlekler — jant detaylı -->
+  <g>
+    <!-- Sol tekerlek -->
+    <circle cx="19" cy="50" r="6" fill="#1A1410"/>
+    <circle cx="19" cy="50" r="3.4" fill="url(#rim)"/>
+    <circle cx="19" cy="50" r="1" fill="#1A1410"/>
+    <!-- Sağ tekerlek -->
+    <circle cx="46" cy="50" r="6" fill="#1A1410"/>
+    <circle cx="46" cy="50" r="3.4" fill="url(#rim)"/>
+    <circle cx="46" cy="50" r="1" fill="#1A1410"/>
+  </g>
+
+  <!-- İngiliz anahtarı (beyaz, otomobilin üstüne biner — yan tarafa kaydırılmış) -->
+  <g transform="translate(15 8) scale(0.95) rotate(-8 12 12)" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
   </g>
 
