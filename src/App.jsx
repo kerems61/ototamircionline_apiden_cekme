@@ -979,8 +979,7 @@ function MapView({ onBack, onSelectMechanic }) {
         style={{ background:'var(--bg-warm)', border:'1px solid var(--line-2)', animationDelay:'150ms' }}>
         <Sparkles size={16} color="var(--accent)" className="shrink-0 mt-0.5" />
         <div className="sans text-[12.5px] leading-relaxed" style={{ color:'var(--ink-2)' }}>
-          <b style={{ color:'var(--ink)' }}>Pin konumları yaklaşık.</b> Her usta mahalle merkezinin yakınına yerleştirildi.
-          Net konum için pin'e tıkla → "Detayları Gör" → "Yol Tarifi" Google Maps'te kesin adresi açar.
+          <b style={{ color:'var(--ink)' }}>Yol tarifi için pin'e tıkla</b> → "Detayları Gör" → "Yol Tarifi" Google Maps'te ustanın konumunu açar.
         </div>
       </div>
     </main>
