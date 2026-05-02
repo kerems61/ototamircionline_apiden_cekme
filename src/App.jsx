@@ -1532,9 +1532,7 @@ function JoinDialog({ type, open, onClose }) {
   if (!open) return null;
   const isCustomer = type === 'customer';
 
-  const customerWaMsg = encodeURIComponent(
-    'Merhaba! ototamircim online müşteri WhatsApp grubuna katılmak istiyorum.'
-  );
+  const CUSTOMER_GROUP_URL = 'https://chat.whatsapp.com/Iewci71HtZtKTw9jreZnsw?mode=gi_t';
   const ownerWaMsg = encodeURIComponent(
     'Merhaba, ustayım. ototamircim online listesine sabit işçilik fiyatlarımı göndermek istiyorum.\n\n· Usta adı:\n· Adres / mahalle:\n· İşçilik 1:  ___ ₺\n· İşçilik 2:  ___ ₺\n· İşçilik 3:  ___ ₺'
   );
@@ -1554,7 +1552,7 @@ function JoinDialog({ type, open, onClose }) {
       'Reklam ve usta yok — sadece konu',
     ],
     question: 'Müşteri grubuna katılmak ister misiniz?',
-    waUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${customerWaMsg}`,
+    waUrl: CUSTOMER_GROUP_URL,
     cta: 'Evet, katıl',
     ctaShade: '#166534',
   } : {
