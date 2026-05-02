@@ -1695,8 +1695,8 @@ function SuggestionCallout({ open: externalOpen, onOpenChange }) {
         onClick={() => setOpen(true)}
         aria-label="Fiyat veya usta öner"
         className="fixed z-40 transition-all hover:scale-105 group
-                   left-4 bottom-24 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:left-0
-                   flex items-center gap-2 px-4 py-3 rounded-full lg:rounded-r-2xl lg:rounded-l-none lg:px-3 lg:py-5"
+                   lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:left-0
+                   hidden lg:flex items-center gap-2 px-4 py-3 rounded-full lg:rounded-r-2xl lg:rounded-l-none lg:px-3 lg:py-5"
         style={{
           background: 'linear-gradient(135deg, var(--ink) 0%, #2A211A 100%)',
           color: 'white',
