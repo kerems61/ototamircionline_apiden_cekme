@@ -1528,6 +1528,130 @@ function Pagination({ current, total, totalItems, pageSize, onChange, onPageSize
   );
 }
 
+function JoinDialog({ type, open, onClose }) {
+  if (!open) return null;
+  const isCustomer = type === 'customer';
+
+  const customerWaMsg = encodeURIComponent(
+    'Merhaba! ototamircim online müşteri WhatsApp grubuna katılmak istiyorum.'
+  );
+  const ownerWaMsg = encodeURIComponent(
+    'Merhaba, ustayım. ototamircim online listesine sabit işçilik fiyatlarımı göndermek istiyorum.\n\n· Usta adı:\n· Adres / mahalle:\n· İşçilik 1:  ___ ₺\n· İşçilik 2:  ___ ₺\n· İşçilik 3:  ___ ₺'
+  );
+
+  const cfg = isCustomer ? {
+    accent: '#166534',
+    accentSoft: 'rgba(22,101,52,0.10)',
+    accentBorder: 'rgba(22,101,52,0.18)',
+    iconBg: 'linear-gradient(135deg, #166534 0%, #15803D 100%)',
+    Icon: User,
+    title: 'Müşteri WhatsApp Grubu',
+    subtitle: 'Ücretsiz · sadece müşteriler',
+    bullets: [
+      'Etimesgut\'taki güncel işçilik fiyatları',
+      'Diğer müşterilerin gerçek deneyimleri',
+      'Ustaya gitmeden önce buradan sor',
+      'Reklam ve usta yok — sadece konu',
+    ],
+    question: 'Müşteri grubuna katılmak ister misiniz?',
+    waUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${customerWaMsg}`,
+    cta: 'Evet, katıl',
+    ctaShade: '#166534',
+  } : {
+    accent: 'var(--accent)',
+    accentSoft: 'rgba(194,65,12,0.10)',
+    accentBorder: 'rgba(194,65,12,0.18)',
+    iconBg: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
+    Icon: Wrench,
+    title: 'Listeye katılın',
+    subtitle: 'Sabit işçilik fiyatlarınızı paylaşın',
+    bullets: [
+      'Profilinizi bizzat doğrularız',
+      '24 saat içinde yayında',
+      'Fiyatlar her zaman güncellenebilir',
+      'Müşteri pazarlık için değil iş için gelir',
+    ],
+    question: 'Fiyat listenizi göndermek ister misiniz?',
+    waUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${ownerWaMsg}`,
+    cta: 'WhatsApp\'tan gönder',
+    ctaShade: 'var(--accent)',
+  };
+  const { Icon } = cfg;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center fadeIn p-4"
+      style={{ background: 'rgba(20,17,15,0.55)' }}
+      onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()}
+        className="slideUp w-full sm:max-w-md rounded-3xl p-6 sm:p-7"
+        style={{ background:'var(--card)', boxShadow:'var(--shadow-xl)', border:'1px solid var(--line-2)' }}>
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+              style={{ background: cfg.iconBg }}>
+              <Icon size={20} color="white" strokeWidth={2.4} />
+            </div>
+            <div>
+              <div className="serif text-[20px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
+                {cfg.title}
+              </div>
+              <div className="sans text-[11.5px] mt-0.5" style={{ color:'var(--ink-3)' }}>
+                {cfg.subtitle}
+              </div>
+            </div>
+          </div>
+          <button onClick={onClose}
+            className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
+            style={{ background:'var(--bg-warm)', color:'var(--ink)' }}>
+            <X size={16} />
+          </button>
+        </div>
+
+        <ul className="space-y-2.5 mt-2">
+          {cfg.bullets.map((b, i) => (
+            <li key={i} className="flex items-start gap-2.5 sans text-[13px]" style={{ color:'var(--ink-2)' }}>
+              <span className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-[1px]"
+                style={{ background: cfg.accentSoft, color: cfg.accent }}>
+                <BadgeCheck size={12} strokeWidth={2.6} />
+              </span>
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-5 p-4 rounded-2xl text-center"
+          style={{ background: cfg.accentSoft, border: `1px solid ${cfg.accentBorder}` }}>
+          <div className="serif text-[16px] font-semibold" style={{ color:'var(--ink)' }}>
+            {cfg.question}
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-[1fr_2fr] gap-2">
+          <button onClick={onClose}
+            className="sans text-[13.5px] font-medium py-3 rounded-2xl transition-colors"
+            style={{ background:'var(--bg-warm)', color:'var(--ink-2)', border:'1px solid var(--line)' }}>
+            Şimdi değil
+          </button>
+          <a href={cfg.waUrl} target="_blank" rel="noreferrer"
+            onClick={() => setTimeout(onClose, 200)}
+            className="sans flex items-center justify-center gap-2 py-3 rounded-2xl text-[13.5px] font-semibold transition-transform hover:scale-[1.02]"
+            style={{
+              background: '#25D366',
+              color: 'white',
+              boxShadow: '0 6px 16px -4px rgba(37,211,102,0.40)',
+            }}>
+            <MessageCircle size={16} fill="white" color="#25D366" /> {cfg.cta}
+          </a>
+        </div>
+
+        <div className="mt-4 pt-3 text-[11.5px] sans text-center" style={{ color:'var(--ink-3)', borderTop:'1px dashed var(--line)' }}>
+          {isCustomer ? 'Spam göndermiyoruz · İstediğin zaman ayrılabilirsin' : 'Bilgileriniz sadece doğrulama için kullanılır'}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SuggestionCallout({ open: externalOpen, onOpenChange }) {
   const [internalOpen, setInternalOpen] = useState(false);
   const open = externalOpen !== undefined ? externalOpen : internalOpen;
@@ -1712,6 +1836,8 @@ export default function App() {
   });
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [suggestionOpen, setSuggestionOpen] = useState(false);
+  const [customerJoinOpen, setCustomerJoinOpen] = useState(false);
+  const [ownerJoinOpen, setOwnerJoinOpen] = useState(false);
 
   const toggleFavorite = (id) => {
     setFavorites(prev => {
@@ -1846,10 +1972,10 @@ export default function App() {
                 {item.label}
               </button>
             ))}
-            <a href={`mailto:${CONTACT_EMAIL}?subject=Usta kayıt başvurusu`}
+            <button onClick={() => setOwnerJoinOpen(true)}
               className="px-4 py-2 hover:text-[var(--ink)] transition" style={{ color:'var(--ink-2)' }}>
               Usta misin?
-            </a>
+            </button>
           </nav>
           <button onClick={() => goToView('admin')}
             className="sans text-[12.5px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-105"
@@ -2036,41 +2162,150 @@ export default function App() {
           </div>
         )}
 
-        <section className="mt-14 rounded-3xl overflow-hidden relative fadeUp" style={{ animationDelay:'250ms' }}>
-          <div className="p-7 sm:p-10" style={{
-            background: 'linear-gradient(135deg, var(--ink) 0%, #2A211A 100%)',
-            color:'white'
+        {/* HAKKIMIZDA — Eyecatcher + Hikaye + 2 CTA */}
+        <section id="hakkimizda" className="mt-16 fadeUp" style={{ animationDelay:'250ms' }}>
+          {/* Eyecatcher başlık */}
+          <div className="text-center max-w-3xl mx-auto mb-10 px-2">
+            <div className="sans text-[11px] uppercase tracking-[0.22em] mb-4 inline-block px-3 py-1.5 rounded-full"
+              style={{ color:'var(--accent)', background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
+              Bu Siteyi Neden Kurduk
+            </div>
+            <h2 className="serif text-[30px] sm:text-[42px] lg:text-[48px] font-semibold leading-[1.1] tracking-tight" style={{ color:'var(--ink)' }}>
+              "Motoru açmadan fiyat verilmez —
+              <span className="block mt-1" style={{ color:'var(--ink)' }}>buna katılıyoruz."</span>
+            </h2>
+            <div className="serif italic text-[22px] sm:text-[30px] mt-5 font-semibold" style={{
+              backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
+              WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+            }}>
+              Ama işçilik fiyatları, baştan belli olmalı.
+            </div>
+          </div>
+
+          {/* Hikaye kartı — koyu, yumuşatılmış */}
+          <div className="rounded-3xl overflow-hidden relative" style={{
+            background: 'linear-gradient(135deg, #1F1A14 0%, #2A211A 55%, #3F2A1E 100%)',
+            color:'white',
+            boxShadow:'0 24px 60px -20px rgba(60,30,15,0.45)',
           }}>
-            <div className="grid sm:grid-cols-3 gap-7">
-              <div className="sm:col-span-2">
-                <div className="sans text-[11px] uppercase tracking-[0.18em] opacity-70">Neden Kurduk?</div>
-                <div className="serif text-[28px] sm:text-[34px] mt-2 font-semibold leading-tight">
-                  Aynı arabaya <span className="italic" style={{ color:'#FBBF77' }}>10 bin TL fark.</span>
-                </div>
-                <p className="sans text-[14px] mt-4 opacity-85 max-w-xl leading-relaxed">
-                  Bir gün arabamı çekiciyle Şaşmaz'a, bir ustaya götürdüm. <b>"80 bin TL"</b> dediler.
-                  İnanmadım, aracı tekrar Başkent sanayiye götürdüm — orada <b>"70 bin TL"</b> dediler.
-                  Aynı arıza, aynı parça. 10 bin TL fark.
-                </p>
-                <p className="sans text-[14px] mt-3 opacity-85 max-w-xl leading-relaxed">
-                  Sonunda arabayı yaptırmadan sattım. <b style={{ color:'#FBBF77' }}>İşte bu yüzden bu siteyi kurduk:</b>
-                  hangi ustanın güvenilir olduğunu, gerçek fiyatları ve şeffaf işçiliği görebileceğin
-                  tek yer olsun istedik.
-                </p>
-              </div>
-              <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
-                {[
-                  { k: totalMechanics ?? '...', v:'Doğrulanmış usta' },
-                  { k:'≥4.5', v:'Puan filtresi' },
-                  { k:'7', v:'Sade kategori' },
-                ].map((s,i)=>(
-                  <div key={i}>
-                    <div className="serif text-[28px] font-semibold" style={{ color:'#FBBF77' }}>{s.k}</div>
-                    <div className="sans text-[11.5px] opacity-75">{s.v}</div>
+            {/* dekoratif gradient blob */}
+            <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-30 pointer-events-none"
+              style={{ background:'radial-gradient(circle, #FBBF77 0%, transparent 65%)', filter:'blur(40px)' }} />
+            <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full opacity-20 pointer-events-none"
+              style={{ background:'radial-gradient(circle, #EA580C 0%, transparent 70%)', filter:'blur(50px)' }} />
+
+            <div className="p-7 sm:p-10 relative">
+              <div className="grid sm:grid-cols-3 gap-7">
+                <div className="sm:col-span-2">
+                  <div className="sans text-[11px] uppercase tracking-[0.18em] opacity-70">Hikaye</div>
+                  <div className="serif text-[24px] sm:text-[30px] mt-2 font-semibold leading-tight">
+                    Aynı arabaya <span className="italic" style={{ color:'#FBBF77' }}>10 bin TL fark.</span>
                   </div>
-                ))}
+                  <p className="sans text-[14px] mt-4 opacity-85 max-w-xl leading-relaxed">
+                    Bir gün arabamı çekiciyle bir ustaya götürdüm. <b>"80 bin TL"</b> dediler.
+                    İnanmadım, başka bir sanayiye götürdüm — orada <b>"70 bin TL"</b> dediler.
+                    Aynı iş, aynı parça. 10 bin TL fark.
+                  </p>
+                  <p className="sans text-[14px] mt-3 opacity-85 max-w-xl leading-relaxed">
+                    Sonunda arabayı yaptırmadan sattım. <b style={{ color:'#FBBF77' }}>İşte bu yüzden buradayız:</b>
+                    Sabit işçilikleri (balata, yağ, akü, klima gazı, eksoz, ekspertiz, lastik dengeleme)
+                    önceden bilinebilir bir şekilde topluyoruz. Motor arızası gibi <i>"açmadan bilinmez"</i>
+                    işler için değil — <b>tahmin edilebilir, tekrar eden işler</b> için.
+                  </p>
+                  <p className="sans text-[14px] mt-3 opacity-90 max-w-xl leading-relaxed">
+                    Çünkü güven, sürpriz olmamasıdır.
+                  </p>
+                </div>
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
+                  {[
+                    { k: totalMechanics ?? '...', v:'Doğrulanmış usta' },
+                    { k:'≥4.5', v:'Puan filtresi' },
+                    { k:'7', v:'Sade kategori' },
+                  ].map((s,i)=>(
+                    <div key={i}>
+                      <div className="serif text-[28px] font-semibold" style={{ color:'#FBBF77' }}>{s.k}</div>
+                      <div className="sans text-[11.5px] opacity-75">{s.v}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* İki CTA kartı: Usta + Müşteri */}
+          <div className="grid sm:grid-cols-2 gap-4 mt-5">
+
+            {/* Usta için */}
+            <div className="rounded-3xl p-7 relative overflow-hidden gradient-card transition-all hover:-translate-y-1"
+              style={{ border:'1px solid rgba(194,65,12,0.18)', boxShadow:'var(--shadow-soft)' }}>
+              <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full opacity-50 pointer-events-none"
+                style={{ background:'radial-gradient(circle, rgba(255,210,168,0.55) 0%, transparent 70%)', filter:'blur(20px)' }} />
+              <div className="relative">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4"
+                  style={{ background:'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
+                           boxShadow:'0 8px 18px -4px rgba(194,65,12,0.40)' }}>
+                  <Wrench size={20} color="white" strokeWidth={2.4} />
+                </div>
+                <div className="serif text-[22px] sm:text-[24px] font-semibold leading-tight mb-2" style={{ color:'var(--ink)' }}>
+                  Ustaysanız, fiyatınızı <span style={{ color:'var(--accent)' }}>siz yazın.</span>
+                </div>
+                <p className="sans text-[13.5px] leading-relaxed mb-4" style={{ color:'var(--ink-2)' }}>
+                  Sabit işçilik fiyatlarınız profilinizde göründüğünde,
+                  müşteri <b>pazarlık için değil iş için</b> gelir. WhatsApp'tan listenizi gönderin, biz ekleyelim.
+                </p>
+                <div className="sans text-[11.5px] mb-5 flex flex-wrap gap-x-2.5 gap-y-1" style={{ color:'var(--ink-3)' }}>
+                  <span>· Ücretsiz</span><span>· 2 dakika</span><span>· 24 saatte yayında</span>
+                </div>
+                <button onClick={() => setOwnerJoinOpen(true)}
+                  className="sans w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13.5px] font-semibold transition-transform hover:scale-[1.02]"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)',
+                    color:'white',
+                    boxShadow:'0 8px 20px -4px rgba(194,65,12,0.42)',
+                  }}>
+                  <MessageCircle size={16} fill="white" color="var(--accent)" /> WhatsApp'tan fiyat gönder
+                </button>
+              </div>
+            </div>
+
+            {/* Müşteri için — yeşil/mint accent */}
+            <div className="rounded-3xl p-7 relative overflow-hidden transition-all hover:-translate-y-1"
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(236,253,245,0.94) 100%), radial-gradient(120% 100% at 100% 0%, rgba(22,101,52,0.10) 0%, transparent 60%)',
+                border:'1px solid rgba(22,101,52,0.20)',
+                boxShadow:'0 8px 24px -8px rgba(22,101,52,0.18), 0 2px 6px rgba(60,30,15,0.04)',
+              }}>
+              <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full opacity-50 pointer-events-none"
+                style={{ background:'radial-gradient(circle, rgba(187,247,208,0.65) 0%, transparent 70%)', filter:'blur(20px)' }} />
+              <div className="relative">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4"
+                  style={{ background:'linear-gradient(135deg, #166534 0%, #15803D 100%)',
+                           boxShadow:'0 8px 18px -4px rgba(22,101,52,0.40)' }}>
+                  <User size={20} color="white" strokeWidth={2.4} />
+                </div>
+                <div className="serif text-[22px] sm:text-[24px] font-semibold leading-tight mb-2" style={{ color:'var(--ink)' }}>
+                  Müşteriyseniz, <span style={{ color:'#166534' }}>yalnız değilsiniz.</span>
+                </div>
+                <p className="sans text-[13.5px] leading-relaxed mb-4" style={{ color:'var(--ink-2)' }}>
+                  Aynı iş için "ne ödedin?" sormak hakkın. Etimesgut <b>müşteri WhatsApp grubunda</b>
+                  gerçek fiyatları, deneyimleri ve usta tavsiyelerini paylaşıyoruz.
+                </p>
+                <div className="sans text-[11.5px] mb-5 flex flex-wrap gap-x-2.5 gap-y-1" style={{ color:'var(--ink-3)' }}>
+                  <span>· Reklam yok</span><span>· Ustalar yok</span><span>· Sadece müşteriler</span>
+                </div>
+                <button onClick={() => setCustomerJoinOpen(true)}
+                  className="sans w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[13.5px] font-semibold transition-transform hover:scale-[1.02]"
+                  style={{
+                    background: 'linear-gradient(135deg, #166534 0%, #15803D 100%)',
+                    color:'white',
+                    boxShadow:'0 8px 20px -4px rgba(22,101,52,0.42)',
+                  }}>
+                  <MessageCircle size={16} fill="white" color="#166534" /> Müşteri grubuna katıl
+                </button>
+              </div>
+            </div>
+
           </div>
         </section>
 
@@ -2113,8 +2348,9 @@ export default function App() {
               </div>
               <div>
                 <div className="sans text-[10.5px] uppercase tracking-[0.18em] font-semibold mb-3" style={{ color:'var(--accent)' }}>Bağlantılar</div>
-                <a href="#" className="block mb-2 transition-colors hover:text-[var(--ink)]">Hakkımızda</a>
-                <a href={`mailto:${CONTACT_EMAIL}?subject=Usta kayıt başvurusu`} className="block mb-2 transition-colors hover:text-[var(--ink)]">Usta misin? Kayıt ol</a>
+                <a href="#hakkimizda" className="block mb-2 transition-colors hover:text-[var(--ink)]">Hakkımızda</a>
+                <button onClick={() => setOwnerJoinOpen(true)} className="block mb-2 transition-colors hover:text-[var(--ink)] text-left">Usta misin? Kayıt ol</button>
+                <button onClick={() => setCustomerJoinOpen(true)} className="block mb-2 transition-colors hover:text-[var(--ink)] text-left">Müşteri grubuna katıl</button>
                 <a href="#" className="block mb-2 transition-colors hover:text-[var(--ink)]">Gizlilik · Şartlar</a>
                 <a href="#admin" className="block transition-colors hover:text-[var(--ink)]">Yönetici girişi</a>
               </div>
@@ -2142,6 +2378,8 @@ export default function App() {
       }} />
       <FloatingActions />
       {view === 'home' && <SuggestionCallout open={suggestionOpen} onOpenChange={setSuggestionOpen} />}
+      <JoinDialog type="customer" open={customerJoinOpen} onClose={() => setCustomerJoinOpen(false)} />
+      <JoinDialog type="owner"    open={ownerJoinOpen}    onClose={() => setOwnerJoinOpen(false)} />
     </div>
   );
 }
