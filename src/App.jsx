@@ -258,8 +258,13 @@ function googleDirectionsUrl(mechanic) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(parts.join(' '))}`;
 }
 
-const DEFAULT_PAGE_SIZE = 15;
-const PAGE_SIZE_OPTIONS = [15, 30, 60, 100];
+const DEFAULT_PAGE_SIZE_DESKTOP = 15;
+const DEFAULT_PAGE_SIZE_MOBILE = 5;
+const PAGE_SIZE_OPTIONS = [5, 15, 30, 60, 100];
+const getInitialPageSize = () => {
+  if (typeof window === 'undefined') return DEFAULT_PAGE_SIZE_DESKTOP;
+  return window.innerWidth < 640 ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
+};
 
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
@@ -463,9 +468,13 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
           </span>
         )}
         {verified && !featured && (
-          <span className="sans text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1"
-            style={{ background:'rgba(255,255,255,0.92)', color:'var(--accent)' }}>
-            <BadgeCheck size={12} strokeWidth={2.4} /> Doğrulanmış
+          <span className="sans text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1"
+            style={{
+              background:'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+              color:'white',
+              boxShadow:'0 2px 8px rgba(16,185,129,0.35)',
+            }}>
+            ₺ Şeffaf Fiyat
           </span>
         )}
       </div>
@@ -483,13 +492,28 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
 
 function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
   const hasPrices = m.transparentPrices.length > 0;
+  const isPriced = hasPrices && !m.featured; // Fiyatı belli & PRO değil → yeşil görsel ipucu
+  const cardBg = m.featured
+    ? undefined
+    : isPriced
+      ? 'linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(236,253,245,0.94) 100%), radial-gradient(120% 100% at 0% 0%, rgba(16,185,129,0.14) 0%, transparent 60%)'
+      : undefined;
   return (
     <article
       onClick={() => onOpen(m)}
-      className={`fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 card-hover tap-highlight ${m.featured ? 'proGlow gradient-card-pro' : 'gradient-card'}`}
+      className={`fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 card-hover tap-highlight ${m.featured ? 'proGlow gradient-card-pro' : isPriced ? '' : 'gradient-card'}`}
       style={{
-        border: m.featured ? '1.5px solid rgba(220,38,38,0.32)' : '1px solid rgba(255,255,255,0.65)',
-        boxShadow: m.featured ? 'var(--shadow-pro)' : 'var(--shadow-soft)',
+        background: cardBg,
+        border: m.featured
+          ? '1.5px solid rgba(220,38,38,0.32)'
+          : isPriced
+            ? '1.5px solid rgba(16,185,129,0.32)'
+            : '1px solid rgba(255,255,255,0.65)',
+        boxShadow: m.featured
+          ? 'var(--shadow-pro)'
+          : isPriced
+            ? '0 10px 28px -10px rgba(16,185,129,0.32), 0 2px 6px rgba(60,30,15,0.04)'
+            : 'var(--shadow-soft)',
         animationDelay: `${delay}ms`,
       }}
     >
@@ -1458,7 +1482,7 @@ function Pagination({ current, total, totalItems, pageSize, onChange, onPageSize
                 onChange={(e) => onPageSizeChange(parseInt(e.target.value))}
                 className="sans text-[13px] font-semibold pl-3 pr-2 py-1.5 rounded-full cursor-pointer outline-none"
                 style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
-                {[15, 30, 60, 100].map(n => <option key={n} value={n}>{n} usta</option>)}
+                {PAGE_SIZE_OPTIONS.map(n => <option key={n} value={n}>{n} usta</option>)}
               </select>
             </label>
           )}
@@ -1791,24 +1815,27 @@ function FloatingActions() {
 }
 
 export default function App() {
-  // URL'den admin/harita view'ı algıla
+  // URL'den admin/harita/fiyatlar view'ı algıla
   const initialView = (() => {
     if (typeof window === 'undefined') return 'home';
     const path = window.location.pathname;
     const hash = window.location.hash;
     if (path === '/admin' || hash === '#admin') return 'admin';
     if (path === '/harita' || hash === '#harita') return 'map';
+    if (path === '/fiyatlar' || hash === '#fiyatlar') return 'pricelist';
     return 'home';
   })();
   const [view, setView] = useState(initialView);
   const goToView = (v) => {
     setView(v);
     if (typeof window !== 'undefined') {
-      const newHash = v === 'home' ? '' : `#${v === 'map' ? 'harita' : v}`;
+      const hashMap = { home:'', map:'#harita', pricelist:'#fiyatlar', admin:'#admin' };
+      const newHash = hashMap[v] ?? '';
       window.history.replaceState(null, '', window.location.pathname + window.location.search + newHash);
       window.scrollTo({ top: 0 });
     }
   };
+  const priceOnly = view === 'pricelist';
 
   const [activeCat, setActiveCat] = useState('all');
   const [activeNeighborhood, setActiveNeighborhood] = useState('all');
@@ -1822,7 +1849,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useState(getInitialPageSize);
   const [userLocation, setUserLocation] = useState(null);
   const [sortMode, setSortMode] = useState('default'); // 'default' | 'distance'
   const [locating, setLocating] = useState(false);
@@ -1932,7 +1959,7 @@ export default function App() {
   // Filtre veya sayfa boyutu değiştiğinde sayfayı sıfırla
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeCat, activeNeighborhood, submittedQuery, pageSize]);
+  }, [activeCat, activeNeighborhood, submittedQuery, pageSize, priceOnly]);
 
   const handleWriteReview = (mechanic) => {
     // place_id varsa direkt Google "yorum yaz" formuna git
@@ -1957,15 +1984,23 @@ export default function App() {
           <nav className="hidden lg:flex items-center gap-1 sans text-[13.5px]">
             {[
               { id: 'home', label: 'Keşfet' },
+              { id: 'pricelist', label: 'Fiyatı Belli', accent: '#10B981' },
               { id: 'map',  label: 'Harita' },
             ].map(item => (
               <button key={item.id} onClick={() => goToView(item.id)}
-                className="px-4 py-2 rounded-full transition-all"
+                className="px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
                 style={{
-                  background: view === item.id ? 'var(--ink)' : 'transparent',
+                  background: view === item.id
+                    ? (item.accent
+                        ? `linear-gradient(135deg, ${item.accent} 0%, #059669 100%)`
+                        : 'var(--ink)')
+                    : 'transparent',
                   color: view === item.id ? 'white' : 'var(--ink-2)',
                   fontWeight: view === item.id ? 600 : 500,
+                  boxShadow: view === item.id && item.accent
+                    ? '0 4px 12px -2px rgba(16,185,129,0.35)' : 'none',
                 }}>
+                {item.accent && <span className="font-bold" style={{ color: view === item.id ? 'white' : item.accent }}>₺</span>}
                 {item.label}
               </button>
             ))}
@@ -1989,17 +2024,21 @@ export default function App() {
       {view === 'map' && <MapView onBack={() => goToView('home')} onSelectMechanic={(rawRow) => setSelected(mapRow(rawRow))} />}
       {view === 'admin' && <AdminView onBack={() => goToView('home')} />}
 
-      {view === 'home' && (
+      {(view === 'home' || view === 'pricelist') && (
       <main className="max-w-6xl mx-auto px-5 pt-10 sm:pt-14 pb-32 lg:pb-12">
         <section className="fadeUp relative flex flex-col items-center text-center">
-          {/* Soft gradient aurora blob'ları */}
+          {/* Soft gradient aurora blob'ları (priceOnly modunda yeşilimsi) */}
           <div className="aurora-blob"
             style={{ width:380, height:380, top:-60, left:'-8%',
-              background:'radial-gradient(circle at 30% 30%, #FFC2A0 0%, #FFE6D0 60%, transparent 75%)',
+              background: priceOnly
+                ? 'radial-gradient(circle at 30% 30%, #A7F3D0 0%, #ECFDF5 60%, transparent 75%)'
+                : 'radial-gradient(circle at 30% 30%, #FFC2A0 0%, #FFE6D0 60%, transparent 75%)',
               animationDelay:'0s' }} />
           <div className="aurora-blob"
             style={{ width:340, height:340, top:-30, right:'-6%',
-              background:'radial-gradient(circle at 60% 40%, #F7D2C8 0%, #FFD2A8 55%, transparent 75%)',
+              background: priceOnly
+                ? 'radial-gradient(circle at 60% 40%, #BBF7D0 0%, #D1FAE5 55%, transparent 75%)'
+                : 'radial-gradient(circle at 60% 40%, #F7D2C8 0%, #FFD2A8 55%, transparent 75%)',
               animationDelay:'-5s' }} />
           <div className="aurora-blob hidden sm:block"
             style={{ width:260, height:260, bottom:-40, left:'30%',
@@ -2007,23 +2046,44 @@ export default function App() {
               animationDelay:'-10s', opacity:0.5 }} />
 
           <div className="relative z-10 flex flex-col items-center text-center w-full">
-          <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex glass-soft"
-            style={{ color:'var(--accent)' }}>
-            <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
-              style={{ background:'var(--accent)' }} />
-            <span className="font-semibold">Etimesgut · {totalMechanics ?? '...'} Doğrulanmış Usta</span>
-          </div>
+          {priceOnly ? (
+            <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex"
+              style={{ color:'#059669', background:'#ECFDF5', border:'1px solid rgba(16,185,129,0.25)' }}>
+              <span className="font-bold">₺</span>
+              <span className="font-semibold">Şeffaf Fiyat Listesi · Pazarlıksız</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex glass-soft"
+              style={{ color:'var(--accent)' }}>
+              <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
+                style={{ background:'var(--accent)' }} />
+              <span className="font-semibold">Etimesgut · {totalMechanics ?? '...'} Doğrulanmış Usta</span>
+            </div>
+          )}
           <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[0.95] font-semibold tracking-tight max-w-4xl"
             style={{ color:'var(--ink)' }}>
-            Güvenilir oto ustası,
-            <span className="block italic mt-1" style={{
-              backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
-              WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
-            }}>şeffaf fiyatla.</span>
+            {priceOnly ? (
+              <>
+                Fiyatı belli olan
+                <span className="block italic mt-1" style={{
+                  backgroundImage: 'linear-gradient(120deg, #059669 0%, #10B981 50%, #34D399 100%)',
+                  WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+                }}>ustalar.</span>
+              </>
+            ) : (
+              <>
+                Güvenilir oto ustası,
+                <span className="block italic mt-1" style={{
+                  backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
+                  WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+                }}>şeffaf fiyatla.</span>
+              </>
+            )}
           </h1>
           <p className="sans text-[16px] sm:text-[18px] mt-6 max-w-2xl leading-relaxed" style={{ color:'var(--ink-2)' }}>
-            Etimesgut sanayisinin en iyi puanlı oto ustalarını tek bakışta gör.
-            Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.
+            {priceOnly
+              ? 'İşçilik fiyatlarını önceden açıklayan, şeffaflığa açık ustalar. Pazarlık yok, sürpriz yok — gittiğinde ne ödeyeceğini biliyorsun.'
+              : 'Etimesgut sanayisinin en iyi puanlı oto ustalarını tek bakışta gör. Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.'}
           </p>
 
           <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 w-full max-w-2xl glass-soft"
@@ -2055,9 +2115,25 @@ export default function App() {
 
         <div className="mt-9 flex items-center justify-between gap-3 flex-wrap fadeUp" style={{ animationDelay:'200ms' }}>
           <h2 className="serif text-[24px] sm:text-[28px] font-semibold" style={{ color:'var(--ink)' }}>
-            {loading ? 'Aranıyor…' : `${mechanics.length} usta bulundu`}
+            {loading
+              ? 'Aranıyor…'
+              : priceOnly
+                ? `${mechanics.filter(m => m.transparentPrices.length > 0).length} şeffaf fiyatlı usta`
+                : `${mechanics.length} usta bulundu`}
           </h2>
           <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => goToView(priceOnly ? 'home' : 'pricelist')}
+              className="sans flex items-center gap-2 text-[12.5px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-[1.03]"
+              style={{
+                background: priceOnly ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)' : 'var(--card)',
+                color: priceOnly ? 'white' : 'var(--ink)',
+                border: `1px solid ${priceOnly ? '#059669' : 'var(--line)'}`,
+                boxShadow: priceOnly ? '0 4px 12px -2px rgba(16,185,129,0.35)' : 'none',
+              }}>
+              <span className="font-bold">₺</span>
+              {priceOnly ? 'Fiyatı Belli · Aktif' : 'Fiyatı Belli'}
+            </button>
             <button
               onClick={() => setShowOnlyFavorites(v => !v)}
               className="sans flex items-center gap-2 text-[12.5px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-[1.03]"
@@ -2100,9 +2176,9 @@ export default function App() {
         )}
 
         {(() => {
-          const visible = showOnlyFavorites
-            ? mechanics.filter(m => favorites.has(m.id))
-            : mechanics;
+          let visible = mechanics;
+          if (priceOnly) visible = visible.filter(m => m.transparentPrices.length > 0);
+          if (showOnlyFavorites) visible = visible.filter(m => favorites.has(m.id));
           return (
             <>
               <section className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
