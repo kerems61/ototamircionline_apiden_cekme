@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- 6: Daire logo — lacivert + krom kenar + turuncu çapraz anahtar + ön cephe araba + marka yazısı -->
+  <defs>
+    <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EAEDF2"/>
+      <stop offset="50%" stop-color="#A8AEB6"/>
+      <stop offset="100%" stop-color="#6E7480"/>
+    </linearGradient>
+    <radialGradient id="navyBg" cx="0.5" cy="0.42" r="0.7">
+      <stop offset="0%" stop-color="#2C4773"/>
+      <stop offset="100%" stop-color="#0E1B30"/>
+    </radialGradient>
+    <linearGradient id="orangeBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Krom dış halka -->
+  <circle cx="128" cy="128" r="126" fill="url(#chrome)"/>
+  <circle cx="128" cy="128" r="120" fill="#0A1320"/>
+  <!-- Lacivert iç -->
+  <circle cx="128" cy="128" r="116" fill="url(#navyBg)"/>
+
+  <!-- Dekoratif kesikli turuncu halka (dönme/servis ipucu) -->
+  <circle cx="128" cy="105" r="74" fill="none" stroke="#EA580C" stroke-width="2.5" stroke-dasharray="6 5" opacity="0.55"/>
+  <path d="M 198 78 L 190 70 L 190 77 L 183 77 Z" fill="#EA580C" opacity="0.75"/>
+
+  <!-- Ön cephe araba (anahtarların arkasında) -->
+  <g transform="translate(128 108)">
+    <!-- Üst gövde / kaput çizgisi -->
+    <path d="M -58 12 Q -58 -10 -45 -17 L -24 -22 L 24 -22 L 45 -17 Q 58 -10 58 12 L 58 20 L -58 20 Z" fill="url(#orangeBody)"/>
+    <!-- Cam koyu -->
+    <path d="M -38 -2 Q -38 -17 -24 -20 L 24 -20 Q 38 -17 38 -2 L 38 0 L -38 0 Z" fill="#0F1B2F"/>
+    <!-- Far -->
+    <ellipse cx="-44" cy="3" rx="7" ry="3.5" fill="#FFE8C8"/>
+    <ellipse cx="44" cy="3" rx="7" ry="3.5" fill="#FFE8C8"/>
+    <!-- Izgara çubukları -->
+    <rect x="-23" y="6" width="46" height="2.5" rx="0.6" fill="#0F1B2F"/>
+    <rect x="-23" y="12" width="46" height="2.5" rx="0.6" fill="#0F1B2F"/>
+    <!-- Plaka boşluğu -->
+    <rect x="-12" y="15" width="24" height="3" rx="0.5" fill="#FFE8C8" opacity="0.85"/>
+    <!-- Yer gölgesi -->
+    <ellipse cx="0" cy="24" rx="55" ry="3" fill="#000000" opacity="0.35"/>
+  </g>
+
+  <!-- ÇAPRAZ ANAHTARLAR (X) — turuncu, lacivert iç gözle -->
+  <g transform="translate(128 108)">
+    <!-- Anahtar 1 ( \ yön ) -->
+    <g transform="rotate(45)">
+      <!-- Sap -->
+      <rect x="-4" y="-25" width="8" height="52" rx="3" fill="url(#orangeBody)"/>
+      <!-- Açık ağız -->
+      <path d="M -11 -45 Q -11 -47 -8 -47 L 8 -47 Q 11 -47 11 -45 L 11 -27 Q 11 -25 9 -25 L -9 -25 Q -11 -25 -11 -27 Z" fill="url(#orangeBody)"/>
+      <path d="M -5 -47 L -5 -32 L 5 -32 L 5 -47 Z" fill="#0F1B2F"/>
+      <!-- Kapalı uç -->
+      <circle cx="0" cy="36" r="12" fill="url(#orangeBody)"/>
+      <circle cx="0" cy="36" r="5" fill="#0F1B2F"/>
+      <!-- Vurgu/parlama -->
+      <rect x="-3" y="-22" width="1.5" height="46" rx="1" fill="#FFFFFF" opacity="0.25"/>
+    </g>
+    <!-- Anahtar 2 ( / yön ) -->
+    <g transform="rotate(-45)">
+      <rect x="-4" y="-25" width="8" height="52" rx="3" fill="url(#orangeBody)"/>
+      <path d="M -11 -45 Q -11 -47 -8 -47 L 8 -47 Q 11 -47 11 -45 L 11 -27 Q 11 -25 9 -25 L -9 -25 Q -11 -25 -11 -27 Z" fill="url(#orangeBody)"/>
+      <path d="M -5 -47 L -5 -32 L 5 -32 L 5 -47 Z" fill="#0F1B2F"/>
+      <circle cx="0" cy="36" r="12" fill="url(#orangeBody)"/>
+      <circle cx="0" cy="36" r="5" fill="#0F1B2F"/>
+      <rect x="-3" y="-22" width="1.5" height="46" rx="1" fill="#FFFFFF" opacity="0.25"/>
+    </g>
+    <!-- Merkez nokta (X kesişim) -->
+    <circle cx="0" cy="0" r="6" fill="#EA580C" stroke="#0F1B2F" stroke-width="1.5"/>
+  </g>
+
+  <!-- MARKA YAZISI -->
+  <text x="128" y="195" text-anchor="middle" fill="#FFFFFF"
+        font-family="Arial Black, Arial, Helvetica, sans-serif"
+        font-size="22" font-weight="900" letter-spacing="1.2">OTOTAMIRCIM</text>
+  <text x="128" y="220" text-anchor="middle" fill="#FFFFFF"
+        font-family="Arial Black, Arial, Helvetica, sans-serif"
+        font-size="22" font-weight="900" letter-spacing="1.2">ONLINE</text>
+  <line x1="74" y1="226" x2="182" y2="226" stroke="#EA580C" stroke-width="1.4" opacity="0.7"/>
+  <!-- Tagline -->
+  <text x="128" y="238" text-anchor="middle" fill="#E8EDF1"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="9.5" letter-spacing="0.4">Güvenilir Sanayi Rehberiniz</text>
+  <text x="128" y="248" text-anchor="middle" fill="#FFD2A8"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="9" letter-spacing="0.3" opacity="0.95">Aracınızın Dijital Karnesi</text>
+</svg>
