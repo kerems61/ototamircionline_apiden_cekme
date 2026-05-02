@@ -31,14 +31,14 @@ const supabase = createClient(
 const FONT_INJECT = `
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Geist:wght@300;400;500;600;700;800&display=swap');
 :root{
-  --bg: #FAFAF6;
-  --bg-warm: #F4F1EA;
+  --bg: #FBF6EE;
+  --bg-warm: #F6EFE2;
   --bg-card: #FFFFFF;
-  --ink: #14110F;
-  --ink-2: #5C5650;
-  --ink-3: #8C857C;
-  --line: #E8E3D8;
-  --line-2: #EFEAE0;
+  --ink: #1A1410;
+  --ink-2: #5C5046;
+  --ink-3: #9A8E80;
+  --line: #ECE3D2;
+  --line-2: #F2EADB;
   --card: #FFFFFF;
   --accent: #C2410C;
   --accent-2: #EA580C;
@@ -48,14 +48,30 @@ const FONT_INJECT = `
   --gold: #D97706;
   --pro: #DC2626;
   --pro-soft: #FEE2E2;
-  --shadow-sm: 0 1px 2px rgba(20,17,15,.04), 0 1px 3px rgba(20,17,15,.03);
-  --shadow-md: 0 2px 4px rgba(20,17,15,.04), 0 12px 28px rgba(20,17,15,.07);
-  --shadow-lg: 0 1px 2px rgba(20,17,15,.04), 0 28px 56px -16px rgba(20,17,15,.16);
-  --shadow-xl: 0 1px 2px rgba(20,17,15,.05), 0 40px 80px -20px rgba(20,17,15,.22);
-  --shadow-pro: 0 0 0 1px rgba(220,38,38,.18), 0 12px 32px -8px rgba(220,38,38,.28);
+  /* Soft gradient mesh paleti — şeftali → kayısı → terrakota → dusty rose */
+  --grad-peach: #FFE6D0;
+  --grad-apricot: #FFD2A8;
+  --grad-coral: #FFC2A0;
+  --grad-rose: #F7D2C8;
+  --grad-cream: #FFF6E8;
+  --grad-mint-soft: #E8F0E2;
+  --shadow-sm: 0 1px 2px rgba(60,30,15,.04), 0 1px 3px rgba(60,30,15,.03);
+  --shadow-md: 0 2px 4px rgba(60,30,15,.04), 0 12px 28px rgba(60,30,15,.08);
+  --shadow-lg: 0 1px 2px rgba(60,30,15,.04), 0 28px 60px -18px rgba(120,60,20,.18);
+  --shadow-xl: 0 1px 2px rgba(60,30,15,.05), 0 40px 80px -20px rgba(120,60,20,.24);
+  --shadow-pro: 0 0 0 1px rgba(220,38,38,.18), 0 16px 36px -10px rgba(220,38,38,.32);
+  --shadow-soft: 0 8px 24px -8px rgba(194,65,12,.18), 0 2px 6px rgba(60,30,15,.04);
 }
 html { scroll-behavior: smooth; }
-body { background: var(--bg); }
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(900px 700px at 12% -8%,  rgba(255,194,160,0.55) 0%, transparent 55%),
+    radial-gradient(800px 600px at 92% 4%,   rgba(247,210,200,0.55) 0%, transparent 60%),
+    radial-gradient(900px 700px at 50% 110%, rgba(255,228,196,0.55) 0%, transparent 60%),
+    radial-gradient(700px 500px at 100% 60%, rgba(232,240,226,0.40) 0%, transparent 65%);
+  background-attachment: fixed;
+}
 .serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -98,9 +114,49 @@ body { background: var(--bg); }
     radial-gradient(600px 400px at 50% 50%, rgba(217,119,6,.025), transparent 70%);
 }
 .glass {
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  background: rgba(255,250,243,0.68);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+.glass-soft {
+  background: rgba(255,253,248,0.78);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255,255,255,0.55);
+}
+/* Yumuşak aurora blob'ları — hero arka planı için */
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.62;
+  pointer-events: none;
+  animation: blobFloat 16s ease-in-out infinite;
+}
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(20px, -16px) scale(1.05); }
+  66%      { transform: translate(-14px, 14px) scale(0.97); }
+}
+/* Soft gradient kart yüzeyi — şeftali ışıltılı */
+.gradient-card {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(255,250,244,0.94) 100%),
+    radial-gradient(120% 100% at 0% 0%, rgba(255,210,168,0.20) 0%, transparent 60%);
+  background-blend-mode: normal, normal;
+}
+.gradient-card-pro {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(255,242,238,0.95) 100%),
+    radial-gradient(140% 100% at 0% 0%, rgba(255,180,160,0.22) 0%, transparent 55%);
+}
+/* Buton/pill için ince gradient */
+.btn-gradient-ink {
+  background: linear-gradient(135deg, #1A1410 0%, #2A2018 100%);
+}
+.btn-gradient-accent {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  box-shadow: 0 6px 16px -4px rgba(194,65,12,0.40);
 }
 .card-hover {
   transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s cubic-bezier(.2,.8,.2,1), border-color .25s ease;
@@ -430,11 +486,10 @@ function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
   return (
     <article
       onClick={() => onOpen(m)}
-      className={`fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 card-hover tap-highlight ${m.featured ? 'proGlow' : ''}`}
+      className={`fadeUp group cursor-pointer rounded-3xl p-3 sm:p-4 card-hover tap-highlight ${m.featured ? 'proGlow gradient-card-pro' : 'gradient-card'}`}
       style={{
-        background: 'var(--card)',
-        border: m.featured ? '1.5px solid rgba(220,38,38,0.35)' : '1px solid var(--line)',
-        boxShadow: m.featured ? 'var(--shadow-pro)' : 'var(--shadow-sm)',
+        border: m.featured ? '1.5px solid rgba(220,38,38,0.32)' : '1px solid rgba(255,255,255,0.65)',
+        boxShadow: m.featured ? 'var(--shadow-pro)' : 'var(--shadow-soft)',
         animationDelay: `${delay}ms`,
       }}
     >
@@ -508,9 +563,11 @@ function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
 
         <button className="sans mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-[13.5px] font-semibold transition-all hover:gap-2.5"
           style={{
-            background: m.featured ? 'linear-gradient(135deg, var(--pro), #B91C1C)' : 'var(--ink)',
+            background: m.featured
+              ? 'linear-gradient(135deg, var(--pro), #B91C1C)'
+              : 'linear-gradient(135deg, #1A1410 0%, #2A2018 100%)',
             color: 'white',
-            boxShadow: m.featured ? '0 8px 16px -4px rgba(220,38,38,0.35)' : 'none',
+            boxShadow: m.featured ? '0 8px 18px -4px rgba(220,38,38,0.40)' : '0 6px 14px -4px rgba(60,30,15,0.28)',
           }}>
           Detayları Gör <ChevronRight size={15} className="transition-transform group-hover:translate-x-1" />
         </button>
@@ -522,8 +579,8 @@ function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
 function CardSkeleton({ delay = 0 }) {
   return (
     <div
-      className="fadeUp rounded-3xl p-3 sm:p-4"
-      style={{ background: 'var(--card)', border: '1px solid var(--line)', animationDelay: `${delay}ms` }}
+      className="fadeUp rounded-3xl p-3 sm:p-4 gradient-card"
+      style={{ border: '1px solid rgba(255,255,255,0.65)', boxShadow:'var(--shadow-soft)', animationDelay: `${delay}ms` }}
     >
       <div className="skeleton w-full h-44 sm:h-48 rounded-2xl" />
       <div className="pt-4 px-1 space-y-3">
@@ -701,11 +758,11 @@ function BottomNav({ active, onChange, savedCount = 0 }) {
       style={{ paddingBottom:'env(safe-area-inset-bottom)' }}>
       <div className="px-2 pt-2 pb-2 backdrop-blur-xl"
         style={{
-          background:'rgba(255,255,255,0.96)',
-          borderTop:'1px solid var(--line)',
-          borderTopLeftRadius: '20px',
-          borderTopRightRadius: '20px',
-          boxShadow: '0 -8px 24px -4px rgba(20,17,15,0.08)',
+          background:'linear-gradient(180deg, rgba(255,250,243,0.82) 0%, rgba(255,246,232,0.95) 100%)',
+          borderTop:'1px solid rgba(236,227,210,0.65)',
+          borderTopLeftRadius: '24px',
+          borderTopRightRadius: '24px',
+          boxShadow: '0 -10px 32px -6px rgba(120,60,20,0.10)',
         }}>
         <div className="grid grid-cols-4">
           {items.map(({id,label,icon:Icon,badge})=>{
@@ -1377,11 +1434,11 @@ function Pagination({ current, total, totalItems, pageSize, onChange, onPageSize
 
   return (
     <div className="mt-12 fadeUp">
-      <div className="rounded-3xl p-6 sm:p-8"
+      <div className="rounded-3xl p-6 sm:p-8 glass-soft"
         style={{
-          background: 'linear-gradient(180deg, var(--bg-warm) 0%, var(--card) 100%)',
-          border: '1px solid var(--line-2)',
-          boxShadow: 'var(--shadow-sm)',
+          backgroundImage:
+            'radial-gradient(120% 100% at 0% 0%, rgba(255,210,168,0.20) 0%, transparent 60%), linear-gradient(180deg, rgba(255,253,248,0.85) 0%, rgba(255,255,255,0.92) 100%)',
+          boxShadow: 'var(--shadow-soft)',
         }}>
         {/* Üst: durum + sayfa boyutu seçici */}
         <div className="flex items-center justify-between gap-4 flex-wrap mb-5">
@@ -1765,11 +1822,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen sans grain" style={{ background:'var(--bg)' }}>
+    <div className="min-h-screen sans" style={{ background:'transparent' }}>
       <style>{FONT_INJECT}</style>
 
       <header className="sticky top-0 z-20 glass"
-        style={{ borderBottom:'1px solid rgba(232,227,216,0.6)' }}>
+        style={{ borderBottom:'1px solid rgba(236,227,210,0.5)', boxShadow:'0 1px 12px rgba(120,60,20,0.06)' }}>
         <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
           <button onClick={() => goToView('home')} className="cursor-pointer transition-transform hover:scale-[1.02]">
             <Logo />
@@ -1812,8 +1869,23 @@ export default function App() {
       {view === 'home' && (
       <main className="max-w-6xl mx-auto px-5 pt-10 sm:pt-14 pb-32 lg:pb-12">
         <section className="fadeUp relative flex flex-col items-center text-center">
-          <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex"
-            style={{ color:'var(--accent)', background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
+          {/* Soft gradient aurora blob'ları */}
+          <div className="aurora-blob"
+            style={{ width:380, height:380, top:-60, left:'-8%',
+              background:'radial-gradient(circle at 30% 30%, #FFC2A0 0%, #FFE6D0 60%, transparent 75%)',
+              animationDelay:'0s' }} />
+          <div className="aurora-blob"
+            style={{ width:340, height:340, top:-30, right:'-6%',
+              background:'radial-gradient(circle at 60% 40%, #F7D2C8 0%, #FFD2A8 55%, transparent 75%)',
+              animationDelay:'-5s' }} />
+          <div className="aurora-blob hidden sm:block"
+            style={{ width:260, height:260, bottom:-40, left:'30%',
+              background:'radial-gradient(circle at 50% 50%, #FFE6D0 0%, transparent 70%)',
+              animationDelay:'-10s', opacity:0.5 }} />
+
+          <div className="relative z-10 flex flex-col items-center text-center w-full">
+          <div className="flex items-center gap-2.5 sans text-[11px] uppercase tracking-[0.2em] mb-5 px-3 py-1.5 rounded-full inline-flex glass-soft"
+            style={{ color:'var(--accent)' }}>
             <span className="relative inline-block w-1.5 h-1.5 rounded-full pulseRing"
               style={{ background:'var(--accent)' }} />
             <span className="font-semibold">Etimesgut · {totalMechanics ?? '...'} Doğrulanmış Usta</span>
@@ -1822,7 +1894,7 @@ export default function App() {
             style={{ color:'var(--ink)' }}>
             Güvenilir oto ustası,
             <span className="block italic mt-1" style={{
-              backgroundImage: 'linear-gradient(120deg, var(--accent) 0%, var(--gold) 50%, var(--accent-2) 100%)',
+              backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
               WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
             }}>şeffaf fiyatla.</span>
           </h1>
@@ -1831,8 +1903,8 @@ export default function App() {
             Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.
           </p>
 
-          <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 w-full max-w-2xl"
-            style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-md)' }}>
+          <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 w-full max-w-2xl glass-soft"
+            style={{ boxShadow:'var(--shadow-soft)' }}>
             <div className="pl-4 flex items-center"><Search size={19} color="var(--ink-3)" strokeWidth={2.2} /></div>
             <input
               value={query}
@@ -1841,11 +1913,12 @@ export default function App() {
               className="flex-1 bg-transparent outline-none sans text-[15px] py-3 text-left"
               style={{ color:'var(--ink)' }}
             />
-            <button type="submit" className="sans text-[13.5px] font-semibold px-6 py-3 rounded-xl transition-transform hover:scale-105"
-              style={{ background:'var(--ink)', color:'white' }}>
+            <button type="submit" className="sans text-[13.5px] font-semibold px-6 py-3 rounded-xl transition-transform hover:scale-105 btn-gradient-accent"
+              style={{ color:'white' }}>
               Ara
             </button>
           </form>
+          </div>
 
         </section>
 
