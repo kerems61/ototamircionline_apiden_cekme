@@ -119,14 +119,14 @@ body::before {
     radial-gradient(600px 400px at 50% 50%, rgba(217,119,6,.025), transparent 70%);
 }
 .glass {
-  background: rgba(255,250,243,0.68);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  background: rgba(255,250,243,0.86);
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
 }
 .glass-soft {
-  background: rgba(255,253,248,0.78);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  background: rgba(255,253,248,0.92);
+  backdrop-filter: blur(8px) saturate(130%);
+  -webkit-backdrop-filter: blur(8px) saturate(130%);
   border: 1px solid rgba(255,255,255,0.55);
 }
 /* Yumuşak aurora blob'ları — hero arka planı için */
