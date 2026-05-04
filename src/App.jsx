@@ -63,14 +63,19 @@ const FONT_INJECT = `
   --shadow-soft: 0 8px 24px -8px rgba(194,65,12,.18), 0 2px 6px rgba(60,30,15,.04);
 }
 html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
+body { background: var(--bg); }
+/* Sabit gradient mesh — pseudo-element, scroll'da repaint yapmaz */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image:
     radial-gradient(900px 700px at 12% -8%,  rgba(255,194,160,0.55) 0%, transparent 55%),
     radial-gradient(800px 600px at 92% 4%,   rgba(247,210,200,0.55) 0%, transparent 60%),
     radial-gradient(900px 700px at 50% 110%, rgba(255,228,196,0.55) 0%, transparent 60%),
     radial-gradient(700px 500px at 100% 60%, rgba(232,240,226,0.40) 0%, transparent 65%);
-  background-attachment: fixed;
 }
 .serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
