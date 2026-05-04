@@ -2071,12 +2071,12 @@ export default function App() {
               <span className="font-semibold">Etimesgut · {totalMechanics ?? '...'} Doğrulanmış Usta</span>
             </div>
           )}
-          <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[0.95] font-semibold max-w-4xl"
+          <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[1.05] font-semibold max-w-4xl"
             style={{ color:'var(--ink)' }}>
             {priceOnly ? (
               <>
                 Fiyatı belli olan
-                <span className="block mt-1" style={{
+                <span className="block mt-2" style={{
                   backgroundImage: 'linear-gradient(120deg, #059669 0%, #10B981 50%, #34D399 100%)',
                   WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
                 }}>ustalar.</span>
@@ -2084,7 +2084,7 @@ export default function App() {
             ) : (
               <>
                 Güvenilir oto ustası,
-                <span className="block mt-1" style={{
+                <span className="block mt-2" style={{
                   backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
                   WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
                 }}>şeffaf fiyatla.</span>
