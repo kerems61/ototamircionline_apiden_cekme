@@ -77,7 +77,7 @@ body::before {
     radial-gradient(900px 700px at 50% 110%, rgba(255,228,196,0.55) 0%, transparent 60%),
     radial-gradient(700px 500px at 100% 60%, rgba(232,240,226,0.40) 0%, transparent 65%);
 }
-.serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
+.serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.01em; font-variant-ligatures: no-common-ligatures; }
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 @keyframes fadeUp { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
@@ -2066,7 +2066,7 @@ export default function App() {
               <span className="font-semibold">Etimesgut · {totalMechanics ?? '...'} Doğrulanmış Usta</span>
             </div>
           )}
-          <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[0.95] font-semibold tracking-tight max-w-4xl"
+          <h1 className="serif text-[44px] sm:text-[68px] lg:text-[80px] leading-[0.95] font-semibold max-w-4xl"
             style={{ color:'var(--ink)' }}>
             {priceOnly ? (
               <>
@@ -2249,7 +2249,7 @@ export default function App() {
               style={{ color:'var(--accent)', background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
               Bu Siteyi Neden Kurduk
             </div>
-            <h2 className="serif text-[30px] sm:text-[42px] lg:text-[48px] font-semibold leading-[1.1] tracking-tight" style={{ color:'var(--ink)' }}>
+            <h2 className="serif text-[30px] sm:text-[42px] lg:text-[48px] font-semibold leading-[1.1]" style={{ color:'var(--ink)' }}>
               "Motoru açmadan fiyat verilmez —
               <span className="block mt-1" style={{ color:'var(--ink)' }}>buna katılıyoruz."</span>
             </h2>
