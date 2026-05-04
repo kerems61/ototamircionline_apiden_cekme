@@ -133,10 +133,11 @@ body::before {
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
+  filter: blur(30px);
   opacity: 0.62;
   pointer-events: none;
   animation: blobFloat 16s ease-in-out infinite;
+  will-change: transform;
 }
 @keyframes blobFloat {
   0%, 100% { transform: translate(0, 0) scale(1); }
