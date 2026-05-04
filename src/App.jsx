@@ -29,7 +29,7 @@ const supabase = createClient(
    ────────────────────────────────────────────────────────────── */
 
 const FONT_INJECT = `
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Geist:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Geist:wght@300;400;500;600;700;800&display=swap');
 :root{
   --bg: #FBF6EE;
   --bg-warm: #F6EFE2;
@@ -78,11 +78,8 @@ body::before {
     radial-gradient(700px 500px at 100% 60%, rgba(232,240,226,0.40) 0%, transparent 65%);
 }
 .serif {
-  font-family: 'Fraunces', ui-serif, Georgia, serif;
-  font-optical-sizing: auto;
+  font-family: 'Playfair Display', 'Fraunces', ui-serif, Georgia, serif;
   letter-spacing: 0;
-  font-variant-ligatures: none;
-  font-feature-settings: "liga" 0, "dlig" 0, "clig" 0, "ss01" 0, "ss02" 0;
 }
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
