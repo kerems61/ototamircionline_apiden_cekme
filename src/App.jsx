@@ -2071,7 +2071,7 @@ export default function App() {
             {priceOnly ? (
               <>
                 Fiyatı belli olan
-                <span className="block italic mt-1" style={{
+                <span className="block mt-1" style={{
                   backgroundImage: 'linear-gradient(120deg, #059669 0%, #10B981 50%, #34D399 100%)',
                   WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
                 }}>ustalar.</span>
@@ -2079,7 +2079,7 @@ export default function App() {
             ) : (
               <>
                 Güvenilir oto ustası,
-                <span className="block italic mt-1" style={{
+                <span className="block mt-1" style={{
                   backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
                   WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
                 }}>şeffaf fiyatla.</span>
@@ -2253,7 +2253,7 @@ export default function App() {
               "Motoru açmadan fiyat verilmez —
               <span className="block mt-1" style={{ color:'var(--ink)' }}>buna katılıyoruz."</span>
             </h2>
-            <div className="serif italic text-[22px] sm:text-[30px] mt-5 font-semibold" style={{
+            <div className="serif text-[22px] sm:text-[30px] mt-5 font-semibold" style={{
               backgroundImage: 'linear-gradient(120deg, #C2410C 0%, #EA580C 35%, #F59E0B 65%, #DB2777 100%)',
               WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
             }}>
