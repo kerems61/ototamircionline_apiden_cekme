@@ -77,7 +77,13 @@ body::before {
     radial-gradient(900px 700px at 50% 110%, rgba(255,228,196,0.55) 0%, transparent 60%),
     radial-gradient(700px 500px at 100% 60%, rgba(232,240,226,0.40) 0%, transparent 65%);
 }
-.serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.01em; font-variant-ligatures: no-common-ligatures; }
+.serif {
+  font-family: 'Fraunces', ui-serif, Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "dlig" 0, "clig" 0, "ss01" 0, "ss02" 0;
+}
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 @keyframes fadeUp { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
