@@ -79,7 +79,9 @@ body::before {
 }
 .serif {
   font-family: 'Playfair Display', 'Fraunces', ui-serif, Georgia, serif;
-  letter-spacing: 0;
+  letter-spacing: 0.005em;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "dlig" 0, "clig" 0, "calt" 0;
 }
 .sans  { font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
