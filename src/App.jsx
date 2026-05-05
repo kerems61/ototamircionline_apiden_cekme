@@ -188,6 +188,8 @@ const ICON_MAP = {
 function resolveIcon(name) {
   return ICON_MAP[name] || Sparkles;
 }
+// Admin kategori formunda dropdown için (kategoriye uygun olanlar)
+const ICON_CHOICES = ['Wrench', 'Shield', 'Hammer', 'Zap', 'Droplet', 'CircleDot', 'BadgeCheck', 'Sparkles', 'Star', 'Clock', 'Heart'];
 
 // Default fallback — DB'den kategoriler gelmezse veya migration_003 çalışmamışsa kullanılır
 const DEFAULT_CATEGORIES = [
@@ -1137,6 +1139,7 @@ function AdminView({ onBack }) {
   const [creating, setCreating] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
   const [renderLimit, setRenderLimit] = useState(30);
+  const [adminTab, setAdminTab] = useState('mechanics'); // 'mechanics' | 'categories'
 
   // Bu callApi her zaman EN GÜNCEL şifreyi kullanır (closure değil, parametre)
   const callApiWith = async (pwd, action, data = {}) => {
@@ -1309,22 +1312,26 @@ function AdminView({ onBack }) {
 
   return (
     <main className="max-w-6xl mx-auto px-5 pt-6 pb-32 lg:pb-12">
-      <div className="flex items-center justify-between mb-5 fadeUp">
+      <div className="flex items-center justify-between mb-4 fadeUp flex-wrap gap-3">
         <div>
           <h2 className="serif text-[28px] sm:text-[34px] font-semibold leading-tight" style={{ color:'var(--ink)' }}>
             Yönetici Paneli
           </h2>
           <p className="sans text-[13px] mt-1" style={{ color:'var(--ink-3)' }}>
-            {mechanics.length} usta · arama yap, düzenle, PRO işaretle
+            {adminTab === 'mechanics'
+              ? `${mechanics.length} usta · arama yap, düzenle, PRO işaretle`
+              : 'Kategorileri yönet — yeni ekle, düzenle, sil'}
           </p>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center flex-wrap">
           {saveMsg && <span className="sans text-[12px]" style={{ color:'var(--ink-2)' }}>{saveMsg}</span>}
-          <button onClick={() => { setCreating(true); setEditing(null); }}
-            className="sans text-[13px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-105"
-            style={{ background:'var(--accent)', color:'white' }}>
-            + Yeni Usta
-          </button>
+          {adminTab === 'mechanics' && (
+            <button onClick={() => { setCreating(true); setEditing(null); }}
+              className="sans text-[13px] font-semibold px-4 py-2 rounded-full transition-all hover:scale-105"
+              style={{ background:'var(--accent)', color:'white' }}>
+              + Yeni Usta
+            </button>
+          )}
           <button onClick={logout}
             className="sans text-[13px] font-medium px-4 py-2 rounded-full"
             style={{ background:'transparent', color:'#B91C1C', border:'1px solid #FECACA' }}
@@ -1338,6 +1345,35 @@ function AdminView({ onBack }) {
           </button>
         </div>
       </div>
+
+      {/* Tab switcher */}
+      <div className="flex gap-1.5 mb-5 fadeUp">
+        {[
+          { id: 'mechanics',  label: 'Ustalar',     icon: Wrench    },
+          { id: 'categories', label: 'Kategoriler', icon: Sparkles },
+        ].map(t => {
+          const Icon = t.icon;
+          const isActive = adminTab === t.id;
+          return (
+            <button key={t.id} onClick={() => setAdminTab(t.id)}
+              className="sans flex items-center gap-1.5 text-[13px] font-semibold px-4 py-2 rounded-full transition-all"
+              style={{
+                background: isActive ? 'var(--ink)' : 'var(--card)',
+                color: isActive ? 'white' : 'var(--ink-2)',
+                border: `1px solid ${isActive ? 'var(--ink)' : 'var(--line)'}`,
+              }}>
+              <Icon size={13} strokeWidth={2.4} />
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Categories tab içeriği */}
+      {adminTab === 'categories' && <CategoryManagement callApi={callApi} setSaveMsg={setSaveMsg} />}
+
+      {/* Mechanics tab içeriği — geri kalan her şey */}
+      {adminTab === 'mechanics' && <>
 
       {creating && (
         <div className="rounded-2xl p-5 mb-5 fadeUp"
@@ -1402,7 +1438,194 @@ function AdminView({ onBack }) {
           Sonuç yok. Aramayı temizle.
         </div>
       )}
+
+      </>}
     </main>
+  );
+}
+
+function CategoryManagement({ callApi, setSaveMsg }) {
+  const [cats, setCats] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [editingId, setEditingId] = useState(null); // null | 'new' | <existing id>
+  const [form, setForm] = useState(null);
+  const [error, setError] = useState('');
+
+  const load = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const { categories } = await callApi('list_categories');
+      setCats(categories || []);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => { load(); }, []);
+
+  const startNew = () => {
+    setEditingId('new');
+    setForm({ id: '', label: '', icon: 'Wrench', tone_dark: '#1F1B16', tone_light: '#3F3525', sort_order: (cats.length + 1) * 10 });
+  };
+  const startEdit = (c) => {
+    setEditingId(c.id);
+    setForm({ id: c.id, label: c.label, icon: c.icon, tone_dark: c.tone_dark, tone_light: c.tone_light, sort_order: c.sort_order });
+  };
+  const cancelEdit = () => { setEditingId(null); setForm(null); };
+
+  const save = async () => {
+    setError('');
+    setSaveMsg('Kaydediliyor...');
+    try {
+      if (editingId === 'new') {
+        await callApi('create_category', form);
+        setSaveMsg('✓ Kategori eklendi');
+      } else {
+        await callApi('update_category', { id: editingId, fields: form });
+        setSaveMsg('✓ Kategori güncellendi');
+      }
+      setTimeout(() => setSaveMsg(''), 2000);
+      cancelEdit();
+      load();
+    } catch (e) {
+      setError(e.message);
+      setSaveMsg('✗ ' + e.message);
+    }
+  };
+
+  const remove = async (c) => {
+    if (c.is_default) {
+      alert('Varsayılan kategoriler silinemez (sadece düzenle).');
+      return;
+    }
+    if (!confirm(`"${c.label}" kategorisi silinsin mi? Bu kategoride atanmış ustalar varsa onların sectors dizisinden de elle çıkarılması gerekir.`)) return;
+    try {
+      await callApi('delete_category', { id: c.id });
+      setSaveMsg('✓ Silindi');
+      setTimeout(() => setSaveMsg(''), 2000);
+      load();
+    } catch (e) {
+      alert('Silme hatası: ' + e.message);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      {error && (
+        <div className="sans text-[13px] px-4 py-3 rounded-xl"
+          style={{ background:'#FEF2F2', color:'#991B1B', border:'1px solid #FECACA' }}>
+          <b>Hata:</b> {error}
+        </div>
+      )}
+
+      {!editingId && (
+        <button onClick={startNew}
+          className="sans text-[13px] font-semibold px-4 py-2.5 rounded-full transition-all hover:scale-[1.02]"
+          style={{ background:'var(--accent)', color:'white' }}>
+          + Yeni Kategori
+        </button>
+      )}
+
+      {editingId && form && (
+        <div className="rounded-2xl p-5 mb-3"
+          style={{ background:'var(--accent-soft)', border:'1.5px solid var(--accent)' }}>
+          <div className="flex items-center justify-between mb-3">
+            <div className="serif text-[18px] font-semibold" style={{ color:'var(--ink)' }}>
+              {editingId === 'new' ? 'Yeni Kategori' : `Düzenle: ${form.label}`}
+            </div>
+            <button onClick={cancelEdit} className="sans text-[12px]" style={{ color:'var(--ink-3)' }}>✕ İptal</button>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {editingId === 'new' && (
+              <Field label="ID (slug, düşük harf, örn: motosiklet)">
+                <input value={form.id} onChange={(e) => setForm({ ...form, id: e.target.value })}
+                  className="admin-input" placeholder="motosiklet" />
+              </Field>
+            )}
+            <Field label="Görünen Ad">
+              <input value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })}
+                className="admin-input" placeholder="Motosiklet Servisi" />
+            </Field>
+            <Field label="İkon">
+              <select value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="admin-input">
+                {ICON_CHOICES.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </Field>
+            <Field label="Sıra (küçük olan önce gelir)">
+              <input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: parseInt(e.target.value) || 100 })}
+                className="admin-input" />
+            </Field>
+            <Field label="Koyu Renk (foto arka planı için)">
+              <input value={form.tone_dark} onChange={(e) => setForm({ ...form, tone_dark: e.target.value })}
+                className="admin-input" placeholder="#1F1B16" />
+            </Field>
+            <Field label="Açık Renk (gradient için)">
+              <input value={form.tone_light} onChange={(e) => setForm({ ...form, tone_light: e.target.value })}
+                className="admin-input" placeholder="#3F3525" />
+            </Field>
+          </div>
+          <div className="flex justify-end gap-2 mt-4">
+            <button onClick={cancelEdit}
+              className="sans text-[13px] font-medium px-4 py-2 rounded-xl"
+              style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>İptal</button>
+            <button onClick={save}
+              className="sans text-[13px] font-semibold px-5 py-2 rounded-xl"
+              style={{ background:'var(--ink)', color:'white' }}>
+              {editingId === 'new' ? 'Oluştur' : 'Kaydet'}
+            </button>
+          </div>
+          <style>{`.admin-input { width:100%; padding:0.55rem 0.75rem; border-radius:0.6rem; background:white; border:1px solid var(--line); font-family:'Geist',sans-serif; font-size:13px; color:var(--ink); outline:none; }`}</style>
+        </div>
+      )}
+
+      {loading && <div className="sans text-center py-10" style={{ color:'var(--ink-3)' }}>Yükleniyor...</div>}
+
+      {!loading && cats.length > 0 && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {cats.map(c => {
+            const Icon = resolveIcon(c.icon);
+            return (
+              <div key={c.id} className="rounded-2xl p-4 transition-all"
+                style={{ background:'var(--card)', border:'1px solid var(--line)' }}>
+                <div className="flex items-start gap-3">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: `linear-gradient(135deg, ${c.tone_light}, ${c.tone_dark})` }}>
+                    <Icon size={20} color="white" strokeWidth={2.4} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="serif text-[15px] font-semibold truncate" style={{ color:'var(--ink)' }}>{c.label}</div>
+                    <div className="sans text-[11px] mt-0.5" style={{ color:'var(--ink-3)' }}>
+                      {c.id} · sıra: {c.sort_order} {c.is_default && '· varsayılan'}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-1.5 mt-3">
+                  <button onClick={() => startEdit(c)}
+                    className="sans text-[12px] font-medium flex-1 py-1.5 rounded-lg"
+                    style={{ background:'var(--bg-warm)', color:'var(--ink)', border:'1px solid var(--line)' }}>
+                    Düzenle
+                  </button>
+                  <button onClick={() => remove(c)} disabled={c.is_default}
+                    title={c.is_default ? 'Varsayılan kategori silinemez' : 'Kategoriyi sil'}
+                    className="sans text-[12px] font-medium px-3 py-1.5 rounded-lg"
+                    style={{
+                      background: 'transparent',
+                      color: c.is_default ? 'var(--ink-3)' : '#B91C1C',
+                      border: `1px solid ${c.is_default ? 'var(--line)' : '#FECACA'}`,
+                      opacity: c.is_default ? 0.5 : 1,
+                      cursor: c.is_default ? 'not-allowed' : 'pointer',
+                    }}>
+                    Sil
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
