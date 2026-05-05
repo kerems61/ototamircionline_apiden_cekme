@@ -1021,6 +1021,38 @@ function MapView({ onBack, onSelectMechanic }) {
   );
 }
 
+const AdminMechanicRow = React.memo(function AdminMechanicRow({ mechanic: m, isEditing, onToggle, onSave, onDelete, callApi }) {
+  return (
+    <div
+      className={`rounded-2xl p-4 cursor-pointer transition-colors ${isEditing ? 'ring-2' : ''}`}
+      style={{
+        background: 'var(--card)',
+        border: m.featured ? '2px solid #DC2626' : '1px solid var(--line)',
+        ...(isEditing ? { '--tw-ring-color': 'var(--accent)' } : {}),
+      }}>
+      <div className="flex items-start justify-between gap-3" onClick={onToggle}>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            {m.featured && (
+              <span className="sans text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background:'#DC2626', color:'white' }}>★ PRO</span>
+            )}
+            <span className="serif text-[16px] font-semibold truncate" style={{ color:'var(--ink)' }}>{m.name}</span>
+          </div>
+          <div className="sans text-[12px]" style={{ color:'var(--ink-3)' }}>
+            {m.sector} · {m.neighborhood ?? '—'} · {m.phone ?? 'tel yok'} · ★ {m.rating} ({m.review_count})
+          </div>
+        </div>
+        <ChevronRight size={18} color="var(--ink-3)"
+          style={{ transform: isEditing ? 'rotate(90deg)' : 'none', transition: 'transform .2s' }} />
+      </div>
+      {isEditing && (
+        <AdminEditForm mechanic={m} onSave={onSave} onDelete={onDelete} callApi={callApi} />
+      )}
+    </div>
+  );
+});
+
 function AdminView({ onBack }) {
   const [password, setPassword] = useState('');
   const [authed, setAuthed] = useState(false);
@@ -1033,6 +1065,7 @@ function AdminView({ onBack }) {
   const [editing, setEditing] = useState(null);
   const [creating, setCreating] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+  const [renderLimit, setRenderLimit] = useState(30);
 
   const callApi = async (action, data = {}) => {
     const res = await fetch('/api/admin', {
@@ -1062,6 +1095,7 @@ function AdminView({ onBack }) {
 
   const loadList = async (q = '') => {
     setLoading(true);
+    setRenderLimit(30);
     try {
       const { mechanics } = await callApi('list_mechanics', { search: q });
       setMechanics(mechanics);
@@ -1205,37 +1239,26 @@ function AdminView({ onBack }) {
       {loading && <div className="sans text-center py-10" style={{ color:'var(--ink-3)' }}>Yükleniyor...</div>}
 
       <div className="space-y-2">
-        {mechanics.map((m) => (
-          <div key={m.id}
-            className={`rounded-2xl p-4 cursor-pointer transition-all ${editing === m.id ? 'ring-2' : ''}`}
-            style={{
-              background: 'var(--card)',
-              border: m.featured ? '2px solid #DC2626' : '1px solid var(--line)',
-              ...(editing === m.id ? { '--tw-ring-color': 'var(--accent)' } : {}),
-            }}>
-            <div className="flex items-start justify-between gap-3" onClick={() => setEditing(editing === m.id ? null : m.id)}>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  {m.featured && (
-                    <span className="sans text-[10px] font-bold px-2 py-0.5 rounded-full"
-                      style={{ background:'#DC2626', color:'white' }}>★ PRO</span>
-                  )}
-                  <span className="serif text-[16px] font-semibold truncate" style={{ color:'var(--ink)' }}>{m.name}</span>
-                </div>
-                <div className="sans text-[12px]" style={{ color:'var(--ink-3)' }}>
-                  {m.sector} · {m.neighborhood ?? '—'} · {m.phone ?? 'tel yok'} · ★ {m.rating} ({m.review_count})
-                </div>
-              </div>
-              <ChevronRight size={18} color="var(--ink-3)"
-                style={{ transform: editing === m.id ? 'rotate(90deg)' : 'none', transition: 'transform .2s' }} />
-            </div>
-
-            {editing === m.id && (
-              <AdminEditForm mechanic={m} onSave={onSave} onDelete={onDelete} callApi={callApi} />
-            )}
-          </div>
+        {mechanics.slice(0, renderLimit).map((m) => (
+          <AdminMechanicRow
+            key={m.id}
+            mechanic={m}
+            isEditing={editing === m.id}
+            onToggle={() => setEditing(editing === m.id ? null : m.id)}
+            onSave={onSave}
+            onDelete={onDelete}
+            callApi={callApi}
+          />
         ))}
       </div>
+
+      {mechanics.length > renderLimit && (
+        <button onClick={() => setRenderLimit(n => n + 30)}
+          className="sans w-full mt-4 py-3 rounded-2xl text-[13px] font-medium transition-all hover:scale-[1.01]"
+          style={{ background:'var(--card)', color:'var(--ink-2)', border:'1px solid var(--line)' }}>
+          Daha fazla göster ({mechanics.length - renderLimit} kalan)
+        </button>
+      )}
 
       {!loading && mechanics.length === 0 && (
         <div className="text-center py-10 sans text-[13px]" style={{ color:'var(--ink-3)' }}>
