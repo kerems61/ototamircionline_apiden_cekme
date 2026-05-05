@@ -273,7 +273,13 @@ const getInitialPageSize = () => {
 const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
 function mapRow(row) {
-  const cat = CATEGORY_BY_ID[row.sector] ?? CATEGORY_BY_ID.all;
+  // Çoklu kategori — sectors[] varsa onu kullan, yoksa eski tek 'sector'a fallback
+  const sectorIds = (Array.isArray(row.sectors) && row.sectors.length > 0)
+    ? row.sectors
+    : (row.sector ? [row.sector] : []);
+  const primaryId = sectorIds[0] ?? 'all';
+  const primaryCat = CATEGORY_BY_ID[primaryId] ?? CATEGORY_BY_ID.all;
+  const allCats = sectorIds.map(id => CATEGORY_BY_ID[id]).filter(Boolean);
   const prices = (row.mechanic_prices ?? []).map(p => ({
     service: p.service,
     priceTL: p.price_tl,
@@ -283,15 +289,17 @@ function mapRow(row) {
     name: row.name ?? 'İsimsiz',
     district: row.district ?? 'Etimesgut',
     neighborhood: row.neighborhood ?? null,
-    categoryId: row.sector ?? 'all',
-    categoryLabel: cat.label,
+    categoryId: primaryId,
+    categoryLabel: primaryCat.label,
+    sectorIds,                         // tüm sektör id'leri (filtreleme için)
+    categories: allCats,               // tüm kategori objeleri (UI'da rozet için)
     googleCategory: row.google_category ?? null,
     rating: row.rating ?? 0,
     reviews: row.review_count ?? 0,
     phone: row.phone ?? null,
     address: row.address ?? '',
     openingHours: row.opening_hours ?? null,
-    photoTone: cat.tones,
+    photoTone: primaryCat.tones,
     transparentPrices: prices,
     avgLaborTL: null,
     verifiedShop: prices.length > 0,
@@ -308,7 +316,10 @@ async function fetchMechanics({ category, neighborhood, query }) {
   let q = supabase
     .from('mechanics')
     .select('*, mechanic_prices(service, price_tl)');
-  if (category && category !== 'all') q = q.eq('sector', category);
+  if (category && category !== 'all') {
+    // sectors[] dizisinde kategori varsa eşleş; eski 'sector' (tek string) fallback için OR
+    q = q.or(`sectors.cs.{${category}},sector.eq.${category}`);
+  }
   if (neighborhood && neighborhood !== 'all') q = q.eq('neighborhood', neighborhood);
   if (query?.trim()) q = q.ilike('name', `%${query.trim()}%`);
   const { data, error } = await q.limit(500);
@@ -1329,19 +1340,17 @@ function AdminView({ onBack }) {
 
 function AdminCreateForm({ onCreate, onCancel }) {
   const [f, setF] = useState({
-    name: '', sector: 'mekanik', neighborhood: '', phone: '',
+    name: '', sectors: ['mekanik'], neighborhood: '', phone: '',
     address: '', rating: 5.0, review_count: 0, opening_hours: '',
   });
   const update = (k, v) => setF(prev => ({ ...prev, [k]: v }));
-  const canSubmit = f.name.trim().length >= 2;
+  const canSubmit = f.name.trim().length >= 2 && f.sectors.length > 0;
 
   return (
     <div className="grid sm:grid-cols-2 gap-3">
-      <Field label="Dükkan Adı *"><input value={f.name} onChange={(e) => update('name', e.target.value)} className="admin-input" placeholder="Örn: Soylu Otomotiv" /></Field>
-      <Field label="Sektör *">
-        <select value={f.sector} onChange={(e) => update('sector', e.target.value)} className="admin-input">
-          {['mekanik','servis','kaporta','lastik','elektrik','ekspertiz','yikama'].map(s => <option key={s} value={s}>{s}</option>)}
-        </select>
+      <Field label="Dükkan Adı *" full><input value={f.name} onChange={(e) => update('name', e.target.value)} className="admin-input" placeholder="Örn: Soylu Otomotiv" /></Field>
+      <Field label={`Kategoriler * (${f.sectors.length})`} full>
+        <CategoryCheckboxes value={f.sectors} onChange={(v) => update('sectors', v)} />
       </Field>
       <Field label="Mahalle"><input value={f.neighborhood} onChange={(e) => update('neighborhood', e.target.value)} className="admin-input" placeholder="Bahçekapı" /></Field>
       <Field label="Telefon"><input value={f.phone} onChange={(e) => update('phone', e.target.value)} className="admin-input" placeholder="0532 123 45 67" /></Field>
@@ -1367,9 +1376,13 @@ function AdminCreateForm({ onCreate, onCancel }) {
 }
 
 function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
+  // sectors önce, fallback eski tek 'sector'
+  const initSectors = (Array.isArray(mechanic.sectors) && mechanic.sectors.length > 0)
+    ? mechanic.sectors
+    : (mechanic.sector ? [mechanic.sector] : ['mekanik']);
   const [f, setF] = useState({
     name: mechanic.name ?? '',
-    sector: mechanic.sector ?? 'mekanik',
+    sectors: initSectors,
     neighborhood: mechanic.neighborhood ?? '',
     phone: mechanic.phone ?? '',
     address: mechanic.address ?? '',
@@ -1386,10 +1399,8 @@ function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
   return (
     <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3" style={{ borderTop:'1px solid var(--line)' }} onClick={(e) => e.stopPropagation()}>
       <Field label="Dükkan Adı"><input value={f.name} onChange={(e) => update('name', e.target.value)} className="admin-input" /></Field>
-      <Field label="Sektör">
-        <select value={f.sector} onChange={(e) => update('sector', e.target.value)} className="admin-input">
-          {['mekanik','servis','kaporta','lastik','elektrik','ekspertiz','yikama'].map(s => <option key={s} value={s}>{s}</option>)}
-        </select>
+      <Field label={`Kategoriler (${f.sectors.length}) — birden fazla seçebilirsin`} full>
+        <CategoryCheckboxes value={f.sectors} onChange={(v) => update('sectors', v)} />
       </Field>
       <Field label="Mahalle"><input value={f.neighborhood} onChange={(e) => update('neighborhood', e.target.value)} className="admin-input" /></Field>
       <Field label="Telefon"><input value={f.phone} onChange={(e) => update('phone', e.target.value)} className="admin-input" /></Field>
@@ -1555,6 +1566,35 @@ function PriceManager({ mechanicId, callApi }) {
       </div>
 
       {error && <div className="sans text-[12px] mt-2" style={{ color:'#B91C1C' }}>{error}</div>}
+    </div>
+  );
+}
+
+function CategoryCheckboxes({ value, onChange }) {
+  const arr = Array.isArray(value) ? value : (value ? [value] : []);
+  const toggle = (id) => {
+    const next = arr.includes(id) ? arr.filter(x => x !== id) : [...arr, id];
+    onChange(next);
+  };
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {CATEGORIES.filter(c => c.id !== 'all').map(c => {
+        const active = arr.includes(c.id);
+        const Icon = c.icon;
+        return (
+          <button key={c.id} type="button" onClick={() => toggle(c.id)}
+            className="sans flex items-center gap-1.5 text-[12px] font-medium px-3 py-2 rounded-full transition-all"
+            style={{
+              background: active ? 'var(--accent)' : 'var(--bg-warm)',
+              color: active ? 'white' : 'var(--ink-2)',
+              border: `1px solid ${active ? 'var(--accent)' : 'var(--line)'}`,
+            }}>
+            <Icon size={12} strokeWidth={2.4} />
+            {c.label}
+            {active && <span style={{ opacity:0.85 }}>✓</span>}
+          </button>
+        );
+      })}
     </div>
   );
 }

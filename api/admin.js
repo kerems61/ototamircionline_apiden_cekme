@@ -52,7 +52,7 @@ export default async function handler(req, res) {
         const { search } = payload;
         let q = supabase
           .from('mechanics')
-          .select('id, name, sector, neighborhood, phone, rating, review_count, featured, google_maps_url, notes')
+          .select('id, name, sector, sectors, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes')
           .order('featured', { ascending: false })
           .order('rating', { ascending: false })
           .limit(500);
@@ -66,12 +66,16 @@ export default async function handler(req, res) {
         const { id, fields } = payload;
         if (!id || !fields) return res.status(400).json({ error: 'id ve fields gerekli' });
         // Güvenlik: sadece belirli alanları güncelle
-        const allowed = ['name', 'sector', 'neighborhood', 'phone', 'address',
+        const allowed = ['name', 'sector', 'sectors', 'neighborhood', 'phone', 'address',
                          'opening_hours', 'rating', 'review_count',
                          'featured', 'google_maps_url', 'notes'];
         const update = {};
         for (const k of allowed) {
           if (fields[k] !== undefined) update[k] = fields[k];
+        }
+        // sectors gönderildiyse, eski 'sector' kolonunu da senkronize et (geri uyumluluk)
+        if (Array.isArray(update.sectors) && update.sectors.length > 0) {
+          update.sector = update.sectors[0];
         }
         update.updated_at = new Date().toISOString();
         const { error } = await supabase.from('mechanics').update(update).eq('id', id);
@@ -89,14 +93,23 @@ export default async function handler(req, res) {
 
       case 'create_mechanic': {
         const { fields } = payload;
-        if (!fields?.name || !fields?.sector) {
-          return res.status(400).json({ error: 'name ve sector zorunlu' });
+        const sectorsList = Array.isArray(fields?.sectors) ? fields.sectors : (fields?.sector ? [fields.sector] : []);
+        if (!fields?.name || sectorsList.length === 0) {
+          return res.status(400).json({ error: 'name ve en az bir kategori (sectors) zorunlu' });
         }
-        const allowed = ['name', 'sector', 'neighborhood', 'phone', 'address',
+        const allowed = ['name', 'sector', 'sectors', 'neighborhood', 'phone', 'address',
                          'opening_hours', 'rating', 'review_count', 'google_category',
                          'featured', 'google_maps_url', 'notes', 'lat', 'lng'];
         const insert = { district: 'Etimesgut' };
         for (const k of allowed) if (fields[k] !== undefined) insert[k] = fields[k];
+        // sectors verilmiş ama sector verilmemişse, sector'a ilkini koy
+        if (Array.isArray(insert.sectors) && insert.sectors.length > 0 && !insert.sector) {
+          insert.sector = insert.sectors[0];
+        }
+        // sector verilmiş ama sectors yoksa, sectors'a koy
+        if (insert.sector && !insert.sectors) {
+          insert.sectors = [insert.sector];
+        }
         const { data, error } = await supabase.from('mechanics').insert(insert).select().single();
         if (error) throw error;
         return res.status(200).json({ ok: true, mechanic: data });
