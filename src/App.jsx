@@ -429,7 +429,7 @@ function NeighborhoodPills({ active, options, onChange }) {
   );
 }
 
-function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel, distanceKm, isFavorite, onToggleFavorite }) {
+function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon, categoryLabel, extraCategoriesCount = 0, distanceKm, isFavorite, onToggleFavorite }) {
   const word = getDisplayWord(name);
   // featured ise kırmızımsı vurgulu gradient kullan
   const grad = featured
@@ -469,9 +469,15 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
       </div>
 
       {categoryLabel && (
-        <div className="absolute bottom-3 left-3 sans text-[10.5px] font-medium px-2.5 py-1 rounded-full backdrop-blur-md"
+        <div className="absolute bottom-3 left-3 sans text-[10.5px] font-medium px-2.5 py-1 rounded-full backdrop-blur-md flex items-center gap-1.5"
           style={{ background:'rgba(255,255,255,0.18)', color:'rgba(255,255,255,0.95)', border:'1px solid rgba(255,255,255,0.2)' }}>
-          {categoryLabel}
+          <span>{categoryLabel}</span>
+          {extraCategoriesCount > 0 && (
+            <span className="font-bold px-1.5 py-0.5 rounded-full"
+              style={{ background:'rgba(255,255,255,0.30)', fontSize:'9.5px' }}>
+              +{extraCategoriesCount}
+            </span>
+          )}
         </div>
       )}
 
@@ -547,6 +553,7 @@ const MechanicCard = React.memo(function MechanicCard({ m, onOpen, delay = 0, is
         name={m.name}
         categoryIcon={CATEGORY_BY_ID[m.categoryId]?.icon}
         categoryLabel={m.categoryLabel}
+        extraCategoriesCount={Math.max(0, (m.categories?.length ?? 1) - 1)}
         distanceKm={m.distanceKm}
         isFavorite={isFavorite}
         onToggleFavorite={onToggleFavorite}
@@ -558,9 +565,10 @@ const MechanicCard = React.memo(function MechanicCard({ m, onOpen, delay = 0, is
             <h3 className="serif text-[18px] sm:text-[19px] font-semibold leading-tight truncate" style={{ color: 'var(--ink)' }}>
               {m.name}
             </h3>
-            <p className="sans text-[12px] mt-1 flex items-center gap-1.5" style={{ color: 'var(--ink-3)' }}>
+            <p className="sans text-[12px] mt-1 flex items-center gap-1.5 flex-wrap" style={{ color: 'var(--ink-3)' }}>
               <span className="font-medium" style={{ color: m.featured ? 'var(--pro)' : 'var(--accent)' }}>
-                {m.categoryLabel}
+                {(m.categories?.length > 0 ? m.categories : [{ label: m.categoryLabel }])
+                  .map(c => c.label).join(' · ')}
               </span>
               {m.neighborhood && (
                 <>
@@ -662,6 +670,16 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
             <div className="sans text-[13px] opacity-90 mt-1 flex items-center gap-2">
               <MapPin size={13} /> {mechanic.address}
             </div>
+            {(mechanic.categories?.length ?? 0) > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {mechanic.categories.map(c => (
+                  <span key={c.id} className="sans text-[10.5px] font-semibold px-2 py-1 rounded-full"
+                    style={{ background:'rgba(255,255,255,0.22)', color:'white', border:'1px solid rgba(255,255,255,0.3)' }}>
+                    {c.label}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
