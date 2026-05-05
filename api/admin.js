@@ -87,7 +87,15 @@ export default async function handler(req, res) {
           update.sector = update.sectors[0];
         }
         update.updated_at = new Date().toISOString();
-        const { error } = await supabase.from('mechanics').update(update).eq('id', id);
+        let { error } = await supabase.from('mechanics').update(update).eq('id', id);
+        if (error && /sectors/i.test(error.message || '') && update.sectors !== undefined) {
+          // sectors kolonu DB'de yok — onu çıkar, sadece eski 'sector' ile dene
+          const fallback = { ...update };
+          delete fallback.sectors;
+          ({ error } = await supabase.from('mechanics').update(fallback).eq('id', id));
+          if (error) throw error;
+          return res.status(200).json({ ok: true, warning: 'sectors_column_missing' });
+        }
         if (error) throw error;
         return res.status(200).json({ ok: true });
       }
@@ -119,7 +127,14 @@ export default async function handler(req, res) {
         if (insert.sector && !insert.sectors) {
           insert.sectors = [insert.sector];
         }
-        const { data, error } = await supabase.from('mechanics').insert(insert).select().single();
+        let { data, error } = await supabase.from('mechanics').insert(insert).select().single();
+        if (error && /sectors/i.test(error.message || '')) {
+          const fallback = { ...insert };
+          delete fallback.sectors;
+          ({ data, error } = await supabase.from('mechanics').insert(fallback).select().single());
+          if (error) throw error;
+          return res.status(200).json({ ok: true, mechanic: data, warning: 'sectors_column_missing' });
+        }
         if (error) throw error;
         return res.status(200).json({ ok: true, mechanic: data });
       }
