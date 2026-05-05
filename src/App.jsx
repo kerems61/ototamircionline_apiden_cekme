@@ -97,8 +97,8 @@ body::before {
   100% { background-position: 400px 0; }
 }
 @keyframes proGlow {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(220,38,38,.25), 0 12px 32px -8px rgba(220,38,38,.32); }
-  50%      { box-shadow: 0 0 0 2px rgba(220,38,38,.45), 0 18px 40px -8px rgba(220,38,38,.48); }
+  /* Sade hâl — box-shadow animate etmek yerine sabit gölge, GPU'yu yormaz */
+  0%, 100% { opacity: 1; }
 }
 @keyframes float { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -134,20 +134,13 @@ body::before {
   -webkit-backdrop-filter: blur(8px) saturate(130%);
   border: 1px solid rgba(255,255,255,0.55);
 }
-/* Yumuşak aurora blob'ları — hero arka planı için */
+/* Yumuşak aurora blob'ları — hero arka planı için (statik, GPU'yu yormaz) */
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(30px);
   opacity: 0.62;
   pointer-events: none;
-  animation: blobFloat 16s ease-in-out infinite;
-  will-change: transform;
-}
-@keyframes blobFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%      { transform: translate(20px, -16px) scale(1.05); }
-  66%      { transform: translate(-14px, 14px) scale(0.97); }
 }
 /* Soft gradient kart yüzeyi — şeftali ışıltılı */
 .gradient-card {
@@ -501,7 +494,7 @@ function MechanicPhoto({ tones, verified, featured, name, categoryIcon: CatIcon,
   );
 }
 
-function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
+const MechanicCard = React.memo(function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
   const hasPrices = m.transparentPrices.length > 0;
   const isPriced = hasPrices && !m.featured; // Fiyatı belli & PRO değil → yeşil görsel ipucu
   const cardBg = m.featured
@@ -609,7 +602,7 @@ function MechanicCard({ m, onOpen, delay = 0, isFavorite, onToggleFavorite }) {
       </div>
     </article>
   );
-}
+});
 
 function CardSkeleton({ delay = 0 }) {
   return (
