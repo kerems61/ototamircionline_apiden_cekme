@@ -201,21 +201,21 @@ function getDisplayWord(name) {
   const words = name.trim()
     .split(/[\s\-,&.|/]+/)
     .filter(w => w.length >= 2 && /[A-Za-zÀ-ÿĞğÜüŞşİıÖöÇç]/.test(w));
-  if (words.length === 0) return name.slice(0, 12).toUpperCase();
+  if (words.length === 0) return name.slice(0, 12).toLocaleUpperCase('tr-TR');
 
   const first = words[0];
 
   // Tek kelime ya da ilk kelime uzunsa → ilk kelime
   if (words.length === 1 || first.length >= 11) {
-    return first.slice(0, 13).toUpperCase();
+    return first.slice(0, 13).toLocaleUpperCase('tr-TR');
   }
 
   // İlk 2 kelime birleştirilebilirse (toplam ≤ 16 char) → ikisini göster
   const combined = `${first} ${words[1]}`;
-  if (combined.length <= 16) return combined.toUpperCase();
+  if (combined.length <= 16) return combined.toLocaleUpperCase('tr-TR');
 
   // Aksi takdirde sadece ilk kelime
-  return first.slice(0, 13).toUpperCase();
+  return first.slice(0, 13).toLocaleUpperCase('tr-TR');
 }
 
 function haversineKm(a, b) {
