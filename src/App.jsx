@@ -280,10 +280,10 @@ function mapRow(row) {
   const primaryId = sectorIds[0] ?? 'all';
   const primaryCat = CATEGORY_BY_ID[primaryId] ?? CATEGORY_BY_ID.all;
   const allCats = sectorIds.map(id => CATEGORY_BY_ID[id]).filter(Boolean);
-  const prices = (row.mechanic_prices ?? []).map(p => ({
-    service: p.service,
-    priceTL: p.price_tl,
-  }));
+  const prices = (row.mechanic_prices ?? [])
+    .slice()
+    .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+    .map(p => ({ service: p.service, priceTL: p.price_tl }));
   return {
     id: row.id,
     name: row.name ?? 'İsimsiz',
@@ -315,7 +315,7 @@ function mapRow(row) {
 async function fetchMechanics({ category, neighborhood, query }) {
   let q = supabase
     .from('mechanics')
-    .select('*, mechanic_prices(service, price_tl)');
+    .select('*, mechanic_prices(service, price_tl, display_order)');
   if (category && category !== 'all') {
     // sectors[] dizisinde kategori varsa eşleş; eski 'sector' (tek string) fallback için OR
     q = q.or(`sectors.cs.{${category}},sector.eq.${category}`);
@@ -2030,6 +2030,7 @@ export default function App() {
     catch { return new Set(); }
   });
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  const [refetchKey, setRefetchKey] = useState(0);
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [customerJoinOpen, setCustomerJoinOpen] = useState(false);
   const [ownerJoinOpen, setOwnerJoinOpen] = useState(false);
@@ -2125,7 +2126,22 @@ export default function App() {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [activeCat, activeNeighborhood, submittedQuery, userLocation, sortMode]);
+  }, [activeCat, activeNeighborhood, submittedQuery, userLocation, sortMode, refetchKey]);
+
+  // Tab tekrar görünür olduğunda otomatik refetch (admin'de yapılan değişiklik anında yansısın)
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        setRefetchKey(k => k + 1);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', onVisible);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', onVisible);
+    };
+  }, []);
 
   // Filtre veya sayfa boyutu değiştiğinde sayfayı sıfırla
   useEffect(() => {
