@@ -1307,6 +1307,8 @@ function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
     sector: mechanic.sector ?? 'mekanik',
     neighborhood: mechanic.neighborhood ?? '',
     phone: mechanic.phone ?? '',
+    address: mechanic.address ?? '',
+    opening_hours: mechanic.opening_hours ?? '',
     rating: mechanic.rating ?? 4.5,
     review_count: mechanic.review_count ?? 0,
     featured: mechanic.featured ?? false,
@@ -1326,6 +1328,14 @@ function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
       </Field>
       <Field label="Mahalle"><input value={f.neighborhood} onChange={(e) => update('neighborhood', e.target.value)} className="admin-input" /></Field>
       <Field label="Telefon"><input value={f.phone} onChange={(e) => update('phone', e.target.value)} className="admin-input" /></Field>
+      <Field label="Çalışma Saatleri">
+        <input value={f.opening_hours} onChange={(e) => update('opening_hours', e.target.value)}
+          className="admin-input" placeholder="08:00-19:00" />
+      </Field>
+      <Field label="Adres">
+        <input value={f.address} onChange={(e) => update('address', e.target.value)}
+          className="admin-input" placeholder="Sokak, no, mahalle" />
+      </Field>
       <Field label="Puan"><input type="number" step="0.1" min="0" max="5" value={f.rating} onChange={(e) => update('rating', parseFloat(e.target.value))} className="admin-input" /></Field>
       <Field label="Yorum Sayısı"><input type="number" min="0" value={f.review_count} onChange={(e) => update('review_count', parseInt(e.target.value) || 0)} className="admin-input" /></Field>
       <Field label="Google Maps URL (özel — boş bırakırsan otomatik arama yapar)" full>
