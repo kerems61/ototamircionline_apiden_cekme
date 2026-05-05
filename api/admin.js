@@ -106,8 +106,9 @@ export default async function handler(req, res) {
         const { mechanic_id } = payload;
         if (!mechanic_id) return res.status(400).json({ error: 'mechanic_id gerekli' });
         const { data, error } = await supabase.from('mechanic_prices')
-          .select('id, service, price_tl, updated_at')
+          .select('id, service, price_tl, display_order, updated_at')
           .eq('mechanic_id', mechanic_id)
+          .order('display_order', { ascending: true })
           .order('updated_at', { ascending: false });
         if (error) throw error;
         return res.status(200).json({ ok: true, prices: data });
@@ -118,11 +119,50 @@ export default async function handler(req, res) {
         if (!mechanic_id || !service || price_tl == null) {
           return res.status(400).json({ error: 'mechanic_id, service ve price_tl zorunlu' });
         }
+        // Yeni satır en sona eklensin
+        const { data: maxRow } = await supabase.from('mechanic_prices')
+          .select('display_order').eq('mechanic_id', mechanic_id)
+          .order('display_order', { ascending: false }).limit(1).maybeSingle();
+        const nextOrder = (maxRow?.display_order ?? -1) + 1;
         const { error } = await supabase.from('mechanic_prices').insert({
-          mechanic_id, service: String(service).trim(), price_tl: Math.max(0, parseInt(price_tl) || 0),
+          mechanic_id,
+          service: String(service).trim(),
+          price_tl: Math.max(0, parseInt(price_tl) || 0),
+          display_order: nextOrder,
         });
         if (error) throw error;
         return res.status(200).json({ ok: true });
+      }
+
+      case 'move_price': {
+        const { id, direction } = payload;
+        if (!id || !['up', 'down'].includes(direction)) {
+          return res.status(400).json({ error: 'id ve direction (up|down) gerekli' });
+        }
+        // Mevcut satırı al
+        const { data: current, error: e1 } = await supabase.from('mechanic_prices')
+          .select('id, mechanic_id, display_order').eq('id', id).single();
+        if (e1) throw e1;
+
+        // Komşu satırı bul (yukarısı veya aşağısı)
+        const isUp = direction === 'up';
+        let nbq = supabase.from('mechanic_prices')
+          .select('id, display_order')
+          .eq('mechanic_id', current.mechanic_id);
+        nbq = isUp
+          ? nbq.lt('display_order', current.display_order).order('display_order', { ascending: false })
+          : nbq.gt('display_order', current.display_order).order('display_order', { ascending: true });
+        const { data: neighbor } = await nbq.limit(1).maybeSingle();
+
+        if (!neighbor) return res.status(200).json({ ok: true, swapped: false });
+
+        // İki satırın display_order'ını swap et (geçici büyük değer kullan, unique constraint olmasa da güvenli)
+        const tempOrder = 999999;
+        await supabase.from('mechanic_prices').update({ display_order: tempOrder }).eq('id', current.id);
+        await supabase.from('mechanic_prices').update({ display_order: current.display_order }).eq('id', neighbor.id);
+        await supabase.from('mechanic_prices').update({ display_order: neighbor.display_order }).eq('id', current.id);
+
+        return res.status(200).json({ ok: true, swapped: true });
       }
 
       case 'update_price': {

@@ -1406,6 +1406,14 @@ function PriceManager({ mechanicId, callApi }) {
     } catch (e) { setError(e.message); }
   };
 
+  const movePrice = async (id, direction) => {
+    setError('');
+    try {
+      await callApi('move_price', { id, direction });
+      load();
+    } catch (e) { setError(e.message); }
+  };
+
   return (
     <div className="sm:col-span-2 mt-4 pt-4" style={{ borderTop:'1px solid var(--line-2)' }}>
       <div className="flex items-center gap-2 mb-3">
@@ -1421,9 +1429,30 @@ function PriceManager({ mechanicId, callApi }) {
       {/* Mevcut fiyatlar */}
       {!loading && prices.length > 0 && (
         <div className="space-y-1.5 mb-3">
-          {prices.map(p => (
+          {prices.map((p, idx) => (
             <div key={p.id} className="flex items-center gap-2 px-3 py-2 rounded-xl"
               style={{ background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.15)' }}>
+              {/* ▲▼ sıralama */}
+              <div className="flex flex-col gap-0.5 shrink-0">
+                <button onClick={() => movePrice(p.id, 'up')} disabled={idx === 0}
+                  aria-label="Yukarı taşı"
+                  className="w-5 h-5 flex items-center justify-center rounded-md transition-colors"
+                  style={{
+                    background: idx === 0 ? 'transparent' : 'rgba(255,255,255,0.7)',
+                    color: idx === 0 ? 'rgba(194,65,12,0.25)' : 'var(--accent)',
+                    cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                    fontSize: '12px', lineHeight: 1,
+                  }}>▲</button>
+                <button onClick={() => movePrice(p.id, 'down')} disabled={idx === prices.length - 1}
+                  aria-label="Aşağı taşı"
+                  className="w-5 h-5 flex items-center justify-center rounded-md transition-colors"
+                  style={{
+                    background: idx === prices.length - 1 ? 'transparent' : 'rgba(255,255,255,0.7)',
+                    color: idx === prices.length - 1 ? 'rgba(194,65,12,0.25)' : 'var(--accent)',
+                    cursor: idx === prices.length - 1 ? 'not-allowed' : 'pointer',
+                    fontSize: '12px', lineHeight: 1,
+                  }}>▼</button>
+              </div>
               <span className="flex-1 sans text-[13px] font-medium" style={{ color:'var(--ink)' }}>{p.service}</span>
               <span className="sans text-[13px] font-semibold whitespace-nowrap" style={{ color:'var(--accent)' }}>
                 {p.price_tl.toLocaleString('tr-TR')} ₺
