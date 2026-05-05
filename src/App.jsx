@@ -313,16 +313,24 @@ function mapRow(row) {
 }
 
 async function fetchMechanics({ category, neighborhood, query }) {
-  let q = supabase
-    .from('mechanics')
-    .select('*, mechanic_prices(service, price_tl, display_order)');
-  if (category && category !== 'all') {
-    // sectors[] dizisinde kategori varsa eşleş; eski 'sector' (tek string) fallback için OR
-    q = q.or(`sectors.cs.{${category}},sector.eq.${category}`);
+  const buildQuery = (useSectors) => {
+    let q = supabase
+      .from('mechanics')
+      .select('*, mechanic_prices(service, price_tl, display_order)');
+    if (category && category !== 'all') {
+      q = useSectors
+        ? q.or(`sectors.cs.{${category}},sector.eq.${category}`)
+        : q.eq('sector', category);
+    }
+    if (neighborhood && neighborhood !== 'all') q = q.eq('neighborhood', neighborhood);
+    if (query?.trim()) q = q.ilike('name', `%${query.trim()}%`);
+    return q.limit(500);
+  };
+  // Önce sectors[] dahil dene; kolon yoksa eski 'sector' tek-değerli filtreye düş
+  let { data, error } = await buildQuery(true);
+  if (error && /sectors/i.test(error.message || '')) {
+    ({ data, error } = await buildQuery(false));
   }
-  if (neighborhood && neighborhood !== 'all') q = q.eq('neighborhood', neighborhood);
-  if (query?.trim()) q = q.ilike('name', `%${query.trim()}%`);
-  const { data, error } = await q.limit(500);
   if (error) throw new Error(error.message);
   return (data ?? []).map(mapRow);
 }
