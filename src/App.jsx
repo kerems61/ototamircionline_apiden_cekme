@@ -180,7 +180,17 @@ input:focus, textarea:focus { box-shadow: 0 0 0 3px rgba(194,65,12,0.12); }
 }
 `;
 
-const CATEGORIES = [
+// Lucide icon name → React component (kategori DB'den geldiğinde icon string'i resolve etmek için)
+const ICON_MAP = {
+  Sparkles, Wrench, Shield, Hammer, Zap, Droplet, CircleDot, BadgeCheck,
+  Search, MapPin, Star, Clock, Phone, Heart, User, Navigation, Send, Mail, MessageCircle,
+};
+function resolveIcon(name) {
+  return ICON_MAP[name] || Sparkles;
+}
+
+// Default fallback — DB'den kategoriler gelmezse veya migration_003 çalışmamışsa kullanılır
+const DEFAULT_CATEGORIES = [
   { id: 'all',       label: 'Tümü',              icon: Sparkles,   tones: ['#2C2825', '#4A3F33'] },
   { id: 'mekanik',   label: 'Motor & Mekanik',   icon: Wrench,     tones: ['#1F1B16', '#3F3525'] },
   { id: 'servis',    label: 'Marka Servisi',     icon: BadgeCheck, tones: ['#1F2937', '#374151'] },
@@ -190,6 +200,9 @@ const CATEGORIES = [
   { id: 'ekspertiz', label: 'Ekspertiz',         icon: Shield,     tones: ['#1F3A4F', '#2F5478'] },
   { id: 'yikama',    label: 'Yıkama & Detailing',icon: Droplet,    tones: ['#0F3F4F', '#1E5A6F'] },
 ];
+
+// Bu canlı CATEGORIES dizisi App mount'ta DB'den dolduruluyor (replace), yoksa default kalıyor
+let CATEGORIES = DEFAULT_CATEGORIES;
 
 const WHATSAPP_NUMBER = '905459029241';
 const CONTACT_EMAIL = 'ototamircim134@gmail.com';
@@ -270,7 +283,30 @@ const getInitialPageSize = () => {
   return window.innerWidth < 640 ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
 };
 
-const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+// Dinamik getter — CATEGORIES değiştiğinde güncel sonuç verir
+const getCategoryById = (id) => CATEGORIES.find(c => c.id === id);
+
+// DB satırını UI kategori formatına çevir
+function dbRowToCategory(row) {
+  return {
+    id: row.id,
+    label: row.label,
+    icon: resolveIcon(row.icon),
+    tones: [row.tone_dark || '#2C2825', row.tone_light || '#4A3F33'],
+    is_default: row.is_default,
+    sort_order: row.sort_order,
+  };
+}
+
+async function fetchCategoriesPublic() {
+  try {
+    const { data, error } = await supabase.from('categories')
+      .select('id, label, icon, tone_dark, tone_light, sort_order, is_default')
+      .order('sort_order', { ascending: true });
+    if (error) return null;
+    return data;
+  } catch { return null; }
+}
 
 function mapRow(row) {
   // Çoklu kategori — sectors[] varsa onu kullan, yoksa eski tek 'sector'a fallback
@@ -278,8 +314,8 @@ function mapRow(row) {
     ? row.sectors
     : (row.sector ? [row.sector] : []);
   const primaryId = sectorIds[0] ?? 'all';
-  const primaryCat = CATEGORY_BY_ID[primaryId] ?? CATEGORY_BY_ID.all;
-  const allCats = sectorIds.map(id => CATEGORY_BY_ID[id]).filter(Boolean);
+  const primaryCat = getCategoryById(primaryId) ?? getCategoryById('all') ?? DEFAULT_CATEGORIES[0];
+  const allCats = sectorIds.map(id => getCategoryById(id)).filter(Boolean);
   const prices = (row.mechanic_prices ?? [])
     .slice()
     .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -551,7 +587,7 @@ const MechanicCard = React.memo(function MechanicCard({ m, onOpen, delay = 0, is
         verified={m.verifiedShop}
         featured={m.featured}
         name={m.name}
-        categoryIcon={CATEGORY_BY_ID[m.categoryId]?.icon}
+        categoryIcon={getCategoryById(m.categoryId)?.icon}
         categoryLabel={m.categoryLabel}
         extraCategoriesCount={Math.max(0, (m.categories?.length ?? 1) - 1)}
         distanceKm={m.distanceKm}
@@ -931,7 +967,7 @@ function MapView({ onBack, onSelectMechanic }) {
 
     filtered.forEach(m => {
       if (!m.lat || !m.lng) return;
-      const cat = CATEGORY_BY_ID[m.sector] ?? CATEGORY_BY_ID.all;
+      const cat = getCategoryById(m.sector) ?? getCategoryById('all');
       const isFeatured = m.featured;
       const color = isFeatured ? '#DC2626' : (cat.tones?.[1] || '#1F1B16');
       const ringColor = isFeatured ? '#FCA5A5' : 'rgba(255,255,255,0.9)';
@@ -2063,6 +2099,7 @@ export default function App() {
   });
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [refetchKey, setRefetchKey] = useState(0);
+  const [categoriesVersion, setCategoriesVersion] = useState(0);
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [customerJoinOpen, setCustomerJoinOpen] = useState(false);
   const [ownerJoinOpen, setOwnerJoinOpen] = useState(false);
@@ -2173,6 +2210,19 @@ export default function App() {
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener('focus', onVisible);
     };
+  }, []);
+
+  // Mount'ta kategorileri DB'den çek (yoksa default kalır)
+  useEffect(() => {
+    fetchCategoriesPublic().then(rows => {
+      if (!rows || rows.length === 0) return; // migration_003 yok ya da boş tablo → default kullan
+      // 'all' her zaman ilk eleman olarak kalır
+      const all = DEFAULT_CATEGORIES.find(c => c.id === 'all');
+      const newCats = [all, ...rows.map(dbRowToCategory)];
+      CATEGORIES = newCats;
+      setCategoriesVersion(v => v + 1);
+      setRefetchKey(k => k + 1); // mechanics'ı yeni kategorilere göre re-map et
+    });
   }, []);
 
   // Filtre veya sayfa boyutu değiştiğinde sayfayı sıfırla

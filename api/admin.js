@@ -221,6 +221,60 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true });
       }
 
+      case 'list_categories': {
+        const { data, error } = await supabase.from('categories')
+          .select('id, label, icon, tone_dark, tone_light, sort_order, is_default')
+          .order('sort_order', { ascending: true });
+        if (error) throw error;
+        return res.status(200).json({ ok: true, categories: data });
+      }
+
+      case 'create_category': {
+        const { id, label, icon, tone_dark, tone_light, sort_order } = payload;
+        if (!id?.trim() || !label?.trim()) {
+          return res.status(400).json({ error: 'id ve label zorunlu' });
+        }
+        const slug = String(id).trim().toLowerCase()
+          .replace(/[ıİ]/g, 'i').replace(/[şŞ]/g, 's').replace(/[ğĞ]/g, 'g')
+          .replace(/[üÜ]/g, 'u').replace(/[öÖ]/g, 'o').replace(/[çÇ]/g, 'c')
+          .replace(/[^a-z0-9_-]/g, '');
+        const { data, error } = await supabase.from('categories').insert({
+          id: slug,
+          label: String(label).trim(),
+          icon: icon || 'Sparkles',
+          tone_dark: tone_dark || '#2C2825',
+          tone_light: tone_light || '#4A3F33',
+          sort_order: Number.isFinite(+sort_order) ? +sort_order : 100,
+          is_default: false,
+        }).select().single();
+        if (error) throw error;
+        return res.status(200).json({ ok: true, category: data });
+      }
+
+      case 'update_category': {
+        const { id, fields } = payload;
+        if (!id || !fields) return res.status(400).json({ error: 'id ve fields gerekli' });
+        const allowed = ['label', 'icon', 'tone_dark', 'tone_light', 'sort_order'];
+        const update = { updated_at: new Date().toISOString() };
+        for (const k of allowed) if (fields[k] !== undefined) update[k] = fields[k];
+        const { error } = await supabase.from('categories').update(update).eq('id', id);
+        if (error) throw error;
+        return res.status(200).json({ ok: true });
+      }
+
+      case 'delete_category': {
+        const { id } = payload;
+        if (!id) return res.status(400).json({ error: 'id gerekli' });
+        // Default kategorileri silmeye izin verme
+        const { data: cat } = await supabase.from('categories').select('is_default').eq('id', id).maybeSingle();
+        if (cat?.is_default) {
+          return res.status(400).json({ error: 'Varsayılan kategori silinemez (sadece düzenle veya gizle)' });
+        }
+        const { error } = await supabase.from('categories').delete().eq('id', id);
+        if (error) throw error;
+        return res.status(200).json({ ok: true });
+      }
+
       default:
         return res.status(400).json({ error: `Bilinmeyen action: ${action}` });
     }
