@@ -1047,10 +1047,15 @@ const AdminMechanicRow = React.memo(function AdminMechanicRow({ mechanic: m, isE
 });
 
 function AdminView({ onBack }) {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(() => {
+    try { return localStorage.getItem('admin-pwd') || ''; } catch { return ''; }
+  });
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+  const [autoChecking, setAutoChecking] = useState(() => {
+    try { return !!localStorage.getItem('admin-pwd'); } catch { return false; }
+  });
 
   const [mechanics, setMechanics] = useState([]);
   const [search, setSearch] = useState('');
@@ -1060,15 +1065,48 @@ function AdminView({ onBack }) {
   const [saveMsg, setSaveMsg] = useState('');
   const [renderLimit, setRenderLimit] = useState(30);
 
-  const callApi = async (action, data = {}) => {
+  // Bu callApi her zaman EN GÜNCEL şifreyi kullanır (closure değil, parametre)
+  const callApiWith = async (pwd, action, data = {}) => {
     const res = await fetch('/api/admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password, action, ...data }),
+      body: JSON.stringify({ password: pwd, action, ...data }),
     });
     const json = await res.json();
     if (!res.ok) throw new Error(json.error || 'Hata');
     return json;
+  };
+  const callApi = (action, data = {}) => callApiWith(password, action, data);
+
+  // Mount'ta: localStorage'da şifre varsa otomatik doğrula
+  useEffect(() => {
+    let saved = '';
+    try { saved = localStorage.getItem('admin-pwd') || ''; } catch {}
+    if (!saved) { setAutoChecking(false); return; }
+    callApiWith(saved, 'verify')
+      .then(() => {
+        setAuthed(true);
+        loadListWith(saved, '');
+      })
+      .catch(() => {
+        try { localStorage.removeItem('admin-pwd'); } catch {}
+        setAuthError('Kayıtlı şifre geçersiz, tekrar giriş yap');
+      })
+      .finally(() => setAutoChecking(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadListWith = async (pwd, q) => {
+    setLoading(true);
+    setRenderLimit(30);
+    try {
+      const { mechanics } = await callApiWith(pwd, 'list_mechanics', { search: q });
+      setMechanics(mechanics);
+    } catch (err) {
+      setAuthError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const tryLogin = async (e) => {
@@ -1077,6 +1115,7 @@ function AdminView({ onBack }) {
     setAuthLoading(true);
     try {
       await callApi('verify');
+      try { localStorage.setItem('admin-pwd', password); } catch {}
       setAuthed(true);
       loadList();
     } catch (err) {
@@ -1084,6 +1123,15 @@ function AdminView({ onBack }) {
     } finally {
       setAuthLoading(false);
     }
+  };
+
+  const logout = () => {
+    try { localStorage.removeItem('admin-pwd'); } catch {}
+    setPassword('');
+    setAuthed(false);
+    setMechanics([]);
+    setEditing(null);
+    setCreating(false);
   };
 
   const loadList = async (q = '') => {
@@ -1135,6 +1183,17 @@ function AdminView({ onBack }) {
       setSaveMsg('✗ ' + err.message);
     }
   };
+
+  if (autoChecking) {
+    return (
+      <main className="max-w-md mx-auto px-5 pt-20 pb-32 lg:pb-12">
+        <div className="rounded-3xl p-8 text-center fadeUp" style={{ background:'var(--card)', border:'1px solid var(--line)', boxShadow:'var(--shadow-md)' }}>
+          <Shield size={28} color="var(--accent)" className="mx-auto mb-3" />
+          <div className="serif text-[18px] font-semibold" style={{ color:'var(--ink)' }}>Oturum kontrol ediliyor…</div>
+        </div>
+      </main>
+    );
+  }
 
   if (!authed) {
     return (
@@ -1193,10 +1252,16 @@ function AdminView({ onBack }) {
             style={{ background:'var(--accent)', color:'white' }}>
             + Yeni Usta
           </button>
+          <button onClick={logout}
+            className="sans text-[13px] font-medium px-4 py-2 rounded-full"
+            style={{ background:'transparent', color:'#B91C1C', border:'1px solid #FECACA' }}
+            title="Yönetici oturumunu kapat">
+            Çıkış
+          </button>
           <button onClick={onBack}
             className="sans text-[13px] font-medium px-4 py-2 rounded-full"
             style={{ background:'var(--card)', color:'var(--ink)', border:'1px solid var(--line)' }}>
-            ← Çık
+            ← Siteye dön
           </button>
         </div>
       </div>
