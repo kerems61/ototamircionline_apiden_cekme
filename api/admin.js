@@ -50,14 +50,23 @@ export default async function handler(req, res) {
 
       case 'list_mechanics': {
         const { search } = payload;
-        let q = supabase
-          .from('mechanics')
-          .select('id, name, sector, sectors, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes')
-          .order('featured', { ascending: false })
-          .order('rating', { ascending: false })
-          .limit(500);
-        if (search?.trim()) q = q.ilike('name', `%${search.trim()}%`);
-        const { data, error } = await q;
+        // Önce 'sectors' dahil dene; kolon yoksa eski şemaya geri düş (geri uyumlu)
+        const tryQuery = async (withSectors) => {
+          const cols = withSectors
+            ? 'id, name, sector, sectors, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes'
+            : 'id, name, sector, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes';
+          let q = supabase.from('mechanics').select(cols)
+            .order('featured', { ascending: false })
+            .order('rating', { ascending: false })
+            .limit(500);
+          if (search?.trim()) q = q.ilike('name', `%${search.trim()}%`);
+          return await q;
+        };
+        let { data, error } = await tryQuery(true);
+        if (error && /sectors/i.test(error.message || '')) {
+          // sectors kolonu daha eklenmemiş, eski şemayla dön
+          ({ data, error } = await tryQuery(false));
+        }
         if (error) throw error;
         return res.status(200).json({ ok: true, mechanics: data });
       }

@@ -1306,6 +1306,12 @@ function AdminView({ onBack }) {
       </form>
 
       {loading && <div className="sans text-center py-10" style={{ color:'var(--ink-3)' }}>Yükleniyor...</div>}
+      {!loading && authError && (
+        <div className="sans text-[13px] px-4 py-3 mb-4 rounded-xl"
+          style={{ background:'#FEF2F2', color:'#991B1B', border:'1px solid #FECACA' }}>
+          <b>Hata:</b> {authError}
+        </div>
+      )}
 
       <div className="space-y-2">
         {mechanics.slice(0, renderLimit).map((m) => (
