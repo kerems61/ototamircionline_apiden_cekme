@@ -1250,6 +1250,14 @@ function AdminView({ onBack }) {
     }
   };
 
+  // Admin: search input değiştiğinde 300ms sonra otomatik filtrele (debounce)
+  useEffect(() => {
+    if (!authed) return;
+    const t = setTimeout(() => { loadList(search); }, 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, authed]);
+
   const onSave = async (id, fields) => {
     setSaveMsg('Kaydediliyor...');
     try {
@@ -1264,7 +1272,9 @@ function AdminView({ onBack }) {
         setSaveMsg('✓ Kaydedildi');
         setTimeout(() => setSaveMsg(''), 2000);
       }
-      loadList(search);
+      // Liste yeniden çekilmesin → o usta yerinde kalır, kaybolmaz
+      // Sadece local state'te o satırı güncelle
+      setMechanics(prev => prev.map(m => m.id === id ? { ...m, ...fields } : m));
       setEditing(null);
     } catch (err) {
       setSaveMsg('✗ ' + err.message);
@@ -2330,12 +2340,17 @@ export default function App() {
   })();
   const [view, setView] = useState(initialView);
   const goToView = (v) => {
+    const prev = view;
     setView(v);
     if (typeof window !== 'undefined') {
       const hashMap = { home:'', map:'#harita', pricelist:'#fiyatlar', admin:'#admin' };
       const newHash = hashMap[v] ?? '';
       window.history.replaceState(null, '', window.location.pathname + window.location.search + newHash);
       window.scrollTo({ top: 0 });
+    }
+    // Listing view'ına geçişte (özellikle admin'den) en güncel veriyi çek
+    if ((v === 'home' || v === 'pricelist') && prev !== v) {
+      setRefetchKey(k => k + 1);
     }
   };
   const priceOnly = view === 'pricelist';
