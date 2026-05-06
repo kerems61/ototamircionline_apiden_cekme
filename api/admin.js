@@ -79,22 +79,33 @@ export default async function handler(req, res) {
         update.updated_at = new Date().toISOString();
         // Eksik kolon hatası varsa o kolonu update'ten çıkar ve tekrar dene
         const tryUpdate = async (u) => supabase.from('mechanics').update(u).eq('id', id);
-        let { error } = await tryUpdate(update);
-        if (error && /column .* does not exist/i.test(error.message || '')) {
-          // Hata mesajından eksik kolonu yakala ve update'ten çıkar
-          const m = (error.message || '').match(/column ["']?(\w+)["']?/i);
-          const missing = m?.[1];
-          if (missing && update[missing] !== undefined) {
-            const fallback = { ...update };
-            delete fallback[missing];
-            // 'sectors' eksikse sector da düşmesin diye ayrıca güvenlik:
-            ({ error } = await tryUpdate(fallback));
-            if (error) throw error;
-            return res.status(200).json({ ok: true, warning: `${missing}_column_missing` });
+
+        // Eksik kolon adlarını hatadan parse eder (mechanics.foo veya foo formatında)
+        const extractMissingCol = (msg) => {
+          if (!msg) return null;
+          const sub = msg.match(/column ([\w."'\s]+?) does not exist/i);
+          if (!sub) return null;
+          const words = sub[1].match(/\w+/g) || [];
+          return words[words.length - 1] || null; // son word = kolon adı
+        };
+
+        // En fazla 3 deneme: her seferinde eksik kolonu çıkar
+        const droppedCols = [];
+        let attemptUpdate = { ...update };
+        for (let i = 0; i < 4; i++) {
+          const r = await tryUpdate(attemptUpdate);
+          if (!r.error) {
+            const warning = droppedCols.length > 0 ? `${droppedCols.join(',')}_column_missing` : undefined;
+            return res.status(200).json({ ok: true, ...(warning ? { warning } : {}) });
           }
+          const missing = extractMissingCol(r.error.message);
+          if (!missing || attemptUpdate[missing] === undefined) {
+            throw r.error;
+          }
+          droppedCols.push(missing);
+          delete attemptUpdate[missing];
         }
-        if (error) throw error;
-        return res.status(200).json({ ok: true });
+        return res.status(500).json({ error: 'Çok fazla eksik kolon' });
       }
 
       case 'delete_mechanic': {
