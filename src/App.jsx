@@ -2599,7 +2599,7 @@ export default function App() {
 
       {(view === 'home' || view === 'pricelist') && (
       <main className="max-w-6xl mx-auto px-5 pt-10 sm:pt-14 pb-32 lg:pb-12">
-        <section className="fadeUp relative flex flex-col items-center text-center">
+        <section className="fadeUp relative flex flex-col items-center text-center" style={{ zIndex: 50 }}>
           {/* Soft gradient aurora blob'ları (priceOnly modunda yeşilimsi) */}
           <div className="aurora-blob"
             style={{ width:380, height:380, top:-60, left:'-8%',
