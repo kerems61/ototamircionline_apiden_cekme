@@ -688,8 +688,10 @@ function CardSkeleton({ delay = 0 }) {
 }
 
 function DetailSheet({ mechanic, onClose, onWriteReview }) {
+  const [nameExpanded, setNameExpanded] = useState(false);
   if (!mechanic) return null;
   const hasPrices = mechanic.transparentPrices.length > 0;
+  const isLongName = (mechanic.name?.length ?? 0) > 40;
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center fadeIn" style={{ background:'rgba(20,17,15,0.45)' }} onClick={onClose}>
       <div
@@ -705,11 +707,22 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
             <X size={16} color="var(--ink)" />
           </button>
           <div className="absolute bottom-4 left-5 right-5 text-white">
-            <div className="serif text-[22px] sm:text-[26px] font-semibold leading-tight"
-              style={{ display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}
-              title={mechanic.name}>
-              {mechanic.name}
-            </div>
+            <button
+              onClick={() => isLongName && setNameExpanded(v => !v)}
+              className="text-left w-full"
+              style={{ cursor: isLongName ? 'pointer' : 'default' }}>
+              <div className="serif text-[22px] sm:text-[26px] font-semibold leading-tight transition-all"
+                style={!nameExpanded ? { display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' } : {}}
+                title={mechanic.name}>
+                {mechanic.name}
+              </div>
+              {isLongName && (
+                <span className="sans text-[11px] mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full"
+                  style={{ background:'rgba(255,255,255,0.18)', color:'rgba(255,255,255,0.92)', border:'1px solid rgba(255,255,255,0.20)' }}>
+                  {nameExpanded ? '▲ Daralt' : '▼ Tüm adı gör'}
+                </span>
+              )}
+            </button>
             <div className="sans text-[13px] opacity-90 mt-1 flex items-center gap-2">
               <MapPin size={13} /> {mechanic.address}
             </div>
@@ -1240,9 +1253,17 @@ function AdminView({ onBack }) {
   const onSave = async (id, fields) => {
     setSaveMsg('Kaydediliyor...');
     try {
-      await callApi('update_mechanic', { id, fields });
-      setSaveMsg('✓ Kaydedildi');
-      setTimeout(() => setSaveMsg(''), 2000);
+      const result = await callApi('update_mechanic', { id, fields });
+      if (result?.warning === 'public_note_column_missing') {
+        setSaveMsg('⚠ Kaydedildi ama Genel Bilgi kaybedildi — supabase\'de migration_004 çalıştır');
+        setTimeout(() => setSaveMsg(''), 8000);
+      } else if (result?.warning) {
+        setSaveMsg('⚠ Kaydedildi (uyarı: ' + result.warning + ')');
+        setTimeout(() => setSaveMsg(''), 6000);
+      } else {
+        setSaveMsg('✓ Kaydedildi');
+        setTimeout(() => setSaveMsg(''), 2000);
+      }
       loadList(search);
       setEditing(null);
     } catch (err) {
