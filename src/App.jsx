@@ -2379,6 +2379,39 @@ export default function App() {
     return 'home';
   })();
   const [view, setView] = useState(initialView);
+
+  // SEO: view'a göre document.title ve meta description'ı dinamik güncelle
+  // Bu sayede Google ilk gördüğü içeriği değil, doğru başlığı indeksler
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const meta = {
+      home: {
+        title: 'Etimesgut Oto Tamir | Şeffaf Fiyatlı Oto Ustası | Ankara',
+        desc: "Ankara Etimesgut'ta 416 doğrulanmış oto ustası, şeffaf işçilik fiyatları ve gerçek müşteri yorumları. Yağ, balata, akü, klima fiyatlarını önceden gör — ustanı 1 dakikada bul.",
+      },
+      pricelist: {
+        title: 'Şeffaf Fiyatlı Oto Ustaları | Etimesgut | OtoTamircimOnline',
+        desc: 'İşçilik fiyatlarını önceden açıklayan, şeffaflığa açık ustalar. Pazarlık yok, sürpriz yok — gittiğinde ne ödeyeceğini biliyorsun.',
+      },
+      map: {
+        title: 'Etimesgut Oto Usta Haritası | OtoTamircimOnline',
+        desc: 'Etimesgut\'taki tüm oto ustalarını harita üzerinde gör, en yakın olanı bul, yol tarifi al.',
+      },
+      admin: {
+        title: 'Yönetici Paneli | OtoTamircimOnline',
+        desc: 'OtoTamircimOnline yönetici paneli',
+      },
+    };
+    const m = meta[view] ?? meta.home;
+    document.title = m.title;
+    let descEl = document.querySelector('meta[name="description"]');
+    if (descEl) descEl.setAttribute('content', m.desc);
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', m.title);
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', m.desc);
+  }, [view]);
+
   const goToView = (v) => {
     const prev = view;
     setView(v);
