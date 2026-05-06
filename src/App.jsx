@@ -2548,7 +2548,7 @@ export default function App() {
     <div className="min-h-screen sans" style={{ background:'transparent' }}>
       <style>{FONT_INJECT}</style>
 
-      <header className="sticky top-0 z-20 glass"
+      <header className="sticky top-0 z-40 glass"
         style={{ borderBottom:'1px solid rgba(236,227,210,0.5)', boxShadow:'0 1px 12px rgba(120,60,20,0.06)' }}>
         <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
           <button onClick={() => goToView('home')} className="cursor-pointer transition-transform hover:scale-[1.02]">
@@ -2599,7 +2599,7 @@ export default function App() {
 
       {(view === 'home' || view === 'pricelist') && (
       <main className="max-w-6xl mx-auto px-5 pt-10 sm:pt-14 pb-32 lg:pb-12">
-        <section className="fadeUp relative flex flex-col items-center text-center" style={{ zIndex: 50 }}>
+        <section className="fadeUp relative flex flex-col items-center text-center" style={{ zIndex: 30 }}>
           {/* Soft gradient aurora blob'ları (priceOnly modunda yeşilimsi) */}
           <div className="aurora-blob"
             style={{ width:380, height:380, top:-60, left:'-8%',
