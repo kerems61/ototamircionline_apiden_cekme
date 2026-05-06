@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { Analytics } from '@vercel/analytics/react';
 import {
   Search, MapPin, Star, Clock, Phone, ChevronRight, X,
   Sparkles, Shield, Wrench, CircleDot, Zap, Hammer, Droplet,
@@ -3052,6 +3053,7 @@ export default function App() {
       {view === 'home' && <SuggestionCallout open={suggestionOpen} onOpenChange={setSuggestionOpen} />}
       <JoinDialog type="customer" open={customerJoinOpen} onClose={() => setCustomerJoinOpen(false)} />
       <JoinDialog type="owner"    open={ownerJoinOpen}    onClose={() => setOwnerJoinOpen(false)} />
+      <Analytics />
     </div>
   );
 }
