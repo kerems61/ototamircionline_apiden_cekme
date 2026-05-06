@@ -420,7 +420,7 @@ function CategoryPills({ active, onChange }) {
           return (
             <button
               key={id}
-              onClick={() => onChange(id)}
+              onClick={() => onChange(isActive && id !== 'all' ? 'all' : id)}
               className="sans flex items-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-300"
               style={{
                 background: isActive ? 'var(--ink)' : 'var(--card)',
@@ -704,7 +704,11 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
             <X size={16} color="var(--ink)" />
           </button>
           <div className="absolute bottom-4 left-5 right-5 text-white">
-            <div className="serif text-[26px] font-semibold leading-tight">{mechanic.name}</div>
+            <div className="serif text-[22px] sm:text-[26px] font-semibold leading-tight"
+              style={{ display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}
+              title={mechanic.name}>
+              {mechanic.name}
+            </div>
             <div className="sans text-[13px] opacity-90 mt-1 flex items-center gap-2">
               <MapPin size={13} /> {mechanic.address}
             </div>
@@ -2324,6 +2328,7 @@ export default function App() {
   const [refetchKey, setRefetchKey] = useState(0);
   const [categoriesVersion, setCategoriesVersion] = useState(0);
   const [suggestionOpen, setSuggestionOpen] = useState(false);
+  const [suggestOpen, setSuggestOpen] = useState(false);
   const [customerJoinOpen, setCustomerJoinOpen] = useState(false);
   const [ownerJoinOpen, setOwnerJoinOpen] = useState(false);
 
@@ -2460,8 +2465,15 @@ export default function App() {
 
   const submitSearch = (e) => {
     e?.preventDefault?.();
-    setSubmittedQuery(query);
+    setSubmittedQuery(query.trim());
   };
+
+  // Input tamamen boşalırsa "eski arama" sonuçları takılı kalmasın
+  useEffect(() => {
+    if (query.trim() === '' && submittedQuery !== '') {
+      setSubmittedQuery('');
+    }
+  }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="min-h-screen sans" style={{ background:'transparent' }}>
@@ -2578,21 +2590,55 @@ export default function App() {
               : 'Etimesgut sanayisinin en iyi puanlı oto ustalarını tek bakışta gör. Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.'}
           </p>
 
-          <form onSubmit={submitSearch} className="mt-8 flex items-center gap-2 rounded-2xl p-2 w-full max-w-2xl glass-soft"
+          <div className="mt-8 w-full max-w-2xl relative">
+          <form onSubmit={(e) => { setSuggestOpen(false); submitSearch(e); }}
+            className="flex items-center gap-2 rounded-2xl p-2 glass-soft"
             style={{ boxShadow:'var(--shadow-soft)' }}>
             <div className="pl-4 flex items-center"><Search size={19} color="var(--ink-3)" strokeWidth={2.2} /></div>
             <input
               value={query}
-              onChange={(e)=>setQuery(e.target.value)}
+              onChange={(e)=>{ setQuery(e.target.value); setSuggestOpen(true); }}
+              onFocus={() => setSuggestOpen(true)}
+              onBlur={() => setTimeout(() => setSuggestOpen(false), 150)}
               placeholder="Mahalle, marka veya hizmet ara…"
               className="flex-1 bg-transparent outline-none sans text-[15px] py-3 text-left"
               style={{ color:'var(--ink)' }}
             />
+            {query && (
+              <button type="button" onClick={() => { setQuery(''); setSubmittedQuery(''); }}
+                aria-label="Aramayı temizle"
+                className="px-2 py-2 text-[16px]" style={{ color:'var(--ink-3)' }}>✕</button>
+            )}
             <button type="submit" className="sans text-[13.5px] font-semibold px-6 py-3 rounded-xl transition-transform hover:scale-105 btn-gradient-accent"
               style={{ color:'white' }}>
               Ara
             </button>
           </form>
+
+          {/* Autocomplete öneri dropdown */}
+          {suggestOpen && query.trim().length >= 2 && (() => {
+            const q = query.trim().toLocaleLowerCase('tr-TR');
+            const matches = mechanics
+              .filter(m => m.name.toLocaleLowerCase('tr-TR').includes(q))
+              .slice(0, 6);
+            if (matches.length === 0) return null;
+            return (
+              <div className="absolute left-0 right-0 mt-2 rounded-2xl overflow-hidden z-30 fadeIn"
+                style={{ background:'var(--card)', border:'1px solid var(--line-2)', boxShadow:'var(--shadow-lg)' }}>
+                {matches.map(m => (
+                  <button key={m.id} type="button"
+                    onMouseDown={(e) => { e.preventDefault(); setSelected(m); setSuggestOpen(false); }}
+                    className="w-full text-left px-4 py-2.5 sans text-[13.5px] flex items-center gap-2 transition-colors hover:bg-[var(--bg-warm)]"
+                    style={{ color:'var(--ink)', borderBottom:'1px solid var(--line-2)' }}>
+                    <Search size={13} color="var(--ink-3)" />
+                    <span className="truncate">{m.name}</span>
+                    {m.neighborhood && <span className="ml-auto text-[11.5px]" style={{ color:'var(--ink-3)' }}>{m.neighborhood}</span>}
+                  </button>
+                ))}
+              </div>
+            );
+          })()}
+          </div>
           </div>
 
         </section>
