@@ -50,23 +50,13 @@ export default async function handler(req, res) {
 
       case 'list_mechanics': {
         const { search } = payload;
-        // Önce 'sectors' dahil dene; kolon yoksa eski şemaya geri düş (geri uyumlu)
-        const tryQuery = async (withSectors) => {
-          const cols = withSectors
-            ? 'id, name, sector, sectors, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes, public_note'
-            : 'id, name, sector, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes, public_note';
-          let q = supabase.from('mechanics').select(cols)
-            .order('featured', { ascending: false })
-            .order('rating', { ascending: false })
-            .limit(500);
-          if (search?.trim()) q = q.ilike('name', `%${search.trim()}%`);
-          return await q;
-        };
-        let { data, error } = await tryQuery(true);
-        if (error && /sectors/i.test(error.message || '')) {
-          // sectors kolonu daha eklenmemiş, eski şemayla dön
-          ({ data, error } = await tryQuery(false));
-        }
+        // SELECT * — hangi kolonlar varsa hepsini al, eksik kolon hatası olmaz
+        let q = supabase.from('mechanics').select('*')
+          .order('featured', { ascending: false })
+          .order('rating', { ascending: false })
+          .limit(500);
+        if (search?.trim()) q = q.ilike('name', `%${search.trim()}%`);
+        const { data, error } = await q;
         if (error) throw error;
         return res.status(200).json({ ok: true, mechanics: data });
       }
@@ -87,14 +77,21 @@ export default async function handler(req, res) {
           update.sector = update.sectors[0];
         }
         update.updated_at = new Date().toISOString();
-        let { error } = await supabase.from('mechanics').update(update).eq('id', id);
-        if (error && /sectors/i.test(error.message || '') && update.sectors !== undefined) {
-          // sectors kolonu DB'de yok — onu çıkar, sadece eski 'sector' ile dene
-          const fallback = { ...update };
-          delete fallback.sectors;
-          ({ error } = await supabase.from('mechanics').update(fallback).eq('id', id));
-          if (error) throw error;
-          return res.status(200).json({ ok: true, warning: 'sectors_column_missing' });
+        // Eksik kolon hatası varsa o kolonu update'ten çıkar ve tekrar dene
+        const tryUpdate = async (u) => supabase.from('mechanics').update(u).eq('id', id);
+        let { error } = await tryUpdate(update);
+        if (error && /column .* does not exist/i.test(error.message || '')) {
+          // Hata mesajından eksik kolonu yakala ve update'ten çıkar
+          const m = (error.message || '').match(/column ["']?(\w+)["']?/i);
+          const missing = m?.[1];
+          if (missing && update[missing] !== undefined) {
+            const fallback = { ...update };
+            delete fallback[missing];
+            // 'sectors' eksikse sector da düşmesin diye ayrıca güvenlik:
+            ({ error } = await tryUpdate(fallback));
+            if (error) throw error;
+            return res.status(200).json({ ok: true, warning: `${missing}_column_missing` });
+          }
         }
         if (error) throw error;
         return res.status(200).json({ ok: true });
