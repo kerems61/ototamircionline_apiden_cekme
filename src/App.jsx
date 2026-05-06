@@ -344,6 +344,7 @@ function mapRow(row) {
     featured: row.featured === true,
     googleMapsUrl: row.google_maps_url ?? null,
     notes: row.notes ?? null,
+    publicNote: row.public_note ?? null,
     placeId: row.place_id ?? null,
     lat: row.lat != null ? Number(row.lat) : null,
     lng: row.lng != null ? Number(row.lng) : null,
@@ -785,6 +786,15 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
                   </div>
                 ))}
               </div>
+              {/* Genel bilgi notu (admin tarafından eklenir) */}
+              {mechanic.publicNote && (
+                <div className="mt-3 rounded-2xl p-4 sans text-[13px] leading-relaxed whitespace-pre-line"
+                  style={{ background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.18)', color:'var(--ink-2)' }}>
+                  <div className="sans text-[10.5px] uppercase tracking-[0.14em] font-semibold mb-1.5"
+                    style={{ color:'var(--accent)' }}>Genel Bilgi</div>
+                  {mechanic.publicNote}
+                </div>
+              )}
             </section>
           ) : (
             <section className="rounded-2xl p-5 text-center" style={{ background:'var(--card)', border:'1px dashed var(--line)' }}>
@@ -1687,6 +1697,7 @@ function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
     featured: mechanic.featured ?? false,
     google_maps_url: mechanic.google_maps_url ?? '',
     notes: mechanic.notes ?? '',
+    public_note: mechanic.public_note ?? '',
   });
 
   const update = (k, v) => setF(prev => ({ ...prev, [k]: v }));
@@ -1714,7 +1725,12 @@ function AdminEditForm({ mechanic, onSave, onDelete, callApi }) {
                placeholder="https://www.google.com/maps/place/... veya boş"
                className="admin-input" />
       </Field>
-      <Field label="Yönetici Notu" full>
+      <Field label="Genel Bilgi (kart altında müşterilere görünür — istediğin zaman güncelleyebilirsin)" full>
+        <textarea value={f.public_note} onChange={(e) => update('public_note', e.target.value)} rows={3}
+          placeholder="Örn: PPF, cam filmi, seramik, pasta cila, far temizleme, sigara yanığı tamiri yapılır. Cumartesi 17:00'a kadar açık."
+          className="admin-input" />
+      </Field>
+      <Field label="Yönetici Notu (yalnızca admin görür)" full>
         <textarea value={f.notes} onChange={(e) => update('notes', e.target.value)} rows={2}
           placeholder="İç not, kullanıcılar görmez"
           className="admin-input" />

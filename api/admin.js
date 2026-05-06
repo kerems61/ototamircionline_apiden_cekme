@@ -53,8 +53,8 @@ export default async function handler(req, res) {
         // Önce 'sectors' dahil dene; kolon yoksa eski şemaya geri düş (geri uyumlu)
         const tryQuery = async (withSectors) => {
           const cols = withSectors
-            ? 'id, name, sector, sectors, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes'
-            : 'id, name, sector, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes';
+            ? 'id, name, sector, sectors, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes, public_note'
+            : 'id, name, sector, neighborhood, phone, address, opening_hours, rating, review_count, featured, google_maps_url, notes, public_note';
           let q = supabase.from('mechanics').select(cols)
             .order('featured', { ascending: false })
             .order('rating', { ascending: false })
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
         // Güvenlik: sadece belirli alanları güncelle
         const allowed = ['name', 'sector', 'sectors', 'neighborhood', 'phone', 'address',
                          'opening_hours', 'rating', 'review_count',
-                         'featured', 'google_maps_url', 'notes'];
+                         'featured', 'google_maps_url', 'notes', 'public_note'];
         const update = {};
         for (const k of allowed) {
           if (fields[k] !== undefined) update[k] = fields[k];
@@ -116,7 +116,7 @@ export default async function handler(req, res) {
         }
         const allowed = ['name', 'sector', 'sectors', 'neighborhood', 'phone', 'address',
                          'opening_hours', 'rating', 'review_count', 'google_category',
-                         'featured', 'google_maps_url', 'notes', 'lat', 'lng'];
+                         'featured', 'google_maps_url', 'notes', 'public_note', 'lat', 'lng'];
         const insert = { district: 'Etimesgut' };
         for (const k of allowed) if (fields[k] !== undefined) insert[k] = fields[k];
         // sectors verilmiş ama sector verilmemişse, sector'a ilkini koy
