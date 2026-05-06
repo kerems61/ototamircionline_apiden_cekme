@@ -30,7 +30,7 @@ const supabase = createClient(
    ────────────────────────────────────────────────────────────── */
 
 const FONT_INJECT = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Geist:wght@300;400;500;600;700;800&display=swap');
+/* Fontlar index.html'de async yüklenir (render-blocking değil) */
 :root{
   --bg: #FBF6EE;
   --bg-warm: #F6EFE2;
