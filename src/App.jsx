@@ -655,22 +655,6 @@ const MechanicCard = React.memo(function MechanicCard({ m, onOpen, delay = 0, is
           </div>
         )}
 
-        {/* Genel Bilgi (admin'in eklediği serbest yazı) — kart altında 2 satıra kadar göster */}
-        {m.publicNote && (
-          <div className="mt-3 sans text-[12px] leading-relaxed px-3 py-2 rounded-xl"
-            style={{
-              background: 'var(--bg-warm)',
-              border: '1px solid var(--line)',
-              color: 'var(--ink-2)',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}>
-            <span className="font-semibold" style={{ color:'var(--accent)' }}>i </span>
-            {m.publicNote}
-          </div>
-        )}
 
         <button className="sans mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-[13.5px] font-semibold transition-all hover:gap-2.5"
           style={{
@@ -791,6 +775,18 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
             </section>
           )}
 
+          {/* Genel Bilgi (açıklama) — fiyatların üstünde */}
+          {mechanic.publicNote && (
+            <section className="rounded-2xl p-4 sans text-[13.5px] leading-relaxed whitespace-pre-line"
+              style={{ background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.18)', color:'var(--ink-2)' }}>
+              <div className="sans text-[10.5px] uppercase tracking-[0.14em] font-semibold mb-2 flex items-center gap-2"
+                style={{ color:'var(--accent)' }}>
+                <Sparkles size={12} strokeWidth={2.4} /> Hakkında
+              </div>
+              {mechanic.publicNote}
+            </section>
+          )}
+
           {hasPrices ? (
             <section>
               <div className="flex items-baseline justify-between mb-3">
@@ -816,15 +812,6 @@ function DetailSheet({ mechanic, onClose, onWriteReview }) {
                   </div>
                 ))}
               </div>
-              {/* Genel bilgi notu (admin tarafından eklenir) */}
-              {mechanic.publicNote && (
-                <div className="mt-3 rounded-2xl p-4 sans text-[13px] leading-relaxed whitespace-pre-line"
-                  style={{ background:'var(--accent-soft)', border:'1px solid rgba(194,65,12,0.18)', color:'var(--ink-2)' }}>
-                  <div className="sans text-[10.5px] uppercase tracking-[0.14em] font-semibold mb-1.5"
-                    style={{ color:'var(--accent)' }}>Genel Bilgi</div>
-                  {mechanic.publicNote}
-                </div>
-              )}
             </section>
           ) : (
             <section className="rounded-2xl p-5 text-center" style={{ background:'var(--card)', border:'1px dashed var(--line)' }}>
