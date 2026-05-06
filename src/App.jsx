@@ -937,19 +937,54 @@ function MapView({ onBack, onSelectMechanic }) {
   const [loading, setLoading] = useState(true);
   const [leafletReady, setLeafletReady] = useState(false);
 
-  // Leaflet'in yüklenmesini bekle
+  // Leaflet'i dinamik yükle (sadece harita sayfası açıldığında)
   useEffect(() => {
     if (window.L && window.L.markerClusterGroup) {
       setLeafletReady(true);
       return;
     }
-    const check = setInterval(() => {
-      if (window.L && window.L.markerClusterGroup) {
-        setLeafletReady(true);
-        clearInterval(check);
+
+    // Yardımcılar — duplicate yükleme önle (idempotent)
+    const ensureCss = (href) => {
+      if (document.querySelector(`link[href="${href}"]`)) return;
+      const l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = href;
+      document.head.appendChild(l);
+    };
+    const ensureScript = (src) => new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) {
+        if (existing.dataset.loaded === '1') return resolve();
+        existing.addEventListener('load', resolve);
+        existing.addEventListener('error', reject);
+        return;
       }
-    }, 100);
-    return () => clearInterval(check);
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.onload = () => { s.dataset.loaded = '1'; resolve(); };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+
+    // CSS'leri paralel ekle
+    ensureCss('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+    ensureCss('https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css');
+    ensureCss('https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css');
+
+    // JS'leri sırayla (cluster, leaflet'e bağımlı)
+    let cancelled = false;
+    (async () => {
+      try {
+        await ensureScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
+        await ensureScript('https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js');
+        if (!cancelled) setLeafletReady(true);
+      } catch (e) {
+        console.error('Leaflet yüklenemedi:', e);
+      }
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   // Ustaları çek
