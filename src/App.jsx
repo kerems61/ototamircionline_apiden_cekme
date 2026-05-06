@@ -655,6 +655,23 @@ const MechanicCard = React.memo(function MechanicCard({ m, onOpen, delay = 0, is
           </div>
         )}
 
+        {/* Genel Bilgi (admin'in eklediği serbest yazı) — kart altında 2 satıra kadar göster */}
+        {m.publicNote && (
+          <div className="mt-3 sans text-[12px] leading-relaxed px-3 py-2 rounded-xl"
+            style={{
+              background: 'var(--bg-warm)',
+              border: '1px solid var(--line)',
+              color: 'var(--ink-2)',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}>
+            <span className="font-semibold" style={{ color:'var(--accent)' }}>i </span>
+            {m.publicNote}
+          </div>
+        )}
+
         <button className="sans mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-[13.5px] font-semibold transition-all hover:gap-2.5"
           style={{
             background: m.featured
@@ -2642,7 +2659,7 @@ export default function App() {
               : 'Etimesgut sanayisinin en iyi puanlı oto ustalarını tek bakışta gör. Topluluktan gelen şeffaf fiyatlarla ücret pazarlığı yapmadan, doğru ustayı bul.'}
           </p>
 
-          <div className="mt-8 w-full max-w-2xl relative">
+          <div className="mt-8 w-full max-w-2xl relative" style={{ zIndex: 100 }}>
           <form onSubmit={(e) => { setSuggestOpen(false); submitSearch(e); }}
             className="flex items-center gap-2 rounded-2xl p-2 glass-soft"
             style={{ boxShadow:'var(--shadow-soft)' }}>
@@ -2675,8 +2692,13 @@ export default function App() {
               .slice(0, 6);
             if (matches.length === 0) return null;
             return (
-              <div className="absolute left-0 right-0 mt-2 rounded-2xl overflow-hidden z-30 fadeIn"
-                style={{ background:'var(--card)', border:'1px solid var(--line-2)', boxShadow:'var(--shadow-lg)' }}>
+              <div className="absolute left-0 right-0 mt-2 rounded-2xl overflow-hidden fadeIn"
+                style={{
+                  background:'var(--card)',
+                  border:'1px solid var(--line-2)',
+                  boxShadow:'var(--shadow-lg)',
+                  zIndex: 100,
+                }}>
                 {matches.map(m => (
                   <button key={m.id} type="button"
                     onMouseDown={(e) => { e.preventDefault(); setSelected(m); setSuggestOpen(false); }}
