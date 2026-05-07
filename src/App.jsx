@@ -1198,6 +1198,22 @@ function AdminView({ onBack }) {
   const [autoChecking, setAutoChecking] = useState(() => {
     try { return !!localStorage.getItem('admin-pwd'); } catch { return false; }
   });
+  // Brute-force frontend koruması
+  const [failCount, setFailCount] = useState(() => {
+    try { return parseInt(localStorage.getItem('admin-fails') || '0'); } catch { return 0; }
+  });
+  const [lockUntil, setLockUntil] = useState(() => {
+    try { return parseInt(localStorage.getItem('admin-lock') || '0'); } catch { return 0; }
+  });
+  const [now, setNow] = useState(Date.now());
+  // Lock varsa her saniye now'ı güncelle (countdown için)
+  useEffect(() => {
+    if (lockUntil <= Date.now()) return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [lockUntil]);
+  const isLocked = lockUntil > now;
+  const secondsLeft = isLocked ? Math.ceil((lockUntil - now) / 1000) : 0;
 
   const [mechanics, setMechanics] = useState([]);
   const [search, setSearch] = useState('');
@@ -1254,15 +1270,35 @@ function AdminView({ onBack }) {
 
   const tryLogin = async (e) => {
     e?.preventDefault?.();
+    if (isLocked) return; // cooldown bitmedi
     setAuthError('');
     setAuthLoading(true);
     try {
       await callApi('verify');
       try { localStorage.setItem('admin-pwd', password); } catch {}
+      // Başarılı → counter sıfırla
+      setFailCount(0);
+      setLockUntil(0);
+      try {
+        localStorage.removeItem('admin-fails');
+        localStorage.removeItem('admin-lock');
+      } catch {}
       setAuthed(true);
       loadList();
     } catch (err) {
       setAuthError(err.message);
+      // Yanlış şifre → fail counter artır, 3'ten sonra cooldown
+      const newFails = failCount + 1;
+      setFailCount(newFails);
+      try { localStorage.setItem('admin-fails', String(newFails)); } catch {}
+      if (newFails >= 3) {
+        // Exponential backoff: 30s, 60s, 120s, 240s, ...
+        const delay = 30 * 1000 * Math.pow(2, newFails - 3);
+        const until = Date.now() + delay;
+        setLockUntil(until);
+        setNow(Date.now());
+        try { localStorage.setItem('admin-lock', String(until)); } catch {}
+      }
     } finally {
       setAuthLoading(false);
     }
@@ -1371,19 +1407,48 @@ function AdminView({ onBack }) {
             <input
               type="password"
               autoFocus
+              disabled={isLocked}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Admin şifresi"
-              className="w-full sans text-[14px] py-3 px-4 rounded-2xl outline-none"
+              className="w-full sans text-[14px] py-3 px-4 rounded-2xl outline-none disabled:opacity-50"
               style={{ background:'var(--bg-warm)', border:'1px solid var(--line)' }}
             />
-            {authError && (
+            {authError && !isLocked && (
               <div className="sans text-[12.5px] mt-3" style={{ color:'#B91C1C' }}>{authError}</div>
             )}
-            <button type="submit" disabled={authLoading || !password}
+            {isLocked && (
+              <div className="sans text-[13px] mt-3 px-3 py-3 rounded-xl flex items-start gap-2"
+                style={{ background:'#FEF2F2', color:'#991B1B', border:'1px solid #FECACA' }}>
+                <Shield size={16} strokeWidth={2.4} className="shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold mb-0.5">Çok fazla yanlış deneme</div>
+                  <div>
+                    {Math.floor(secondsLeft / 60) > 0
+                      ? `${Math.floor(secondsLeft / 60)} dk ${secondsLeft % 60} sn`
+                      : `${secondsLeft} saniye`} sonra tekrar deneyebilirsin.
+                  </div>
+                </div>
+              </div>
+            )}
+            {!isLocked && failCount > 0 && failCount < 3 && (
+              <div className="sans text-[12px] mt-2" style={{ color:'var(--ink-3)' }}>
+                {3 - failCount} yanlış denemeden sonra hesabın geçici kilitlenir.
+              </div>
+            )}
+            <button type="submit" disabled={authLoading || !password || isLocked}
               className="sans w-full mt-4 py-3 rounded-2xl text-[14px] font-semibold transition-all"
-              style={{ background:'var(--ink)', color:'white', opacity: authLoading || !password ? 0.5 : 1 }}>
-              {authLoading ? 'Kontrol ediliyor...' : 'Giriş Yap'}
+              style={{
+                background: isLocked ? '#9CA3AF' : 'var(--ink)',
+                color:'white',
+                opacity: authLoading || !password || isLocked ? 0.5 : 1,
+                cursor: isLocked ? 'not-allowed' : 'pointer',
+              }}>
+              {authLoading
+                ? 'Kontrol ediliyor...'
+                : isLocked
+                  ? `Bekle (${secondsLeft}s)`
+                  : 'Giriş Yap'}
             </button>
           </form>
           <button onClick={onBack}

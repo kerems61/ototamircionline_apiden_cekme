@@ -18,16 +18,86 @@ export const config = {
   maxDuration: 30,
 };
 
+/* ────────────────────────────────────────────────────────────────
+   Brute-force koruması — IP bazlı in-memory rate limit
+   (serverless cold start'ta sıfırlanır, küçük trafik için yeterli)
+   ──────────────────────────────────────────────────────────────── */
+const failedAttempts = new Map(); // ip -> { count, firstAttempt, lockedUntil }
+const MAX_FAILS = 5;
+const LOCK_MS = 15 * 60 * 1000;     // 15 dk lock
+const WINDOW_MS = 15 * 60 * 1000;   // 15 dk pencere
+
+function getClientIp(req) {
+  const xff = req.headers['x-forwarded-for'];
+  if (xff) return String(xff).split(',')[0].trim();
+  return req.socket?.remoteAddress || 'unknown';
+}
+
+function checkLimit(ip) {
+  const now = Date.now();
+  const r = failedAttempts.get(ip);
+  if (!r) return { allowed: true };
+  if (r.lockedUntil && r.lockedUntil > now) {
+    return { allowed: false, retryAfter: Math.ceil((r.lockedUntil - now) / 1000), reason: 'locked' };
+  }
+  if (r.firstAttempt && now - r.firstAttempt > WINDOW_MS) {
+    failedAttempts.delete(ip);
+    return { allowed: true };
+  }
+  return { allowed: true };
+}
+
+function recordFail(ip) {
+  const now = Date.now();
+  const r = failedAttempts.get(ip) ?? { count: 0, firstAttempt: now };
+  r.count += 1;
+  if (r.count >= MAX_FAILS) {
+    r.lockedUntil = now + LOCK_MS;
+  }
+  failedAttempts.set(ip, r);
+  return { count: r.count, locked: !!r.lockedUntil, retryAfter: r.lockedUntil ? Math.ceil(LOCK_MS / 1000) : 0 };
+}
+
+function clearFails(ip) {
+  failedAttempts.delete(ip);
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { password, action, ...payload } = req.body || {};
+  const ip = getClientIp(req);
+
+  // Önce rate limit kontrolü
+  const limit = checkLimit(ip);
+  if (!limit.allowed) {
+    return res.status(429).json({
+      error: `Çok fazla yanlış deneme. ${Math.ceil(limit.retryAfter / 60)} dakika sonra tekrar dene.`,
+      retryAfter: limit.retryAfter,
+      locked: true,
+    });
+  }
 
   if (!process.env.ADMIN_PASSWORD || password !== process.env.ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Yanlış şifre' });
+    const result = recordFail(ip);
+    if (result.locked) {
+      return res.status(429).json({
+        error: `Hesap geçici olarak kilitlendi. ${Math.ceil(result.retryAfter / 60)} dakika sonra tekrar dene.`,
+        retryAfter: result.retryAfter,
+        locked: true,
+      });
+    }
+    const remaining = MAX_FAILS - result.count;
+    return res.status(401).json({
+      error: `Yanlış şifre. ${remaining} deneme hakkın kaldı.`,
+      remaining,
+    });
   }
+
+  // Başarılı login → fail counter sıfırla
+  clearFails(ip);
 
   // Vercel'de VITE_SUPABASE_URL veya SUPABASE_URL — ikisini de kabul et
   const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
